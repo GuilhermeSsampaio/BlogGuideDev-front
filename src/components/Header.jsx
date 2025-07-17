@@ -63,6 +63,17 @@ export default function Header() {
                   Sobre
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  to="/usuario"
+                  className={`nav-link ${
+                    isActive("/usuario") ? "azul fw-bold" : "azul"
+                  }`}
+                >
+                  <i className="bi bi-person-circle me-1"></i>
+                  Perfil
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
