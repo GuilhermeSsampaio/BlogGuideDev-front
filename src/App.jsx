@@ -7,6 +7,7 @@ import PostCard from "./components/PostCard";
 import BlogPage from "../pages/BlogPage";
 import IdeiasPage from "../pages/IdeiasPage";
 import SobrePage from "../pages/SobrePage";
+import CriarPostPage from "../pages/CriarPostPage";
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<BlogPage />} />
           <Route path="/ideias" element={<IdeiasPage />} />
           <Route path="/sobre" element={<SobrePage />} />
+          <Route path="/criar-post" element={<CriarPostPage />} />
         </Routes>
 
         <hr />

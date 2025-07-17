@@ -7,9 +7,9 @@ export default function CtaBox() {
       className="container azul jersey-25-regular"
       style={{ fontSize: "1.5rem" }}
     >
-      <p className="text-center m-0">
+      {/* <p className="text-center m-0">
         Idéias? Projetos? Tutoriais? Vamos aprender juntos!
-      </p>
+      </p> */}
       <div
         className="container azul jersey-25-regular px-3 py-2 d-flex justify-content-center align-itens-center"
         style={{ fontSize: "1.5rem", height: "20vh" }}
