@@ -1,21 +1,29 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import CtaBox from "./components/CtaBox";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import PostCard from "./components/PostCard";
+import BlogPage from "../pages/BlogPage";
+import IdeiasPage from "../pages/IdeiasPage";
+import SobrePage from "../pages/SobrePage";
 function App() {
   return (
-    <div>
+    <Router>
       <div>
         <Header />
-        <hr></hr>
-        <CtaBox />
-        <hr></hr>
-        <PostCard />
-        <hr></hr>
+        <hr />
+
+        <Routes>
+          <Route path="/" element={<BlogPage />} />
+          <Route path="/ideias" element={<IdeiasPage />} />
+          <Route path="/sobre" element={<SobrePage />} />
+        </Routes>
+
+        <hr />
         <Footer />
       </div>
-    </div>
+    </Router>
   );
 }
 
