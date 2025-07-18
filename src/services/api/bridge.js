@@ -1,30 +1,16 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://blogguidedev-api.fly.dev";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 class ApiService {
   constructor() {
-    this.baseURL = API_BASE_URL;
-
-    // Garantir que sempre use HTTPS
-    if (this.baseURL && this.baseURL.startsWith("http://")) {
-      this.baseURL = this.baseURL.replace("http://", "https://");
-      console.warn("⚠️ Convertendo HTTP para HTTPS:", this.baseURL);
-    }
-
-    console.log("🌍 API Base URL final:", this.baseURL);
+    this.baseURL = "https://blogguidedev-api.fly.dev";
   }
 
   // Método genérico para fazer requisições
   async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
 
-    // Verificação extra para garantir HTTPS
-    if (url.startsWith("http://")) {
-      console.error("🚨 ERRO: Tentativa de usar HTTP em produção!", url);
-      throw new Error("Requisição HTTP bloqueada por política de segurança");
-    }
-
     console.log("🚀 Fazendo requisição para:", url);
+    console.log("📦 Dados:", options.body);
 
     const config = {
       headers: {
