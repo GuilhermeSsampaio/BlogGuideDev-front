@@ -50,7 +50,7 @@ class ApiService {
   }
 
   async createPost(postData) {
-    return this.request("/posts", {
+    return this.request("/posts/", {
       method: "POST",
       body: JSON.stringify(postData),
     });
