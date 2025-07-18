@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 class ApiService {
   constructor() {
-    this.baseURL = "https://blogguidedev-api.fly.dev";
+    this.baseURL = API_BASE_URL;
   }
 
   // Método genérico para fazer requisições
