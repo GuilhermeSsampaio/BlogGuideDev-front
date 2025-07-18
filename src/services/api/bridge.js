@@ -7,10 +7,6 @@ class ApiService {
     console.log("🔧 VITE_API_URL:", import.meta.env.VITE_API_URL);
     console.log("🔧 Environment Mode:", import.meta.env.MODE);
     console.log("🔧 All env vars:", import.meta.env);
-
-    this.baseURL =
-      import.meta.env.VITE_API_URL || "https://blogguidedev-api.fly.dev";
-    console.log("🌍 Final API Base URL:", this.baseURL);
   }
 
   // Método genérico para fazer requisições
