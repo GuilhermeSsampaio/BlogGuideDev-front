@@ -35,6 +35,17 @@ export function usePosts() {
     }
   };
 
+  //terminar de implementar
+  const updatePost = async (idPost) => {
+    try {
+      const postForUpdate = await apiService.getPost(idPost);
+      console.log(postForUpdate);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const deletePost = async (id) => {
     try {
       await apiService.deletePost(id);
@@ -52,5 +63,6 @@ export function usePosts() {
     refetch: fetchPosts,
     createPost,
     deletePost,
+    updatePost,
   };
 }

@@ -1,41 +1,24 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import React, { useEffect } from "react";
 import PostForm from "../components/PostForm";
-import apiService from "../services/api/bridge";
+import { useProtectedPage } from "../handlers/globalHandlers";
+import { useHandlersPosts } from "../handlers/postHandler";
 
 export default function CriarPostPage() {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { checkAuthentication, handleCancel } = useProtectedPage();
+  const { handleCreatePost } = useHandlersPosts();
 
-  // Redirecionar se não estiver autenticado
-  if (!isAuthenticated) {
-    navigate("/login");
-    return null;
-  }
+  // Verificar autenticação na montagem do componente
+  useEffect(() => {
+    checkAuthentication();
+  }, [checkAuthentication]);
 
-  const handleCreatePost = async (postData) => {
-    try {
-      const newPost = await apiService.createPost(postData);
-      console.log(newPost);
-      // Mostrar sucesso (você pode usar um toast aqui)
-      alert("Post criado com sucesso!");
-
-      // Redirecionar para a página principal
-      navigate("/");
-    } catch (error) {
-      console.error("Erro ao criar post:", error);
-      alert("Erro ao criar post. Tente novamente.");
-    }
-  };
-
-  const handleCancel = () => {
-    navigate("/");
+  const onCancel = () => {
+    handleCancel();
   };
 
   return (
     <div>
-      <PostForm onSubmit={handleCreatePost} onCancel={handleCancel} />
+      <PostForm onSubmit={handleCreatePost} onCancel={onCancel} />
     </div>
   );
 }

@@ -2,8 +2,10 @@ import React from "react";
 import BtnCriarPost from "../components/BtnCriarPost";
 import PostCard from "../components/PostCard";
 import { usePosts } from "../hooks/usePosts";
+
 export default function BlogPage() {
   const { posts, loading, error } = usePosts();
+
   if (loading) {
     return (
       <div className="container text-center py-5">
