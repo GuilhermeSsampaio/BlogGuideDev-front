@@ -42,7 +42,7 @@ class ApiService {
 
   // Posts
   async getPosts() {
-    return this.request("/posts");
+    return this.request("/posts/");
   }
 
   async getPost(id) {
