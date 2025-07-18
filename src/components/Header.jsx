@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ROUTES } from "../routes/constants";
 
 export default function Header() {
   const location = useLocation();
@@ -13,7 +14,7 @@ export default function Header() {
           <Link
             className="navbar-brand fw-bold text-decoration-none azul"
             style={{ fontSize: "2.5rem" }}
-            to="/"
+            to={ROUTES.HOME}
           >
             BlogGuideDev
           </Link>
@@ -35,9 +36,9 @@ export default function Header() {
             <ul className="navbar-nav ms-auto gap-4">
               <li className="nav-item">
                 <Link
-                  to="/"
+                  to={ROUTES.HOME}
                   className={`nav-link ${
-                    isActive("/") ? "azul fw-bold" : "azul"
+                    isActive(ROUTES.HOME) ? "azul fw-bold" : "azul"
                   }`}
                 >
                   Blog
@@ -45,9 +46,9 @@ export default function Header() {
               </li>
               <li className="nav-item">
                 <Link
-                  to="/ideias"
+                  to={ROUTES.IDEIAS}
                   className={`nav-link ${
-                    isActive("/ideias") ? "azul fw-bold" : "azul"
+                    isActive(ROUTES.IDEIAS) ? "azul fw-bold" : "azul"
                   }`}
                 >
                   Idéias
@@ -55,9 +56,9 @@ export default function Header() {
               </li>
               <li className="nav-item">
                 <Link
-                  to="/sobre"
+                  to={ROUTES.SOBRE}
                   className={`nav-link ${
-                    isActive("/sobre") ? "azul fw-bold" : "azul"
+                    isActive(ROUTES.SOBRE) ? "azul fw-bold" : "azul"
                   }`}
                 >
                   Sobre
@@ -65,9 +66,9 @@ export default function Header() {
               </li>
               <li className="nav-item">
                 <Link
-                  to="/usuario"
+                  to={ROUTES.USUARIO}
                   className={`nav-link ${
-                    isActive("/usuario") ? "azul fw-bold" : "azul"
+                    isActive(ROUTES.USUARIO) ? "azul fw-bold" : "azul"
                   }`}
                 >
                   <i className="bi bi-person-circle me-1"></i>

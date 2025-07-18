@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ROUTES } from "../routes/constants";
 
 export default function Footer() {
   const location = useLocation();
@@ -7,22 +8,22 @@ export default function Footer() {
 
   const tabs = [
     {
-      id: "/",
+      id: ROUTES.HOME,
       label: "Blog",
       icon: "bi-journal-text",
-      path: "/",
+      path: ROUTES.HOME,
     },
     {
-      id: "/ideias",
+      id: ROUTES.IDEIAS,
       label: "Ideias",
       icon: "bi-lightbulb",
-      path: "/ideias",
+      path: ROUTES.IDEIAS,
     },
     {
-      id: "/sobre",
+      id: ROUTES.SOBRE,
       label: "Sobre",
       icon: "bi-info-circle",
-      path: "/sobre",
+      path: ROUTES.SOBRE,
     },
   ];
 

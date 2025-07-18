@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "../routes/constants";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ export default function LoginPage() {
 
     try {
       await login(formData.email, formData.password);
-      navigate("/");
+      navigate(ROUTES.HOME);
     } catch (error) {
       setError("Email ou senha incorretos:", error);
     } finally {
@@ -86,7 +87,10 @@ export default function LoginPage() {
               <div className="text-center mt-3">
                 <p>
                   Não tem uma conta?{" "}
-                  <Link to="/register" className="azul text-decoration-none">
+                  <Link
+                    to={ROUTES.REGISTER}
+                    className="azul text-decoration-none"
+                  >
                     Cadastre-se
                   </Link>
                 </p>
