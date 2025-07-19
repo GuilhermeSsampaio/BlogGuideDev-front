@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useHandlersRegister } from "../handlers/registerHandler";
+import { ROUTES } from "../routes/constants";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -14,8 +15,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { register } = useAuth();
-  const navigate = useNavigate();
+  const { handleRegister } = useHandlersRegister();
 
   const handleChange = (e) => {
     setFormData({
@@ -29,26 +29,11 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("As senhas não coincidem");
-      setLoading(false);
-      return;
-    }
-
     try {
-      await register({
-        name: formData.name,
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        bio: formData.bio,
-      });
-      navigate("/login");
+      await handleRegister(formData);
     } catch (error) {
-      setError(
-        "Erro ao criar conta. Verifique os dados e tente novamente:",
-        error
-      );
+      setError("Erro inesperado. Tente novamente.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -152,7 +137,7 @@ export default function RegisterPage() {
               <div className="text-center mt-3">
                 <p>
                   Já tem uma conta?{" "}
-                  <Link to="/login" className="azul text-decoration-none">
+                  <Link to={ROUTES.LOGIN} className="azul text-decoration-none">
                     Entrar
                   </Link>
                 </p>

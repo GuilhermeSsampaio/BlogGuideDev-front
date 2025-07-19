@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useHandlersLogin } from "../handlers/loginHandler";
 import { ROUTES } from "../routes/constants";
 
 export default function LoginPage() {
@@ -11,8 +11,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  const { handleLogin } = useHandlersLogin();
 
   const handleChange = (e) => {
     setFormData({
@@ -27,10 +26,10 @@ export default function LoginPage() {
     setError("");
 
     try {
-      await login(formData.email, formData.password);
-      navigate(ROUTES.HOME);
+      await handleLogin(formData);
     } catch (error) {
-      setError("Email ou senha incorretos:", error);
+      setError("Erro inesperado. Tente novamente.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
