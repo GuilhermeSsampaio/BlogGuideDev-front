@@ -70,7 +70,7 @@ class ApiService {
   }
 
   async getUSerOfPost(postId) {
-    return this.request(`/posts/${postId}/author/`, {
+    return this.request(`/posts/${postId}/author`, {
       method: "GET",
     });
   }
