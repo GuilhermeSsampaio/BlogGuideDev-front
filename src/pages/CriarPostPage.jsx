@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PostForm from "../components/PostForm";
+import PostForm from "../components/Posts/PostForm";
 import { useProtectedPage } from "../handlers/globalHandlers";
 import { useHandlersPosts } from "../handlers/postHandler";
 

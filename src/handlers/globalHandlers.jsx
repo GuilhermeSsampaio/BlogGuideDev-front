@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useToast } from "../hooks/useToast";
 import { ROUTES } from "../routes/constants";
 
 // Hook para verificação de autenticação
@@ -50,6 +51,7 @@ export const useNavigation = () => {
 // Hook para handlers de formulários
 export const useFormHandlers = () => {
   const { goBack, goToRoute } = useNavigation();
+  const { showSuccess, showError } = useToast();
 
   const handleCancel = (redirectTo = ROUTES.HOME) => {
     goToRoute(redirectTo);
@@ -59,7 +61,7 @@ export const useFormHandlers = () => {
     message = "Operação realizada com sucesso!",
     redirectTo = ROUTES.HOME
   ) => {
-    alert(message);
+    showSuccess(message);
     goToRoute(redirectTo);
   };
 
@@ -68,7 +70,7 @@ export const useFormHandlers = () => {
     customMessage = "Erro ao realizar operação. Tente novamente."
   ) => {
     console.error(error);
-    alert(customMessage);
+    showError(customMessage);
   };
 
   return {

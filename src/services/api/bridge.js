@@ -69,6 +69,12 @@ class ApiService {
     });
   }
 
+  async getUSerOfPost(postId) {
+    return this.request(`/posts/${postId}/author/`, {
+      method: "GET",
+    });
+  }
+
   // Health check
   async healthCheck() {
     return this.request("/health");

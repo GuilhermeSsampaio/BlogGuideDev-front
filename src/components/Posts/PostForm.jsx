@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function PostForm({ onSubmit, initialData = null, onCancel }) {
   const { user } = useAuth();

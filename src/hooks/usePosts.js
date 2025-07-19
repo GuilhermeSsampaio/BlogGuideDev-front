@@ -3,6 +3,8 @@ import apiService from "../services/api/bridge";
 
 export function usePosts() {
   const [posts, setPosts] = useState([]);
+  const [post, setPost] = useState([]);
+  const [postAuthor, setPostAuthor] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,6 +23,17 @@ export function usePosts() {
       console.error("Erro ao carregar posts:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getPost = async (idPost) => {
+    try {
+      const post = await apiService.getPost(idPost);
+      setPost(post);
+      return post;
+    } catch (err) {
+      setError(err.message);
+      throw error;
     }
   };
 
@@ -56,13 +69,27 @@ export function usePosts() {
     }
   };
 
+  const getPostAuthor = async (postId) => {
+    try {
+      const postAuthor = await apiService.getUSerOfPost(postId);
+      setPostAuthor(postAuthor);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   return {
     posts,
+    post,
+    postAuthor,
     loading,
     error,
     refetch: fetchPosts,
+    getPost,
     createPost,
     deletePost,
     updatePost,
+    getPostAuthor,
   };
 }
