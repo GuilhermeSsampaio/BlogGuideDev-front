@@ -1,6 +1,6 @@
 import React from "react";
-import BtnCriarPost from "../components/BtnCriarPost";
-import PostCard from "../components/PostCard";
+import BtnCriarPost from "../components/Posts/BtnCriarPost";
+import PostCard from "../components/Posts/PostCard";
 import { usePosts } from "../hooks/usePosts";
 
 export default function BlogPage() {

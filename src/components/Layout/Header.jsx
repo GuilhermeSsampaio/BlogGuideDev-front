@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ROUTES } from "../routes/constants";
+import { ROUTES } from "../../routes/constants";
 
 export default function Header() {
   const location = useLocation();
@@ -32,7 +32,11 @@ export default function Header() {
             <i className="bi bi-list azul" style={{ fontSize: "2.5rem" }}></i>
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div
+            className="collapse navbar-collapse"
+            id="navbarNav"
+            style={{ fontSize: "1.5rem" }}
+          >
             <ul className="navbar-nav ms-auto gap-4">
               <li className="nav-item">
                 <Link

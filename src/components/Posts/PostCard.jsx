@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ApiService from "../../services/api/bridge.js";
 
 export default function PostCard({ post }) {
+  const [author, setAuthor] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   // Dados padrão caso não seja passado nenhum post
   const defaultPost = {
     id: 1,
@@ -15,10 +19,34 @@ export default function PostCard({ post }) {
 
   const postData = post || defaultPost;
 
+  // Buscar autor do post
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      if (postData.id && !postData.author?.name) {
+        setLoading(true);
+        try {
+          const authorData = await ApiService.getUSerOfPost(postData.id);
+          setAuthor(authorData);
+        } catch (error) {
+          console.error("Erro ao buscar autor:", error);
+          // Manter autor padrão em caso de erro
+          setAuthor({ name: "User" });
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchAuthor();
+  }, [postData.id]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-BR");
   };
+
+  // Determinar qual autor usar: do post, buscado pela API ou padrão
+  const displayAuthor = postData.author?.username || author?.username || "User";
 
   return (
     <div className="container jersey-25-regular my-4">
@@ -28,7 +56,9 @@ export default function PostCard({ post }) {
           className="bi bi-person-circle azul"
           style={{ fontSize: "1.5rem" }}
         ></i>
-        <span className="azul">{postData.author?.name || "User"}</span>
+        <span className="azul">
+          {loading ? "Carregando..." : displayAuthor}
+        </span>
         <small className="text-muted ms-auto">
           {formatDate(postData.created_at)}
         </small>
