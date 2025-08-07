@@ -2,7 +2,7 @@ import React from "react";
 
 export default function IdeiasPage() {
   return (
-    <div className="container jersey-25-regular my-4">
+    <div className="container jersey-25-regular my-5">
       <div className="text-center mb-4">
         <h1 className="azul">💡 Ideias</h1>
         <p className="text-muted">
@@ -12,7 +12,7 @@ export default function IdeiasPage() {
 
       <div className="row">
         <div className="col-md-8 mx-auto">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-1 shadow-sm">
             <div className="card-body p-4">
               <h5 className="azul mb-3">Sugira uma ideia de projeto</h5>
               <form>

@@ -39,7 +39,7 @@ export default function LoginPage() {
     <div className="container jersey-25-regular my-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-1 shadow-sm">
             <div className="card-body p-4">
               <h2 className="azul text-center mb-4">Entrar</h2>
 

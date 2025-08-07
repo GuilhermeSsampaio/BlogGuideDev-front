@@ -123,12 +123,12 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
   };
 
   return (
-    <div className="container jersey-25-regular my-4">
+    <div className="container jersey-25-regular my-5">
       <div className="row">
         <div className="col-md-8 mx-auto">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-1 shadow-sm">
             <div className="card-header bg-white border-bottom">
-              <h4 className="azul mb-0">
+              <h4 className="azul mb-0 text-center">
                 {initialData ? "Editar Post" : "Criar Novo Post"}
               </h4>
             </div>

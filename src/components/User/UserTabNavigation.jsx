@@ -10,7 +10,7 @@ export default function UserTabNavigation({
       <ul className="nav nav-tabs card-header-tabs border-0">
         <li className="nav-item">
           <button
-            className={`nav-link border-0 ${
+            className={`nav-link border-1 ${
               activeTab === "perfil" ? "active azul fw-bold" : "text-muted"
             }`}
             onClick={() => setActiveTab("perfil")}
@@ -21,7 +21,7 @@ export default function UserTabNavigation({
         </li>
         <li className="nav-item">
           <button
-            className={`nav-link border-0 ${
+            className={`nav-link border-1 ${
               activeTab === "posts" ? "active azul fw-bold" : "text-muted"
             }`}
             onClick={() => setActiveTab("posts")}
@@ -32,7 +32,7 @@ export default function UserTabNavigation({
         </li>
         <li className="nav-item">
           <button
-            className={`nav-link border-0 ${
+            className={`nav-link border-1 ${
               activeTab === "configuracoes"
                 ? "active azul fw-bold"
                 : "text-muted"

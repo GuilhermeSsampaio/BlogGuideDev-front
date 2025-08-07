@@ -1,3 +1,4 @@
+import HomePage from "../pages/HomePage"; // nova página
 import BlogPage from "../pages/BlogPage";
 import IdeiasPage from "../pages/IdeiasPage";
 import SobrePage from "../pages/SobrePage";
@@ -11,8 +12,14 @@ import { ROUTES } from "./constants";
 export const publicRoutes = [
   {
     path: ROUTES.HOME,
+    component: HomePage,
+    name: "Home",
+    showInNav: true,
+  },
+  {
+    path: ROUTES.CONTEUDO,
     component: BlogPage,
-    name: "Blog",
+    name: "Conteúdo",
     showInNav: true,
   },
   {

@@ -12,15 +12,11 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="app-container">
+        <div className="app-container d-flex flex-column min-vh-100">
           <Header />
-          <hr />
-
-          <main className="main-content">
+          <main className="main-content flex-grow-1">
             <AppRoutes />
           </main>
-
-          <hr />
           <Footer />
         </div>
 

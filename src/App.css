@@ -1,3 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Jersey 25", sans-serif;
+  color: #333;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  min-width: 320px;
+  max-width: 100%;
+}
+
 .jersey-25-regular {
   font-family: "Jersey 25", sans-serif;
   font-weight: 400;
@@ -6,4 +17,228 @@
 
 .azul {
   color: #333ceb;
+}
+
+.navbar {
+  height: 80px;
+}
+
+.navbar-toggler {
+  border: none !important;
+  font-size: 1.3rem !important;
+  outline: none !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+.search-input {
+  position: relative;
+  width: 250px;
+}
+
+.hero-image-center {
+  background-image:
+    linear-gradient(180deg, #fafafacc 0%, #fafafacc 100%),
+    url("./image-home.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+footer {
+  font-size: 1rem;
+}
+
+.home-hero-section {
+  min-height: 70vh;
+  background-color: #fafafacc;
+}
+
+.home-hero-content {
+  text-align: center;
+}
+
+.home-hero-subtitle {
+  font-size: 1.1rem;
+  color: #6B7280;
+  font-style: italic;
+  margin-bottom: 2.5rem;
+  font-weight: 300 !important;
+}
+
+.home-hero-btn {
+  background: #7C3AED;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 0.8rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 16px rgba(124,58,237,0.15);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.home-hero-btn-arrow {
+  margin-left: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.home-about-section {
+  background: #fafafa;
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.home-about-content {
+  max-width: 900px;
+  margin: 0 auto;
+  color: #6B7280;
+  font-size: 1.125rem;
+  line-height: 1.625;
+}
+
+.home-team-section {
+  background: #f5f5f7;
+  padding: 3rem 0;
+}
+
+.home-team-title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+}
+
+.home-team-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home-team-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 2.5rem 2rem;
+  flex: 1 1 340px;
+  max-width: 420px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.home-team-card:hover {
+  box-shadow: 0 2px 3px 0 rgb(0 0 0 / .05);
+}
+
+.home-team-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 5px solid #e9d5ff;
+  margin-bottom: 1.2rem;
+  object-fit: cover;
+}
+
+.home-team-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.home-team-desc {
+  color: #6B7280;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.home-team-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  border-radius: 0.8rem;
+  padding: 0.7rem 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(124,58,237,0.07);
+  transition: border 0.2s;
+}
+
+.home-team-btn-icon {
+  font-size: 1.2rem;
+}
+
+@media only screen and (min-width: 1200px) {
+  .home-team-cards {
+    gap: 6rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .search-form {
+    margin-bottom: 1rem;
+  }
+  .search-input {
+    width: 100%;
+    max-width: 300px;
+  }
+  .home-team-cards {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-hero-title {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #7C3AED;
+    font-family: inherit;
+  }
+  .home-about-title,
+  .home-team-title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  footer .row > div {
+    text-align: center !important;
+    margin-bottom: 1.5rem;
+  }
+  footer .row {
+    flex-direction: column;
+  }
+  .home-hero-title {
+    font-size: 3.75rem;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .home-about-title,
+  .home-team-title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  body {
+    overflow-x: auto !important;
+  }
 }
