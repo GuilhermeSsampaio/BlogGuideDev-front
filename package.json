@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup:system": "cd ../backend && python -m venv venv && venv\\Scripts\\pip install -r requirements.txt",
+    "start:system": "cd ../backend && venv\\Scripts\\activate && python main.py"
   },
   "dependencies": {
     "bootstrap": "^5.3.7",
