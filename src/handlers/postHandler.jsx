@@ -7,7 +7,7 @@ export const useHandlersPosts = () => {
 
   const handleCreatePost = async (postData) => {
     try {
-      const newPost = await apiService.createPost(postData);
+      const newPost = await apiService.savePost(postData);
       console.log(newPost);
 
       handleSuccess("Post criado com sucesso!");

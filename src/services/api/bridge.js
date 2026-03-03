@@ -5,8 +5,9 @@ class ApiService {
     this.baseURL = API_BASE_URL;
   }
 
-  // Método genérico para fazer requisições
-  async request(endpoint, options = {}) {
+  // Método genérico para fazer requisições com autenticação
+  async authRequest(endpoint, options = {}) {
+    const token = localStorage.getItem("auth_token");
     const url = `${this.baseURL}${endpoint}`;
 
     console.log("🚀 Fazendo requisição para:", url);
@@ -15,6 +16,7 @@ class ApiService {
     const config = {
       headers: {
         "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },
       ...options,
@@ -40,49 +42,31 @@ class ApiService {
     }
   }
 
-  // Posts
-  async getPosts() {
-    return this.request("/posts/");
-  }
-
-  async getPost(id) {
-    return this.request(`/posts/${id}`);
-  }
-
-  async createPost(postData) {
-    return this.request("/posts/", {
+  // Posts do usuário autenticado
+  async savePost(postData) {
+    return this.authRequest("/users/save_post", {
       method: "POST",
       body: JSON.stringify(postData),
     });
   }
 
-  async updatePost(id, postData) {
-    return this.request(`/posts/${id}`, {
+  async getMyPosts() {
+    return this.authRequest("/users/my_posts", {
+      method: "GET",
+    });
+  }
+
+  async updatePost(postId, postData) {
+    return this.authRequest(`/users/update_post/${postId}`, {
       method: "PUT",
       body: JSON.stringify(postData),
     });
   }
 
-  async deletePost(id) {
-    return this.request(`/posts/${id}`, {
+  async deletePost(postId) {
+    return this.authRequest(`/users/delete_post/${postId}`, {
       method: "DELETE",
     });
-  }
-
-  async getUSerOfPost(postId) {
-    return this.request(`/posts/${postId}/author`, {
-      method: "GET",
-    });
-  }
-
-  // Health check
-  async healthCheck() {
-    return this.request("/health");
-  }
-
-  // Teste CORS
-  async testCors() {
-    return this.request("/debug/cors");
   }
 }
 

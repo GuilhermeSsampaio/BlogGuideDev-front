@@ -39,20 +39,19 @@ class AuthService {
 
   // Login
   async login(email, password) {
-    const response = await this.authRequest("/auth/login", {
+    const response = await this.authRequest("/users/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
 
     this.setToken(response.access_token);
-    this.setUser(response.user);
 
     return response;
   }
 
   // Registro
   async register(userData) {
-    const response = await this.authRequest("/auth/register", {
+    const response = await this.authRequest("/users/register", {
       method: "POST",
       body: JSON.stringify(userData),
     });
@@ -62,7 +61,15 @@ class AuthService {
 
   // Obter usuário atual
   async getCurrentUser() {
-    return this.authRequest("/auth/me");
+    return this.authRequest("/users/me");
+  }
+
+  // Atualizar perfil
+  async updateProfile(profileData) {
+    return this.authRequest("/users/edit_profile", {
+      method: "PUT",
+      body: JSON.stringify(profileData),
+    });
   }
 
   // Logout

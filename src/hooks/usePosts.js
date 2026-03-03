@@ -3,21 +3,15 @@ import apiService from "../services/api/bridge";
 
 export function usePosts() {
   const [posts, setPosts] = useState([]);
-  const [post, setPost] = useState([]);
-  const [postAuthor, setPostAuthor] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
+  const fetchMyPosts = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await apiService.getPosts();
-      setPosts(data);
+      const data = await apiService.getMyPosts();
+      setPosts(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message);
       console.error("Erro ao carregar posts:", err);
@@ -26,20 +20,9 @@ export function usePosts() {
     }
   };
 
-  const getPost = async (idPost) => {
-    try {
-      const post = await apiService.getPost(idPost);
-      setPost(post);
-      return post;
-    } catch (err) {
-      setError(err.message);
-      throw error;
-    }
-  };
-
   const createPost = async (postData) => {
     try {
-      const newPost = await apiService.createPost(postData);
+      const newPost = await apiService.savePost(postData);
       setPosts((prevPosts) => [newPost, ...prevPosts]);
       return newPost;
     } catch (err) {
@@ -48,31 +31,23 @@ export function usePosts() {
     }
   };
 
-  //terminar de implementar
-  const updatePost = async (idPost) => {
+  const updatePost = async (postId, postData) => {
     try {
-      const postForUpdate = await apiService.getPost(idPost);
-      console.log(postForUpdate);
+      const updatedPost = await apiService.updatePost(postId, postData);
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => (post.id === postId ? updatedPost : post)),
+      );
+      return updatedPost;
     } catch (err) {
       setError(err.message);
       throw err;
     }
   };
 
-  const deletePost = async (id) => {
+  const deletePost = async (postId) => {
     try {
-      await apiService.deletePost(id);
-      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    }
-  };
-
-  const getPostAuthor = async (postId) => {
-    try {
-      const postAuthor = await apiService.getUSerOfPost(postId);
-      setPostAuthor(postAuthor);
+      await apiService.deletePost(postId);
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
     } catch (err) {
       setError(err.message);
       throw err;
@@ -81,15 +56,11 @@ export function usePosts() {
 
   return {
     posts,
-    post,
-    postAuthor,
     loading,
     error,
-    refetch: fetchPosts,
-    getPost,
+    fetchMyPosts,
     createPost,
-    deletePost,
     updatePost,
-    getPostAuthor,
+    deletePost,
   };
 }

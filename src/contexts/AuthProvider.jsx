@@ -26,12 +26,13 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const response = await authService.login(email, password);
-    setUser(response.user);
+    setUser(response);
     return response;
   };
 
   const register = async (userData) => {
-    return await authService.register(userData);
+    const response = await authService.register(userData);
+    return response;
   };
 
   const logout = () => {

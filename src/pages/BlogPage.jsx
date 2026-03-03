@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BtnCriarPost from "../components/Posts/BtnCriarPost";
 import PostCard from "../components/Posts/PostCard";
 import { usePosts } from "../hooks/usePosts";
 
 export default function BlogPage() {
-  const { posts, loading, error } = usePosts();
+  const { posts, loading, error, fetchMyPosts } = usePosts();
+
+  useEffect(() => {
+    fetchMyPosts();
+  }, []);
 
   if (loading) {
     return (
@@ -44,11 +48,14 @@ export default function BlogPage() {
         </p>
         <BtnCriarPost />
       </div>
-      <hr className="mx-4"/>
+      <hr className="mx-4" />
       <div>
         {posts.length === 0 ? (
           <div className="container text-center py-5">
-            <i className="bi bi-journal-x azul" style={{ fontSize: "3rem" }}></i>
+            <i
+              className="bi bi-journal-x azul"
+              style={{ fontSize: "3rem" }}
+            ></i>
             <h3 className="azul mt-3">Nenhum post encontrado</h3>
             <p className="text-muted">Seja o primeiro a compartilhar algo!</p>
           </div>

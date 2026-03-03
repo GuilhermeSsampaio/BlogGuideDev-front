@@ -15,21 +15,19 @@ export const useHandlersRegister = () => {
 
     try {
       await register({
-        name: userData.name,
         username: userData.username,
         email: userData.email,
         password: userData.password,
-        bio: userData.bio,
       });
 
       handleSuccess(
         "Conta criada com sucesso! Faça login para continuar.",
-        ROUTES.LOGIN
+        ROUTES.LOGIN,
       );
     } catch (error) {
       handleError(
         error,
-        "Erro ao criar conta. Verifique os dados e tente novamente."
+        "Erro ao criar conta. Verifique os dados e tente novamente.",
       );
     }
   };
