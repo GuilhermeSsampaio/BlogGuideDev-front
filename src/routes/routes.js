@@ -8,6 +8,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import UserPage from "../pages/UserPage";
 import CriarPostPage from "../pages/CriarPostPage";
+import AdminPage from "../pages/AdminPage";
 import { ROUTES } from "./constants";
 
 // Rotas públicas (não precisam de autenticação)
@@ -75,6 +76,12 @@ export const protectedRoutes = [
     component: CriarPostPage,
     name: "Criar Post",
     showInNav: true,
+  },
+  {
+    path: ROUTES.ADMIN,
+    component: AdminPage,
+    name: "Admin",
+    showInNav: false,
   },
 ];
 

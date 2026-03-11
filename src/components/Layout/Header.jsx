@@ -1,10 +1,12 @@
 import React, { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Header() {
   const location = useLocation();
   const togglerRef = useRef(null);
+  const { user, isAuthenticated } = useAuth();
 
   const isActive = (path) => location.pathname === path;
 
@@ -96,6 +98,22 @@ export default function Header() {
                   Fórum
                 </Link>
               </li>
+              {/* Menu: Admin (só para admins) */}
+              {isAuthenticated && user?.tipo_perfil === "admin" && (
+                <li className="nav-item">
+                  <Link
+                    to={ROUTES.ADMIN}
+                    className={`nav-link ${
+                      isActive(ROUTES.ADMIN) ? "fw-bold" : ""
+                    }`}
+                    style={{ color: "#dc3545", fontSize: "1.15rem" }}
+                    onClick={handleNavLinkClick}
+                  >
+                    <i className="bi bi-shield-lock me-1"></i>
+                    Admin
+                  </Link>
+                </li>
+              )}
               {/* Removido menu Blog */}
             </ul>
             {/* Search input com ícone de lupa */}

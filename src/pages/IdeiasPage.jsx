@@ -97,7 +97,9 @@ export default function IdeiasPage() {
             className="btn btn-primary"
             onClick={() => setShowForm(!showForm)}
           >
-            <i className={`bi ${showForm ? "bi-x-lg" : "bi-plus-circle"} me-1`}></i>
+            <i
+              className={`bi ${showForm ? "bi-x-lg" : "bi-plus-circle"} me-1`}
+            ></i>
             {showForm ? "Cancelar" : "Novo Tópico"}
           </button>
         </div>
@@ -163,9 +165,7 @@ export default function IdeiasPage() {
       )}
 
       {/* Lista de tópicos */}
-      {error && (
-        <div className="alert alert-danger text-center">{error}</div>
-      )}
+      {error && <div className="alert alert-danger text-center">{error}</div>}
 
       {topics.length === 0 ? (
         <div className="text-center py-5">
@@ -212,15 +212,16 @@ export default function IdeiasPage() {
                     </small>
                   </div>
                 </div>
-                {isAuthenticated && user?.username === topic.autor?.username && (
-                  <button
-                    className="btn btn-sm btn-outline-danger ms-2"
-                    onClick={() => handleDelete(topic.id)}
-                    title="Excluir tópico"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                )}
+                {isAuthenticated &&
+                  user?.username === topic.autor?.username && (
+                    <button
+                      className="btn btn-sm btn-outline-danger ms-2"
+                      onClick={() => handleDelete(topic.id)}
+                      title="Excluir tópico"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  )}
               </div>
             </div>
           ))}

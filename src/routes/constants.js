@@ -10,6 +10,7 @@ export const ROUTES = {
   SOBRE: "/sobre",
   USUARIO: "/usuario",
   CRIAR_POST: "/criar-post",
+  ADMIN: "/admin",
 };
 
 // Rotas que não precisam de autenticação

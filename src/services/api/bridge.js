@@ -164,6 +164,48 @@ class ApiService {
       method: "GET",
     });
   }
+
+  // Admin
+  async getAdminStats() {
+    return this.authRequest("/admin/stats");
+  }
+
+  async getAdminUsers() {
+    return this.authRequest("/admin/users");
+  }
+
+  async updateUserRole(profileId, tipoPerfil) {
+    return this.authRequest(`/admin/users/${profileId}/role`, {
+      method: "PUT",
+      body: JSON.stringify({ tipo_perfil: tipoPerfil }),
+    });
+  }
+
+  async deleteUser(profileId) {
+    return this.authRequest(`/admin/users/${profileId}`, {
+      method: "DELETE",
+    });
+  }
+
+  async getAdminPosts() {
+    return this.authRequest("/admin/posts");
+  }
+
+  async adminDeletePost(postId) {
+    return this.authRequest(`/admin/posts/${postId}`, {
+      method: "DELETE",
+    });
+  }
+
+  async getAdminForum() {
+    return this.authRequest("/admin/forum");
+  }
+
+  async adminDeleteTopic(topicId) {
+    return this.authRequest(`/admin/forum/${topicId}`, {
+      method: "DELETE",
+    });
+  }
 }
 
 // Exporta uma instância única do serviço

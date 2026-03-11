@@ -15,7 +15,10 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
   const fetchCurtidas = async () => {
     try {
       if (isAuthenticated) {
-        const data = await apiService.getCurtidasWithUser(tipoReferencia, referenciaId);
+        const data = await apiService.getCurtidasWithUser(
+          tipoReferencia,
+          referenciaId,
+        );
         setTotal(data.total);
         setCurtido(data.curtido);
       } else {
@@ -46,7 +49,13 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
       className={`btn btn-sm ${curtido ? "btn-danger" : "btn-outline-danger"} d-inline-flex align-items-center gap-1`}
       onClick={handleToggle}
       disabled={!isAuthenticated || loading}
-      title={isAuthenticated ? (curtido ? "Descurtir" : "Curtir") : "Faça login para curtir"}
+      title={
+        isAuthenticated
+          ? curtido
+            ? "Descurtir"
+            : "Curtir"
+          : "Faça login para curtir"
+      }
     >
       <i className={`bi ${curtido ? "bi-heart-fill" : "bi-heart"}`}></i>
       <span>{total}</span>

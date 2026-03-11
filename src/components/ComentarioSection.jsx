@@ -16,7 +16,10 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   const fetchComentarios = async () => {
     try {
       setLoading(true);
-      const data = await apiService.getComentarios(tipoReferencia, referenciaId);
+      const data = await apiService.getComentarios(
+        tipoReferencia,
+        referenciaId,
+      );
       setComentarios(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Erro ao carregar comentários:", err);
@@ -34,7 +37,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
       const comentario = await apiService.createComentario(
         tipoReferencia,
         referenciaId,
-        novoComentario
+        novoComentario,
       );
       setComentarios((prev) => [...prev, comentario]);
       setNovoComentario("");
@@ -106,7 +109,10 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
       {/* Lista de comentários */}
       {loading ? (
         <div className="text-center py-3">
-          <div className="spinner-border spinner-border-sm azul" role="status"></div>
+          <div
+            className="spinner-border spinner-border-sm azul"
+            role="status"
+          ></div>
         </div>
       ) : comentarios.length === 0 ? (
         <p className="text-muted">Nenhum comentário ainda. Seja o primeiro!</p>
