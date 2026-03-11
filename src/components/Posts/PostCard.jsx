@@ -32,9 +32,7 @@ export default function PostCard({ post }) {
           className="bi bi-person-circle azul"
           style={{ fontSize: "1.5rem" }}
         ></i>
-        <span className="azul">
-          {displayAuthor}
-        </span>
+        <span className="azul">{displayAuthor}</span>
         <small className="text-muted ms-auto">
           {formatDate(postData.created_at)}
         </small>
