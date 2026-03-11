@@ -67,9 +67,7 @@ export default function PostDetailPage() {
           <span>{formatDate(post.created_at)}</span>
         </div>
 
-        {post.excerpt && (
-          <p className="lead text-muted mb-4">{post.excerpt}</p>
-        )}
+        {post.excerpt && <p className="lead text-muted mb-4">{post.excerpt}</p>}
 
         <div
           className="post-content"

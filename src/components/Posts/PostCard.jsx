@@ -68,7 +68,10 @@ export default function PostCard({ post }) {
       {/* Title and Tags */}
       <div className="mb-3">
         <div className="d-flex flex-wrap gap-2 align-items-center mb-2">
-          <Link to={`/conteudo/${postData.id}`} className="text-decoration-none">
+          <Link
+            to={`/conteudo/${postData.id}`}
+            className="text-decoration-none"
+          >
             <h5 className="mb-0 azul">{postData.title}</h5>
           </Link>
           {postData.tags &&

@@ -1,10 +1,6 @@
 import React from "react";
 
-export default function UserTabNavigation({
-  activeTab,
-  setActiveTab,
-  posts,
-}) {
+export default function UserTabNavigation({ activeTab, setActiveTab, posts }) {
   return (
     <div className="card-header bg-white border-bottom">
       <ul className="nav nav-tabs card-header-tabs border-0">

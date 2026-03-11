@@ -12,7 +12,12 @@ export const ROUTES = {
 };
 
 // Rotas que não precisam de autenticação
-export const PUBLIC_ROUTES = [ROUTES.HOME, ROUTES.CONTEUDO, ROUTES.LOGIN, ROUTES.REGISTER];
+export const PUBLIC_ROUTES = [
+  ROUTES.HOME,
+  ROUTES.CONTEUDO,
+  ROUTES.LOGIN,
+  ROUTES.REGISTER,
+];
 
 // Rotas que precisam de autenticação
 export const PROTECTED_ROUTES = [

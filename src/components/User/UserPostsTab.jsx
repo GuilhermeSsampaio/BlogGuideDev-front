@@ -48,7 +48,10 @@ export default function UserPostsTab({
             <div key={post.id} className="list-group-item border-0 px-0 py-3">
               <div className="d-flex justify-content-between align-items-start">
                 <div className="flex-grow-1">
-                  <Link to={`/conteudo/${post.id}`} className="text-decoration-none">
+                  <Link
+                    to={`/conteudo/${post.id}`}
+                    className="text-decoration-none"
+                  >
                     <h6 className="azul mb-1">{post.title}</h6>
                   </Link>
                   {post.excerpt && (
@@ -59,8 +62,14 @@ export default function UserPostsTab({
                       <i className="bi bi-calendar me-1"></i>
                       {formatDate(post.created_at)}
                     </small>
-                    <small className={post.published ? "text-success" : "text-warning"}>
-                      <i className={`bi ${post.published ? "bi-globe" : "bi-eye-slash"} me-1`}></i>
+                    <small
+                      className={
+                        post.published ? "text-success" : "text-warning"
+                      }
+                    >
+                      <i
+                        className={`bi ${post.published ? "bi-globe" : "bi-eye-slash"} me-1`}
+                      ></i>
                       {post.published ? "Publicado" : "Rascunho"}
                     </small>
                   </div>
