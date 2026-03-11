@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { usePosts } from "../hooks/usePosts";
-import { ROUTES } from "../routes";
+import { useForum } from "../hooks/useForum";
 import ComentarioSection from "../components/ComentarioSection";
 import CurtidaButton from "../components/CurtidaButton";
 
-export default function PostDetailPage() {
-  const { postId } = useParams();
-  const { post, loading, error, fetchPostById } = usePosts();
+export default function ForumDetailPage() {
+  const { topicId } = useParams();
+  const { topic, loading, error, fetchTopic } = useForum();
 
   useEffect(() => {
-    fetchPostById(postId);
-  }, [postId]);
+    fetchTopic(topicId);
+  }, [topicId]);
 
   if (loading) {
     return (
@@ -19,7 +18,7 @@ export default function PostDetailPage() {
         <div className="spinner-border azul mt-5" role="status">
           <span className="visually-hidden">Carregando...</span>
         </div>
-        <p className="mt-3 text-muted">Carregando conteúdo...</p>
+        <p className="mt-3 text-muted">Carregando tópico...</p>
       </div>
     );
   }
@@ -31,18 +30,17 @@ export default function PostDetailPage() {
           <i className="bi bi-exclamation-triangle me-2"></i>
           {error}
         </div>
-        <Link to={ROUTES.CONTEUDO} className="btn btn-primary">
-          Voltar para conteúdos
+        <Link to="/ideias" className="btn btn-primary">
+          Voltar para o fórum
         </Link>
       </div>
     );
   }
 
-  if (!post) return null;
+  if (!topic) return null;
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", {
+    return new Date(dateString).toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "long",
       year: "numeric",
@@ -51,42 +49,42 @@ export default function PostDetailPage() {
 
   return (
     <div className="container py-5" style={{ maxWidth: "800px" }}>
-      <Link
-        to={ROUTES.CONTEUDO}
-        className="btn btn-outline-secondary btn-sm mb-4"
-      >
+      <Link to="/ideias" className="btn btn-outline-secondary btn-sm mb-4">
         <i className="bi bi-arrow-left me-1"></i>
-        Voltar
+        Voltar ao Fórum
       </Link>
 
       <article>
-        <h1 className="azul jersey-25-regular mb-3">{post.title}</h1>
+        <div className="d-flex align-items-center gap-2 mb-2">
+          <h1 className="azul jersey-25-regular mb-0">{topic.titulo}</h1>
+          {topic.tipo && (
+            <span className="badge bg-info text-dark">{topic.tipo}</span>
+          )}
+        </div>
 
         <div className="d-flex align-items-center gap-2 mb-4 text-muted">
           <i className="bi bi-person-circle" style={{ fontSize: "1.2rem" }}></i>
-          <span>{post.author?.username || "Anônimo"}</span>
+          <span>{topic.autor?.username || "Anônimo"}</span>
           <span className="mx-2">·</span>
-          <span>{formatDate(post.created_at)}</span>
+          <span>{formatDate(topic.data_criacao)}</span>
         </div>
-
-        {post.excerpt && <p className="lead text-muted mb-4">{post.excerpt}</p>}
 
         <div
           className="post-content"
           style={{ fontSize: "1.1rem", lineHeight: "1.8" }}
         >
-          {post.content.split("\n").map((paragraph, i) => (
+          {topic.descricao.split("\n").map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
         </div>
 
         <div className="mt-4 d-flex gap-3">
-          <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
+          <CurtidaButton tipoReferencia="forum" referenciaId={topic.id} />
         </div>
 
         <hr className="my-4" />
 
-        <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
+        <ComentarioSection tipoReferencia="forum" referenciaId={topic.id} />
       </article>
     </div>
   );

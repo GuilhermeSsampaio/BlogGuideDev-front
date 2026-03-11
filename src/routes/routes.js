@@ -2,6 +2,7 @@ import HomePage from "../pages/HomePage"; // nova página
 import BlogPage from "../pages/BlogPage";
 import PostDetailPage from "../pages/PostDetailPage";
 import IdeiasPage from "../pages/IdeiasPage";
+import ForumDetailPage from "../pages/ForumDetailPage";
 import SobrePage from "../pages/SobrePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
@@ -48,8 +49,14 @@ export const protectedRoutes = [
   {
     path: ROUTES.IDEIAS,
     component: IdeiasPage,
-    name: "Ideias",
+    name: "Fórum",
     showInNav: true,
+  },
+  {
+    path: ROUTES.FORUM_DETAIL,
+    component: ForumDetailPage,
+    name: "Detalhe do Tópico",
+    showInNav: false,
   },
   {
     path: ROUTES.SOBRE,

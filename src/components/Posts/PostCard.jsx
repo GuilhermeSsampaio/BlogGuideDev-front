@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ApiService from "../../services/api/bridge.js";
+import CurtidaButton from "../CurtidaButton";
 
 export default function PostCard({ post }) {
   const [author, setAuthor] = useState(null);
@@ -103,15 +104,15 @@ export default function PostCard({ post }) {
       )}
 
       {/* Interaction buttons */}
-      <div className="d-flex gap-3 mt-3">
-        <button className="btn btn-sm btn-outline-primary">
-          <i className="bi bi-heart me-1"></i>
-          Curtir
-        </button>
-        <button className="btn btn-sm btn-outline-secondary">
+      <div className="d-flex gap-3 mt-3 align-items-center">
+        <CurtidaButton tipoReferencia="post" referenciaId={postData.id} />
+        <Link
+          to={`/conteudo/${postData.id}`}
+          className="btn btn-sm btn-outline-secondary"
+        >
           <i className="bi bi-chat me-1"></i>
           Comentar
-        </button>
+        </Link>
         <button className="btn btn-sm btn-outline-info">
           <i className="bi bi-share me-1"></i>
           Compartilhar

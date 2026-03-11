@@ -87,6 +87,83 @@ class ApiService {
     }
     return response.json();
   }
+
+  // Fórum
+  async getForumTopics() {
+    const url = `${this.baseURL}/forum/`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getForumTopic(topicId) {
+    const url = `${this.baseURL}/forum/${topicId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async createForumTopic(topicData) {
+    return this.authRequest("/forum/", {
+      method: "POST",
+      body: JSON.stringify(topicData),
+    });
+  }
+
+  async deleteForumTopic(topicId) {
+    return this.authRequest(`/forum/${topicId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Comentários
+  async getComentarios(tipoReferencia, referenciaId) {
+    const url = `${this.baseURL}/comentarios/${tipoReferencia}/${referenciaId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async createComentario(tipoReferencia, referenciaId, conteudo) {
+    return this.authRequest(`/comentarios/${tipoReferencia}/${referenciaId}`, {
+      method: "POST",
+      body: JSON.stringify({ conteudo }),
+    });
+  }
+
+  async deleteComentario(comentarioId) {
+    return this.authRequest(`/comentarios/${comentarioId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Curtidas
+  async toggleCurtida(tipoReferencia, referenciaId) {
+    return this.authRequest(`/curtidas/${tipoReferencia}/${referenciaId}`, {
+      method: "POST",
+    });
+  }
+
+  async getCurtidas(tipoReferencia, referenciaId) {
+    const url = `${this.baseURL}/curtidas/${tipoReferencia}/${referenciaId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getCurtidasWithUser(tipoReferencia, referenciaId) {
+    return this.authRequest(`/curtidas/${tipoReferencia}/${referenciaId}/me`, {
+      method: "GET",
+    });
+  }
 }
 
 // Exporta uma instância única do serviço

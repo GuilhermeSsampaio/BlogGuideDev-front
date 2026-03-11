@@ -6,6 +6,7 @@ export const ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   IDEIAS: "/ideias",
+  FORUM_DETAIL: "/forum/:topicId",
   SOBRE: "/sobre",
   USUARIO: "/usuario",
   CRIAR_POST: "/criar-post",
