@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import ApiService from "../../services/api/bridge.js";
 import CurtidaButton from "../CurtidaButton";
 
 export default function PostCard({ post }) {
-  const [author, setAuthor] = useState(null);
-  const [loading, setLoading] = useState(false);
-
   // Dados padrão caso não seja passado nenhum post
   const defaultPost = {
     id: 1,
     title: "API de receitas",
     content:
       "Neste post eu estou criando uma API de receitas que faz um fetch no youtube, me ajudem!",
-    author: { name: "User" },
+    author: { username: "User" },
     tags: ["JavaScript", "Socorro"],
     image_url: "/example.png",
     created_at: new Date().toISOString(),
@@ -21,34 +17,12 @@ export default function PostCard({ post }) {
 
   const postData = post || defaultPost;
 
-  // Buscar autor do post
-  useEffect(() => {
-    const fetchAuthor = async () => {
-      if (postData.id && !postData.author?.name) {
-        setLoading(true);
-        try {
-          const authorData = await ApiService.getUSerOfPost(postData.id);
-          setAuthor(authorData);
-        } catch (error) {
-          console.error("Erro ao buscar autor:", error);
-          // Manter autor padrão em caso de erro
-          setAuthor({ name: "User" });
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchAuthor();
-  }, [postData.id]);
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-BR");
   };
 
-  // Determinar qual autor usar: do campo author (API pública) ou buscado pela API
-  const displayAuthor = postData.author?.username || author?.username || "User";
+  const displayAuthor = postData.author?.username || "User";
 
   return (
     <div className="container jersey-25-regular my-4">
@@ -59,7 +33,7 @@ export default function PostCard({ post }) {
           style={{ fontSize: "1.5rem" }}
         ></i>
         <span className="azul">
-          {loading ? "Carregando..." : displayAuthor}
+          {displayAuthor}
         </span>
         <small className="text-muted ms-auto">
           {formatDate(postData.created_at)}

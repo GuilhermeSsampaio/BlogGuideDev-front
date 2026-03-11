@@ -47,7 +47,10 @@ function VagaCard({ vaga }) {
           </div>
         </div>
 
-        <p className="card-text text-muted mb-2" style={{ whiteSpace: "pre-line" }}>
+        <p
+          className="card-text text-muted mb-2"
+          style={{ whiteSpace: "pre-line" }}
+        >
           {vaga.descricao.length > 200
             ? vaga.descricao.substring(0, 200) + "..."
             : vaga.descricao}
@@ -210,9 +213,7 @@ export default function VagasPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const isRecrutador =
-    isAuthenticated &&
-    user?.tipo_perfil === "recrutador";
+  const isRecrutador = isAuthenticated && user?.tipo_perfil === "recrutador";
 
   useEffect(() => {
     fetchVagas();
@@ -245,7 +246,10 @@ export default function VagasPage() {
   return (
     <div className="container py-4" style={{ maxWidth: "900px" }}>
       <div className="d-flex align-items-center gap-3 mb-4">
-        <i className="bi bi-briefcase-fill azul" style={{ fontSize: "2rem" }}></i>
+        <i
+          className="bi bi-briefcase-fill azul"
+          style={{ fontSize: "2rem" }}
+        ></i>
         <h2 className="azul jersey-25-regular mb-0">Vagas</h2>
       </div>
 
