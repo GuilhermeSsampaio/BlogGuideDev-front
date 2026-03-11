@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ApiService from "../../services/api/bridge.js";
+import CurtidaButton from "../CurtidaButton";
 
 export default function PostCard({ post }) {
   const [author, setAuthor] = useState(null);
@@ -45,7 +47,7 @@ export default function PostCard({ post }) {
     return date.toLocaleDateString("pt-BR");
   };
 
-  // Determinar qual autor usar: do post, buscado pela API ou padrão
+  // Determinar qual autor usar: do campo author (API pública) ou buscado pela API
   const displayAuthor = postData.author?.username || author?.username || "User";
 
   return (
@@ -67,7 +69,12 @@ export default function PostCard({ post }) {
       {/* Title and Tags */}
       <div className="mb-3">
         <div className="d-flex flex-wrap gap-2 align-items-center mb-2">
-          <h5 className="mb-0 azul">{postData.title}</h5>
+          <Link
+            to={`/conteudo/${postData.id}`}
+            className="text-decoration-none"
+          >
+            <h5 className="mb-0 azul">{postData.title}</h5>
+          </Link>
           {postData.tags &&
             postData.tags.map((tag, index) => (
               <span
@@ -97,15 +104,15 @@ export default function PostCard({ post }) {
       )}
 
       {/* Interaction buttons */}
-      <div className="d-flex gap-3 mt-3">
-        <button className="btn btn-sm btn-outline-primary">
-          <i className="bi bi-heart me-1"></i>
-          Curtir
-        </button>
-        <button className="btn btn-sm btn-outline-secondary">
+      <div className="d-flex gap-3 mt-3 align-items-center">
+        <CurtidaButton tipoReferencia="post" referenciaId={postData.id} />
+        <Link
+          to={`/conteudo/${postData.id}`}
+          className="btn btn-sm btn-outline-secondary"
+        >
           <i className="bi bi-chat me-1"></i>
           Comentar
-        </button>
+        </Link>
         <button className="btn btn-sm btn-outline-info">
           <i className="bi bi-share me-1"></i>
           Compartilhar

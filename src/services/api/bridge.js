@@ -68,6 +68,204 @@ class ApiService {
       method: "DELETE",
     });
   }
+
+  // Conteúdos públicos (sem autenticação)
+  async getPublishedPosts() {
+    const url = `${this.baseURL}/conteudos/`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getPostById(postId) {
+    const url = `${this.baseURL}/conteudos/${postId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  // Fórum
+  async getForumTopics() {
+    const url = `${this.baseURL}/forum/`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getForumTopic(topicId) {
+    const url = `${this.baseURL}/forum/${topicId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async createForumTopic(topicData) {
+    return this.authRequest("/forum/", {
+      method: "POST",
+      body: JSON.stringify(topicData),
+    });
+  }
+
+  async deleteForumTopic(topicId) {
+    return this.authRequest(`/forum/${topicId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Comentários
+  async getComentarios(tipoReferencia, referenciaId) {
+    const url = `${this.baseURL}/comentarios/${tipoReferencia}/${referenciaId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async createComentario(tipoReferencia, referenciaId, conteudo) {
+    return this.authRequest(`/comentarios/${tipoReferencia}/${referenciaId}`, {
+      method: "POST",
+      body: JSON.stringify({ conteudo }),
+    });
+  }
+
+  async deleteComentario(comentarioId) {
+    return this.authRequest(`/comentarios/${comentarioId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Curtidas
+  async toggleCurtida(tipoReferencia, referenciaId) {
+    return this.authRequest(`/curtidas/${tipoReferencia}/${referenciaId}`, {
+      method: "POST",
+    });
+  }
+
+  async getCurtidas(tipoReferencia, referenciaId) {
+    const url = `${this.baseURL}/curtidas/${tipoReferencia}/${referenciaId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getCurtidasWithUser(tipoReferencia, referenciaId) {
+    return this.authRequest(`/curtidas/${tipoReferencia}/${referenciaId}/me`, {
+      method: "GET",
+    });
+  }
+
+  // Admin
+  async getAdminStats() {
+    return this.authRequest("/admin/stats");
+  }
+
+  async getAdminUsers() {
+    return this.authRequest("/admin/users");
+  }
+
+  async adminCreateUser(userData) {
+    return this.authRequest("/admin/users", {
+      method: "POST",
+      body: JSON.stringify(userData),
+    });
+  }
+
+  async updateUserRole(profileId, tipoPerfil) {
+    return this.authRequest(`/admin/users/${profileId}/role`, {
+      method: "PUT",
+      body: JSON.stringify({ tipo_perfil: tipoPerfil }),
+    });
+  }
+
+  async deleteUser(profileId) {
+    return this.authRequest(`/admin/users/${profileId}`, {
+      method: "DELETE",
+    });
+  }
+
+  async getAdminPosts() {
+    return this.authRequest("/admin/posts");
+  }
+
+  async adminDeletePost(postId) {
+    return this.authRequest(`/admin/posts/${postId}`, {
+      method: "DELETE",
+    });
+  }
+
+  async getAdminForum() {
+    return this.authRequest("/admin/forum");
+  }
+
+  async adminDeleteTopic(topicId) {
+    return this.authRequest(`/admin/forum/${topicId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Vagas
+  async getVagas() {
+    const url = `${this.baseURL}/vagas/`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getVaga(vagaId) {
+    const url = `${this.baseURL}/vagas/${vagaId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getMinhasVagas() {
+    return this.authRequest("/vagas/minhas/list");
+  }
+
+  async createVaga(vagaData) {
+    return this.authRequest("/vagas/", {
+      method: "POST",
+      body: JSON.stringify(vagaData),
+    });
+  }
+
+  async updateVaga(vagaId, vagaData) {
+    return this.authRequest(`/vagas/${vagaId}`, {
+      method: "PUT",
+      body: JSON.stringify(vagaData),
+    });
+  }
+
+  async deleteVaga(vagaId) {
+    return this.authRequest(`/vagas/${vagaId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Pesquisa
+  async search(query) {
+    const url = `${this.baseURL}/search/?q=${encodeURIComponent(query)}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
 }
 
 // Exporta uma instância única do serviço

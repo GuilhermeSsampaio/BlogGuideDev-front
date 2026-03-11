@@ -1,12 +1,25 @@
-import React, { useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const togglerRef = useRef(null);
+  const { user, isAuthenticated } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const isActive = (path) => location.pathname === path;
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`${ROUTES.SEARCH}?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+      handleNavLinkClick();
+    }
+  };
 
   const handleNavLinkClick = () => {
     // Só fecha o menu se o toggler estiver visível (display != 'none')
@@ -96,6 +109,35 @@ export default function Header() {
                   Fórum
                 </Link>
               </li>
+              {/* Menu: Vagas */}
+              <li className="nav-item">
+                <Link
+                  to={ROUTES.VAGAS}
+                  className={`nav-link ${
+                    isActive(ROUTES.VAGAS) ? "fw-bold" : ""
+                  }`}
+                  style={{ color: "#222", fontSize: "1.15rem" }}
+                  onClick={handleNavLinkClick}
+                >
+                  Vagas
+                </Link>
+              </li>
+              {/* Menu: Admin (só para admins) */}
+              {isAuthenticated && user?.tipo_perfil === "admin" && (
+                <li className="nav-item">
+                  <Link
+                    to={ROUTES.ADMIN}
+                    className={`nav-link ${
+                      isActive(ROUTES.ADMIN) ? "fw-bold" : ""
+                    }`}
+                    style={{ color: "#dc3545", fontSize: "1.15rem" }}
+                    onClick={handleNavLinkClick}
+                  >
+                    <i className="bi bi-shield-lock me-1"></i>
+                    Admin
+                  </Link>
+                </li>
+              )}
               {/* Removido menu Blog */}
             </ul>
             {/* Search input com ícone de lupa */}
@@ -103,6 +145,7 @@ export default function Header() {
               className="d-flex align-items-center search-form"
               role="search"
               style={{ marginRight: "1rem" }}
+              onSubmit={handleSearch}
             >
               <div className="search-input">
                 <span
@@ -122,6 +165,8 @@ export default function Header() {
                   type="search"
                   placeholder="Buscar..."
                   aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   style={{
                     paddingLeft: "2.2rem",
                     borderRadius: "1.5rem",

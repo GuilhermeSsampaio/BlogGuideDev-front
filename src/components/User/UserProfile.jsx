@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
+import { useAuth } from "../../hooks/useAuth";
+import { usePosts } from "../../hooks/usePosts";
 import UserHeader from "./UserHeader";
 import UserTabNavigation from "./UserTabNavigation";
 import UserProfileTab from "./UserProfileTab";
@@ -8,37 +10,32 @@ import UserConfigTab from "./UserConfigTab";
 
 export default function UserProfile() {
   const [activeTab, setActiveTab] = useState("perfil");
+  const { user, logout } = useAuth();
+  const { posts, loading: postsLoading, fetchMyPosts, deletePost } = usePosts();
   const [formData, setFormData] = useState({
-    nome: "Guilherme Sampaio",
-    email: "guilherme@email.com",
-    biografia:
-      "Desenvolvedor apaixonado por tecnologia, sempre buscando aprender e compartilhar conhecimento com a comunidade. Especializado em React, Node.js e Python.",
-    github: "https://github.com/guilherme",
-    linkedin: "https://linkedin.com/in/guilherme",
+    nome: "",
+    email: "",
+    biografia: "",
+    github: "",
+    linkedin: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const { showSuccess, showError, showWarning } = useToast();
 
-  const mockPosts = [
-    {
-      id: 1,
-      titulo: "API de receitas com Node.js",
-      resumo: "Como criar uma API completa para gerenciar receitas...",
-      dataPublicacao: "há 2 dias",
-    },
-    {
-      id: 2,
-      titulo: "Introdução ao React Hooks",
-      resumo: "Guia completo sobre useState e useEffect...",
-      dataPublicacao: "há 1 semana",
-    },
-    {
-      id: 3,
-      titulo: "Autenticação JWT em Node.js",
-      resumo: "Implementando autenticação segura com JSON Web Tokens...",
-      dataPublicacao: "há 2 semanas",
-    },
-  ];
+  useEffect(() => {
+    fetchMyPosts();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        nome: user.username || "",
+        email: user.email || "",
+        biografia: user.bio || "",
+      }));
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,12 +56,12 @@ export default function UserProfile() {
     }
   };
 
-  const handleDeletePost = (postId, postTitle) => {
+  const handleDeletePost = async (postId, postTitle) => {
     if (
       window.confirm(`Tem certeza que deseja excluir o post "${postTitle}"?`)
     ) {
       try {
-        console.log("Post deletado:", postId);
+        await deletePost(postId);
         showSuccess("Post excluído com sucesso!");
       } catch (error) {
         showError("Erro ao excluir o post. Tente novamente.");
@@ -78,7 +75,7 @@ export default function UserProfile() {
         <div className="col-md-8 mx-auto">
           <UserHeader
             formData={formData}
-            mockPosts={mockPosts}
+            posts={posts}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             showWarning={showWarning}
@@ -88,7 +85,7 @@ export default function UserProfile() {
             <UserTabNavigation
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              mockPosts={mockPosts}
+              posts={posts}
             />
 
             <div className="card-body p-4">
@@ -104,7 +101,8 @@ export default function UserProfile() {
 
               {activeTab === "posts" && (
                 <UserPostsTab
-                  mockPosts={mockPosts}
+                  posts={posts}
+                  loading={postsLoading}
                   handleDeletePost={handleDeletePost}
                   showWarning={showWarning}
                 />
@@ -116,6 +114,7 @@ export default function UserProfile() {
                   handleInputChange={handleInputChange}
                   handleSaveProfile={handleSaveProfile}
                   showWarning={showWarning}
+                  logout={logout}
                 />
               )}
             </div>

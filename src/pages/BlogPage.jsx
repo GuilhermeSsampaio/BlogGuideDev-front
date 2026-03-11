@@ -4,10 +4,10 @@ import PostCard from "../components/Posts/PostCard";
 import { usePosts } from "../hooks/usePosts";
 
 export default function BlogPage() {
-  const { posts, loading, error, fetchMyPosts } = usePosts();
+  const { posts, loading, error, fetchPublishedPosts } = usePosts();
 
   useEffect(() => {
-    fetchMyPosts();
+    fetchPublishedPosts();
   }, []);
 
   if (loading) {

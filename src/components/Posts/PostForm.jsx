@@ -98,8 +98,11 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
 
     try {
       const postData = {
-        ...formData,
-        author_id: user.id,
+        title: formData.title,
+        content: formData.content,
+        excerpt: formData.category || null,
+        image_url: formData.image_url || null,
+        published: formData.is_published,
       };
 
       await onSubmit(postData);

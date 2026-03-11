@@ -5,6 +5,7 @@ export default function UserConfigTab({
   handleInputChange,
   handleSaveProfile,
   showWarning,
+  logout,
 }) {
   return (
     <div>
@@ -137,6 +138,20 @@ export default function UserConfigTab({
           >
             <i className="bi bi-trash me-1"></i>
             Excluir Conta
+          </button>
+        </div>
+
+        <hr className="my-4" />
+
+        <div>
+          <h6 className="text-danger mb-3">Sessão</h6>
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={logout}
+          >
+            <i className="bi bi-box-arrow-right me-1"></i>
+            Sair da conta
           </button>
         </div>
       </form>
