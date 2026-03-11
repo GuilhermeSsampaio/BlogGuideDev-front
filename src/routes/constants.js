@@ -11,6 +11,9 @@ export const ROUTES = {
   USUARIO: "/usuario",
   CRIAR_POST: "/criar-post",
   ADMIN: "/admin",
+  VAGAS: "/vagas",
+  VAGA_DETAIL: "/vagas/:vagaId",
+  SEARCH: "/search",
 };
 
 // Rotas que não precisam de autenticação

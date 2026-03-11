@@ -10,7 +10,7 @@ import UserConfigTab from "./UserConfigTab";
 
 export default function UserProfile() {
   const [activeTab, setActiveTab] = useState("perfil");
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { posts, loading: postsLoading, fetchMyPosts, deletePost } = usePosts();
   const [formData, setFormData] = useState({
     nome: "",
@@ -114,6 +114,7 @@ export default function UserProfile() {
                   handleInputChange={handleInputChange}
                   handleSaveProfile={handleSaveProfile}
                   showWarning={showWarning}
+                  logout={logout}
                 />
               )}
             </div>

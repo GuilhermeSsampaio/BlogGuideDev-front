@@ -9,6 +9,9 @@ import RegisterPage from "../pages/RegisterPage";
 import UserPage from "../pages/UserPage";
 import CriarPostPage from "../pages/CriarPostPage";
 import AdminPage from "../pages/AdminPage";
+import VagasPage from "../pages/VagasPage";
+import VagaDetailPage from "../pages/VagaDetailPage";
+import SearchPage from "../pages/SearchPage";
 import { ROUTES } from "./constants";
 
 // Rotas públicas (não precisam de autenticação)
@@ -29,6 +32,24 @@ export const publicRoutes = [
     path: ROUTES.POST_DETAIL,
     component: PostDetailPage,
     name: "Detalhe do Post",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.VAGAS,
+    component: VagasPage,
+    name: "Vagas",
+    showInNav: true,
+  },
+  {
+    path: ROUTES.VAGA_DETAIL,
+    component: VagaDetailPage,
+    name: "Detalhe da Vaga",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.SEARCH,
+    component: SearchPage,
+    name: "Pesquisa",
     showInNav: false,
   },
   {

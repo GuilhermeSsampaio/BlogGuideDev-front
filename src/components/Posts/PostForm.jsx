@@ -101,6 +101,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
         title: formData.title,
         content: formData.content,
         excerpt: formData.category || null,
+        image_url: formData.image_url || null,
         published: formData.is_published,
       };
 

@@ -71,6 +71,17 @@ export default function PostDetailPage() {
 
         {post.excerpt && <p className="lead text-muted mb-4">{post.excerpt}</p>}
 
+        {post.image_url && (
+          <div className="mb-4">
+            <img
+              src={post.image_url}
+              alt={post.title}
+              className="img-fluid rounded"
+              style={{ maxHeight: "400px", width: "100%", objectFit: "cover" }}
+            />
+          </div>
+        )}
+
         <div
           className="post-content"
           style={{ fontSize: "1.1rem", lineHeight: "1.8" }}

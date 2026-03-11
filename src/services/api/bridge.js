@@ -174,6 +174,13 @@ class ApiService {
     return this.authRequest("/admin/users");
   }
 
+  async adminCreateUser(userData) {
+    return this.authRequest("/admin/users", {
+      method: "POST",
+      body: JSON.stringify(userData),
+    });
+  }
+
   async updateUserRole(profileId, tipoPerfil) {
     return this.authRequest(`/admin/users/${profileId}/role`, {
       method: "PUT",
@@ -205,6 +212,59 @@ class ApiService {
     return this.authRequest(`/admin/forum/${topicId}`, {
       method: "DELETE",
     });
+  }
+
+  // Vagas
+  async getVagas() {
+    const url = `${this.baseURL}/vagas/`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getVaga(vagaId) {
+    const url = `${this.baseURL}/vagas/${vagaId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getMinhasVagas() {
+    return this.authRequest("/vagas/minhas/list");
+  }
+
+  async createVaga(vagaData) {
+    return this.authRequest("/vagas/", {
+      method: "POST",
+      body: JSON.stringify(vagaData),
+    });
+  }
+
+  async updateVaga(vagaId, vagaData) {
+    return this.authRequest(`/vagas/${vagaId}`, {
+      method: "PUT",
+      body: JSON.stringify(vagaData),
+    });
+  }
+
+  async deleteVaga(vagaId) {
+    return this.authRequest(`/vagas/${vagaId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // Pesquisa
+  async search(query) {
+    const url = `${this.baseURL}/search/?q=${encodeURIComponent(query)}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
   }
 }
 

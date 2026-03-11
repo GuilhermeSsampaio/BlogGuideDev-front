@@ -43,18 +43,148 @@ function DashboardTab({ stats, loading }) {
 
   return (
     <div className="row g-3">
-      <StatsCard icon="bi-people" label="Usuários" value={stats.total_users} color="#6c2bd7" />
-      <StatsCard icon="bi-file-earmark-text" label="Posts" value={stats.total_posts} color="#0d6efd" />
-      <StatsCard icon="bi-check-circle" label="Publicados" value={stats.published_posts} color="#198754" />
-      <StatsCard icon="bi-pencil-square" label="Rascunhos" value={stats.draft_posts} color="#ffc107" />
-      <StatsCard icon="bi-chat-square-text" label="Tópicos Fórum" value={stats.total_topics} color="#0dcaf0" />
-      <StatsCard icon="bi-chat-dots" label="Comentários" value={stats.total_comentarios} color="#6f42c1" />
-      <StatsCard icon="bi-heart" label="Curtidas" value={stats.total_curtidas} color="#dc3545" />
+      <StatsCard
+        icon="bi-people"
+        label="Usuários"
+        value={stats.total_users}
+        color="#6c2bd7"
+      />
+      <StatsCard
+        icon="bi-file-earmark-text"
+        label="Posts"
+        value={stats.total_posts}
+        color="#0d6efd"
+      />
+      <StatsCard
+        icon="bi-check-circle"
+        label="Publicados"
+        value={stats.published_posts}
+        color="#198754"
+      />
+      <StatsCard
+        icon="bi-pencil-square"
+        label="Rascunhos"
+        value={stats.draft_posts}
+        color="#ffc107"
+      />
+      <StatsCard
+        icon="bi-chat-square-text"
+        label="Tópicos Fórum"
+        value={stats.total_topics}
+        color="#0dcaf0"
+      />
+      <StatsCard
+        icon="bi-chat-dots"
+        label="Comentários"
+        value={stats.total_comentarios}
+        color="#6f42c1"
+      />
+      <StatsCard
+        icon="bi-heart"
+        label="Curtidas"
+        value={stats.total_curtidas}
+        color="#dc3545"
+      />
     </div>
   );
 }
 
-function UsersTab({ users, loading, onChangeRole, onDelete }) {
+function CreateUserForm({ onCreate }) {
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    tipo_perfil: "user",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSubmitting(true);
+    try {
+      await onCreate(form);
+      setForm({ username: "", email: "", password: "", tipo_perfil: "user" });
+    } catch (err) {
+      setError(err.message || "Erro ao criar usuário");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="card border-0 shadow-sm mb-4">
+      <div className="card-body">
+        <h6 className="azul mb-3">
+          <i className="bi bi-person-plus me-2"></i>Criar Novo Usuário
+        </h6>
+        {error && <div className="alert alert-danger py-2">{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <div className="row g-2">
+            <div className="col-md-3">
+              <input
+                type="text"
+                className="form-control form-control-sm"
+                placeholder="Username"
+                value={form.username}
+                onChange={(e) => setForm({ ...form, username: e.target.value })}
+                required
+              />
+            </div>
+            <div className="col-md-3">
+              <input
+                type="email"
+                className="form-control form-control-sm"
+                placeholder="Email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                required
+              />
+            </div>
+            <div className="col-md-2">
+              <input
+                type="password"
+                className="form-control form-control-sm"
+                placeholder="Senha"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+                minLength={6}
+              />
+            </div>
+            <div className="col-md-2">
+              <select
+                className="form-select form-select-sm"
+                value={form.tipo_perfil}
+                onChange={(e) => setForm({ ...form, tipo_perfil: e.target.value })}
+              >
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+                <option value="recrutador">recrutador</option>
+              </select>
+            </div>
+            <div className="col-md-2">
+              <button
+                type="submit"
+                className="btn btn-primary btn-sm w-100"
+                disabled={submitting}
+              >
+                {submitting ? (
+                  <span className="spinner-border spinner-border-sm"></span>
+                ) : (
+                  <><i className="bi bi-plus-lg me-1"></i>Criar</>
+                )}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function UsersTab({ users, loading, onChangeRole, onDelete, onCreate }) {
   if (loading) {
     return (
       <div className="text-center py-5">
@@ -73,7 +203,9 @@ function UsersTab({ users, loading, onChangeRole, onDelete }) {
   };
 
   return (
-    <div className="table-responsive">
+    <div>
+      <CreateUserForm onCreate={onCreate} />
+      <div className="table-responsive">
       <table className="table table-hover align-middle">
         <thead className="table-light">
           <tr>
@@ -138,6 +270,7 @@ function UsersTab({ users, loading, onChangeRole, onDelete }) {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }
@@ -310,16 +443,26 @@ export default function AdminPage() {
       await apiService.updateUserRole(profileId, newRole);
       setUsers((prev) =>
         prev.map((u) =>
-          u.id === profileId ? { ...u, tipo_perfil: newRole } : u
-        )
+          u.id === profileId ? { ...u, tipo_perfil: newRole } : u,
+        ),
       );
     } catch (err) {
       console.error("Erro ao alterar role:", err);
     }
   };
 
+  const handleCreateUser = async (userData) => {
+    const newUser = await apiService.adminCreateUser(userData);
+    setUsers((prev) => [...prev, newUser]);
+  };
+
   const handleDeleteUser = async (profileId, username) => {
-    if (!window.confirm(`Tem certeza que deseja deletar o usuário "${username}"? Esta ação é irreversível.`)) return;
+    if (
+      !window.confirm(
+        `Tem certeza que deseja deletar o usuário "${username}"? Esta ação é irreversível.`,
+      )
+    )
+      return;
     try {
       await apiService.deleteUser(profileId);
       setUsers((prev) => prev.filter((u) => u.id !== profileId));
@@ -358,7 +501,10 @@ export default function AdminPage() {
   return (
     <div className="container py-4">
       <div className="d-flex align-items-center gap-3 mb-4">
-        <i className="bi bi-shield-lock-fill azul" style={{ fontSize: "2rem" }}></i>
+        <i
+          className="bi bi-shield-lock-fill azul"
+          style={{ fontSize: "2rem" }}
+        ></i>
         <h2 className="azul jersey-25-regular mb-0">Painel Admin</h2>
       </div>
 
@@ -378,20 +524,27 @@ export default function AdminPage() {
       </ul>
 
       {/* Tab content */}
-      {activeTab === "dashboard" && <DashboardTab stats={stats} loading={loading} />}
+      {activeTab === "dashboard" && (
+        <DashboardTab stats={stats} loading={loading} />
+      )}
       {activeTab === "users" && (
         <UsersTab
           users={users}
           loading={loading}
           onChangeRole={handleChangeRole}
           onDelete={handleDeleteUser}
+          onCreate={handleCreateUser}
         />
       )}
       {activeTab === "posts" && (
         <PostsTab posts={posts} loading={loading} onDelete={handleDeletePost} />
       )}
       {activeTab === "forum" && (
-        <ForumTab topics={topics} loading={loading} onDelete={handleDeleteTopic} />
+        <ForumTab
+          topics={topics}
+          loading={loading}
+          onDelete={handleDeleteTopic}
+        />
       )}
     </div>
   );
