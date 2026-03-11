@@ -2,7 +2,7 @@ import React from "react";
 
 export default function UserHeader({
   formData,
-  mockPosts,
+  posts,
   isEditing,
   setIsEditing,
   showWarning,
@@ -46,7 +46,7 @@ export default function UserHeader({
 
         <div className="row text-center">
           <div className="col-4">
-            <h5 className="azul mb-0">{mockPosts.length}</h5>
+            <h5 className="azul mb-0">{posts.length}</h5>
             <small className="text-muted">Posts</small>
           </div>
           <div className="col-4">

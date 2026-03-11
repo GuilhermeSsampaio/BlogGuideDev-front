@@ -3,7 +3,7 @@ import React from "react";
 export default function UserTabNavigation({
   activeTab,
   setActiveTab,
-  mockPosts,
+  posts,
 }) {
   return (
     <div className="card-header bg-white border-bottom">
@@ -27,7 +27,7 @@ export default function UserTabNavigation({
             onClick={() => setActiveTab("posts")}
           >
             <i className="bi bi-file-text me-1"></i>
-            Meus Posts ({mockPosts.length})
+            Meus Posts ({posts.length})
           </button>
         </li>
         <li className="nav-item">

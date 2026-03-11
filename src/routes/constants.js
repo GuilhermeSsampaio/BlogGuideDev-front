@@ -2,6 +2,7 @@
 export const ROUTES = {
   HOME: "/",
   CONTEUDO: "/conteudo",
+  POST_DETAIL: "/conteudo/:postId",
   LOGIN: "/login",
   REGISTER: "/register",
   IDEIAS: "/ideias",

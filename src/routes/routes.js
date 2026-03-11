@@ -1,5 +1,6 @@
 import HomePage from "../pages/HomePage"; // nova página
 import BlogPage from "../pages/BlogPage";
+import PostDetailPage from "../pages/PostDetailPage";
 import IdeiasPage from "../pages/IdeiasPage";
 import SobrePage from "../pages/SobrePage";
 import LoginPage from "../pages/LoginPage";
@@ -21,6 +22,12 @@ export const publicRoutes = [
     component: BlogPage,
     name: "Conteúdo",
     showInNav: true,
+  },
+  {
+    path: ROUTES.POST_DETAIL,
+    component: PostDetailPage,
+    name: "Detalhe do Post",
+    showInNav: false,
   },
   {
     path: ROUTES.LOGIN,

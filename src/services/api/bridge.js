@@ -68,6 +68,25 @@ class ApiService {
       method: "DELETE",
     });
   }
+
+  // Conteúdos públicos (sem autenticação)
+  async getPublishedPosts() {
+    const url = `${this.baseURL}/conteudos/`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+
+  async getPostById(postId) {
+    const url = `${this.baseURL}/conteudos/${postId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
 }
 
 // Exporta uma instância única do serviço

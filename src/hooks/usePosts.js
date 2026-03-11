@@ -3,8 +3,36 @@ import apiService from "../services/api/bridge";
 
 export function usePosts() {
   const [posts, setPosts] = useState([]);
+  const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const fetchPublishedPosts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await apiService.getPublishedPosts();
+      setPosts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPostById = async (postId) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await apiService.getPostById(postId);
+      setPost(data);
+      return data;
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchMyPosts = async () => {
     try {
@@ -56,8 +84,11 @@ export function usePosts() {
 
   return {
     posts,
+    post,
     loading,
     error,
+    fetchPublishedPosts,
+    fetchPostById,
     fetchMyPosts,
     createPost,
     updatePost,

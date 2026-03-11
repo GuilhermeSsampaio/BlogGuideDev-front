@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ApiService from "../../services/api/bridge.js";
 
 export default function PostCard({ post }) {
@@ -45,7 +46,7 @@ export default function PostCard({ post }) {
     return date.toLocaleDateString("pt-BR");
   };
 
-  // Determinar qual autor usar: do post, buscado pela API ou padrão
+  // Determinar qual autor usar: do campo author (API pública) ou buscado pela API
   const displayAuthor = postData.author?.username || author?.username || "User";
 
   return (
@@ -67,7 +68,9 @@ export default function PostCard({ post }) {
       {/* Title and Tags */}
       <div className="mb-3">
         <div className="d-flex flex-wrap gap-2 align-items-center mb-2">
-          <h5 className="mb-0 azul">{postData.title}</h5>
+          <Link to={`/conteudo/${postData.id}`} className="text-decoration-none">
+            <h5 className="mb-0 azul">{postData.title}</h5>
+          </Link>
           {postData.tags &&
             postData.tags.map((tag, index) => (
               <span
