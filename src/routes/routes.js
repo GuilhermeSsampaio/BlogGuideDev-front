@@ -1,5 +1,7 @@
 import HomePage from "../pages/HomePage"; // nova página
 import BlogPage from "../pages/BlogPage";
+import ContentGuidesPage from "../pages/ContentGuidesPage";
+import ContentDetailPage from "../pages/ContentDetailPage";
 import PostDetailPage from "../pages/PostDetailPage";
 import IdeiasPage from "../pages/IdeiasPage";
 import ForumDetailPage from "../pages/ForumDetailPage";
@@ -24,9 +26,15 @@ export const publicRoutes = [
   },
   {
     path: ROUTES.CONTEUDO,
-    component: BlogPage,
+    component: ContentGuidesPage,
     name: "Conteúdo",
     showInNav: true,
+  },
+  {
+    path: "/conteudo/:slug",
+    component: ContentDetailPage,
+    name: "Detalhe do Conteúdo",
+    showInNav: false,
   },
   {
     path: ROUTES.POST_DETAIL,

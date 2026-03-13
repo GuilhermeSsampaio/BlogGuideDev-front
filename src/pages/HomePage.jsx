@@ -57,8 +57,8 @@ export default function HomePage() {
             />
             <h3 className="home-team-name">Guilherme Sampaio</h3>
             <p className="home-team-desc">
-              Desenvolvedor Full Stack com 8 anos de experiência em React, Node.js
-              e AWS. Formado em Ciência da Computação pela USP, especialista em
+              Desenvolvedor Júnior com 4 anos de experiência em React, Python
+              e Back-end. Formado em Tecnico em Informática para Internet pelo IFMS, especialista em
               arquitetura de sistemas e desenvolvimento de aplicações escaláveis.
             </p>
             <a

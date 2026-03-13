@@ -42,6 +42,9 @@ body {
   background-image:
     linear-gradient(180deg, #fafafacc 0%, #fafafacc 100%),
     url("./image-home.jpg");
+  /* background-image:
+    linear-gradient(180deg, #fafafaa1 0%, #fafafaa1 100%),
+    url("./image-home.jpg"); */
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -87,7 +90,7 @@ footer {
 }
 
 .home-about-section {
-  background: #fafafa;
+  background: #ffffff;
   padding: 4rem 1rem;
   text-align: center;
 }
@@ -182,12 +185,39 @@ footer {
   font-size: 1.2rem;
 }
 
+/* Conteúdo */
+.text-primary-conteudo {
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+}
+
+.text-secondary-conteudo {
+  font-size: 1.1rem;
+}
+
+.icon-tema-detail {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.text-title-detail {
+  font-size: 2.2rem;
+  letter-spacing: 0.8px;
+}
+
+.text-subtitle-detail {
+  font-size: 1.1rem;
+}
+
 @media only screen and (min-width: 1200px) {
   .home-team-cards {
     gap: 6rem;
   }
+  .page-detail-container {
+    max-width: 1000px;
+  }
 }
-
 @media (max-width: 992px) {
   .search-form {
     margin-bottom: 1rem;
@@ -200,7 +230,6 @@ footer {
     max-width: 800px;
   }
 }
-
 @media (min-width: 768px) {
   .home-hero-title {
     font-size: 6rem;
@@ -236,7 +265,28 @@ footer {
     line-height: 2.25rem;
   }
 }
-
+@media only screen and (max-width: 480px) {
+  .text-primary-conteudo {
+    font-size: 1.9rem;
+  }
+  .text-secondary-conteudo {
+    font-size: 1.05rem;
+    text-align: justify;
+  }
+  .page-detail-container {
+    padding: 0 15px;
+  }
+  .icon-tema-detail {
+    width: 50px;
+    height: 50px;
+  }
+  .text-title-detail {
+    font-size: 1.9rem;
+  }
+  .text-subtitle-detail {
+    font-size: 1rem;
+  }
+}
 @media only screen and (max-width: 320px) {
   body {
     overflow-x: auto !important;
