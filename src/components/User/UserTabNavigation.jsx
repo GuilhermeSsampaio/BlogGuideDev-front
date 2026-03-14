@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function UserTabNavigation({ activeTab, setActiveTab, posts }) {
+export default function UserTabNavigation({ activeTab, setActiveTab, forunsCount }) {
   return (
     <div className="card-header bg-white border-bottom">
       <ul className="nav nav-tabs card-header-tabs border-0">
@@ -18,12 +18,12 @@ export default function UserTabNavigation({ activeTab, setActiveTab, posts }) {
         <li className="nav-item">
           <button
             className={`nav-link border-1 ${
-              activeTab === "posts" ? "active azul fw-bold" : "text-muted"
+              activeTab === "foruns" ? "active azul fw-bold" : "text-muted"
             }`}
-            onClick={() => setActiveTab("posts")}
+            onClick={() => setActiveTab("foruns")}
           >
-            <i className="bi bi-file-text me-1"></i>
-            Meus Posts ({posts.length})
+            <i className="bi bi-chat-square-text me-1"></i>
+            Meus Fóruns ({forunsCount})
           </button>
         </li>
         <li className="nav-item">

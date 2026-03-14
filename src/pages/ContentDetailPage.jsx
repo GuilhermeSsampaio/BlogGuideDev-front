@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import contentData from "../utils/contentData";
+import CurtidaButton from "../components/CurtidaButton";
+import ComentarioSection from "../components/ComentarioSection";
+import apiService from "../services/api/bridge";
 
 export default function ContentDetailPage() {
   const { slug } = useParams();
   const content = contentData.find((item) => item.slug === slug);
-
-  // Simula usuário logado (integrar com seu sistema de autenticação)
-  const [isLoggedIn] = useState(true);
-  const [comments, setComments] = useState([
-    { id: 1, user: "Maria Silva", text: "Excelente conteúdo! Me ajudou muito.", date: "2024-03-10" },
-    { id: 2, user: "João Santos", text: "Muito bem explicado, obrigado!", date: "2024-03-12" },
-  ]);
-  const [newComment, setNewComment] = useState("");
+  const [conteudoId, setConteudoId] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (slug) {
+      apiService
+        .getConteudoBySlug(slug)
+        .then((data) => setConteudoId(data.id))
+        .catch((err) => console.error("Erro ao buscar conteudo:", err));
+    }
+  }, [slug]);
 
   if (!content) {
     return (
@@ -26,21 +31,6 @@ export default function ContentDetailPage() {
       </div>
     );
   }
-
-  const handleAddComment = (e) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
-    setComments([
-      ...comments,
-      {
-        id: Date.now(),
-        user: "Você",
-        text: newComment,
-        date: new Date().toISOString().split("T")[0],
-      },
-    ]);
-    setNewComment("");
-  };
 
   return (
     <div className="container py-5 page-detail-container">
@@ -182,56 +172,15 @@ export default function ContentDetailPage() {
         </div>
       ))}
 
-      {/* Seção de Comentários */}
-      <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
-        <h2 className="fw-bold mb-4" style={{ fontSize: "1.5rem" }}>
-          Comentários
-        </h2>
-
-        {isLoggedIn ? (
-          <form onSubmit={handleAddComment} className="mb-4">
-            <div className="mb-3">
-              <textarea
-                className="form-control"
-                rows={3}
-                placeholder="Deixe seu comentário..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                style={{ resize: "none" }}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Enviar Comentário
-            </button>
-          </form>
-        ) : (
-          <div className="alert alert-info mb-4">
-            <Link to="/login" className="alert-link">Faça login</Link> para deixar um comentário.
+      {/* Curtida e Comentários */}
+      {conteudoId && (
+        <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
+          <div className="mb-4">
+            <CurtidaButton tipoReferencia="conteudo" referenciaId={conteudoId} />
           </div>
-        )}
-
-        {comments.length === 0 ? (
-          <p className="text-muted">Nenhum comentário ainda. Seja o primeiro!</p>
-        ) : (
-          <div className="d-flex flex-column gap-3">
-            {comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="p-3 rounded"
-                style={{ background: "#f8f9fa", border: "1px solid #dee2e6" }}
-              >
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                  <strong style={{ color: "#333" }}>{comment.user}</strong>
-                  <small className="text-muted">{comment.date}</small>
-                </div>
-                <p className="mb-0" style={{ fontSize: "0.95rem" }}>
-                  {comment.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+          <ComentarioSection tipoReferencia="conteudo" referenciaId={conteudoId} />
+        </div>
+      )}
 
       {/* Botão Voltar */}
       <div className="mt-5 pt-3">

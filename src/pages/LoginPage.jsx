@@ -28,8 +28,7 @@ export default function LoginPage() {
     try {
       await handleLogin(formData);
     } catch (error) {
-      setError("Erro inesperado. Tente novamente.");
-      console.error(error);
+      setError(error.message || "Erro inesperado. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -54,7 +53,7 @@ export default function LoginPage() {
                   <label className="form-label">Email</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${error ? "is-invalid" : ""}`}
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
@@ -66,7 +65,7 @@ export default function LoginPage() {
                   <label className="form-label">Senha</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className={`form-control ${error ? "is-invalid" : ""}`}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}

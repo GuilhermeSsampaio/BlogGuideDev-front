@@ -2,7 +2,8 @@ import React from "react";
 
 export default function UserHeader({
   formData,
-  posts,
+  user,
+  userStats,
   isEditing,
   setIsEditing,
   showWarning,
@@ -30,8 +31,10 @@ export default function UserHeader({
           </div>
           <div className="flex-grow-1">
             <h3 className="azul mb-0">{formData.nome}</h3>
-            <p className="text-muted mb-1">@guilherme_dev</p>
-            <small className="text-muted">Membro desde Janeiro 2025</small>
+            <p className="text-muted mb-1">@{user?.username || "usuario"}</p>
+            <small className="text-muted">
+              {user?.tipo_perfil === "recrutador" ? "Recrutador" : "Estudante"}
+            </small>
           </div>
           <div>
             <button
@@ -46,16 +49,16 @@ export default function UserHeader({
 
         <div className="row text-center">
           <div className="col-4">
-            <h5 className="azul mb-0">{posts.length}</h5>
-            <small className="text-muted">Posts</small>
-          </div>
-          <div className="col-4">
-            <h5 className="azul mb-0">8</h5>
-            <small className="text-muted">Ideias</small>
-          </div>
-          <div className="col-4">
-            <h5 className="azul mb-0">23</h5>
+            <h5 className="azul mb-0">{userStats.curtidas}</h5>
             <small className="text-muted">Curtidas</small>
+          </div>
+          <div className="col-4">
+            <h5 className="azul mb-0">{userStats.comentarios}</h5>
+            <small className="text-muted">Comentários</small>
+          </div>
+          <div className="col-4">
+            <h5 className="azul mb-0">{userStats.foruns}</h5>
+            <small className="text-muted">Fóruns</small>
           </div>
         </div>
       </div>

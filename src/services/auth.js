@@ -39,24 +39,50 @@ class AuthService {
 
   // Login
   async login(email, password) {
-    const response = await this.authRequest("/users/login", {
+    const url = `${this.baseURL}/users/login`;
+    const response = await fetch(url, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
-    this.setToken(response.access_token);
+    if (!response.ok) {
+      let detail = "Email ou senha incorretos.";
+      try {
+        const errorData = await response.json();
+        if (errorData.detail) detail = errorData.detail;
+      } catch (e) {
+        /* usa mensagem padrão */
+      }
+      throw new Error(detail);
+    }
 
-    return response;
+    const data = await response.json();
+    this.setToken(data.access_token);
+    return data;
   }
 
   // Registro
   async register(userData) {
-    const response = await this.authRequest("/users/register", {
+    const url = `${this.baseURL}/users/register`;
+    const response = await fetch(url, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
     });
 
-    return response;
+    if (!response.ok) {
+      let detail = "Erro ao criar conta. Verifique os dados e tente novamente.";
+      try {
+        const errorData = await response.json();
+        if (errorData.detail) detail = errorData.detail;
+      } catch (e) {
+        /* usa mensagem padrão */
+      }
+      throw new Error(detail);
+    }
+
+    return await response.json();
   }
 
   // Obter usuário atual
@@ -70,6 +96,11 @@ class AuthService {
       method: "PUT",
       body: JSON.stringify(profileData),
     });
+  }
+
+  // Obter estatísticas do usuário
+  async getUserStats() {
+    return this.authRequest("/users/me/stats");
   }
 
   // Logout

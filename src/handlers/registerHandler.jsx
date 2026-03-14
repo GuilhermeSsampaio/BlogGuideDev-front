@@ -18,6 +18,9 @@ export const useHandlersRegister = () => {
         username: userData.username,
         email: userData.email,
         password: userData.password,
+        tipo_perfil: userData.tipoPerfil || "user",
+        nome_completo: userData.name || null,
+        bio: userData.bio || null,
       });
 
       handleSuccess(
@@ -27,7 +30,7 @@ export const useHandlersRegister = () => {
     } catch (error) {
       handleError(
         error,
-        "Erro ao criar conta. Verifique os dados e tente novamente.",
+        error.message || "Erro ao criar conta. Verifique os dados e tente novamente.",
       );
     }
   };

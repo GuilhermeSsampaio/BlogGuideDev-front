@@ -5,6 +5,7 @@ import curtidaService from "./curtidaService";
 import adminService from "./adminService";
 import vagaService from "./vagaService";
 import searchService from "./searchService";
+import conteudoEducacionalService from "./conteudoEducacionalService";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -21,6 +22,7 @@ class ApiService {
       adminService(this),
       vagaService(this),
       searchService(this),
+      conteudoEducacionalService(this),
     );
   }
 

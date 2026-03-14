@@ -12,7 +12,8 @@ export const useHandlersLogin = () => {
 
       handleSuccess("Login realizado com sucesso!", ROUTES.HOME);
     } catch (error) {
-      handleError(error, "Email ou senha incorretos. Tente novamente.");
+      handleError(error, error.message || "Email ou senha incorretos. Tente novamente.");
+      throw error;
     }
   };
 

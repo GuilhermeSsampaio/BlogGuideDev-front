@@ -176,24 +176,43 @@ export default function Header() {
                 />
               </div>
             </form>
-            {/* Botão Login roxo */}
-            <Link
-              to={ROUTES.USUARIO}
-              className="btn px-3"
-              style={{
-                background: "#6c2bd7",
-                color: "#fff",
-                borderRadius: "1.5rem",
-                fontWeight: "500",
-                fontSize: "1rem",
-                padding: "0.5rem 1.3rem",
-                gap: ".5rem",
-              }}
-              onClick={handleNavLinkClick}
-            >
-              <i className="bi bi-box-arrow-in-right me-2"></i>
-              Login
-            </Link>
+            {/* Botão Login/Perfil */}
+            {isAuthenticated ? (
+              <Link
+                to={ROUTES.USUARIO}
+                className="btn d-flex align-items-center justify-content-center"
+                style={{
+                  background: "#6c2bd7",
+                  color: "#fff",
+                  borderRadius: "50%",
+                  width: "40px",
+                  height: "40px",
+                  padding: "0",
+                }}
+                onClick={handleNavLinkClick}
+                title={user?.username || "Perfil"}
+              >
+                <i className="bi bi-person-fill" style={{ fontSize: "1.2rem" }}></i>
+              </Link>
+            ) : (
+              <Link
+                to={ROUTES.LOGIN}
+                className="btn px-3"
+                style={{
+                  background: "#6c2bd7",
+                  color: "#fff",
+                  borderRadius: "1.5rem",
+                  fontWeight: "500",
+                  fontSize: "1rem",
+                  padding: "0.5rem 1.3rem",
+                  gap: ".5rem",
+                }}
+                onClick={handleNavLinkClick}
+              >
+                <i className="bi bi-box-arrow-in-right me-2"></i>
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
