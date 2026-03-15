@@ -4,12 +4,10 @@ export default function UserHeader({
   formData,
   user,
   userStats,
-  isEditing,
-  setIsEditing,
   showWarning,
 }) {
   return (
-    <div className="card border-0 shadow-sm mb-4">
+    <div className="card border-0 shadow-sm mb-4 jersey-25-regular">
       <div className="card-body p-4">
         <div className="d-flex align-items-center gap-3 mb-3">
           <div
@@ -21,7 +19,7 @@ export default function UserHeader({
               style={{ fontSize: "2rem" }}
             ></i>
             <button
-              className="btn btn-sm btn-light position-absolute bottom-0 end-0 rounded-circle p-1"
+              className="btn btn-sm btn-light position-absolute bottom-0 end-0 rounded-circle p-1 d-flex align-items-center justify-content-center"
               style={{ width: "24px", height: "24px" }}
               title="Alterar foto"
               onClick={() => showWarning("Funcionalidade em desenvolvimento")}
@@ -35,15 +33,6 @@ export default function UserHeader({
             <small className="text-muted">
               {user?.tipo_perfil === "recrutador" ? "Recrutador" : "Estudante"}
             </small>
-          </div>
-          <div>
-            <button
-              className="btn btn-outline-primary btn-sm"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              <i className="bi bi-pencil me-1"></i>
-              {isEditing ? "Cancelar" : "Editar"}
-            </button>
           </div>
         </div>
 

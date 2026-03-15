@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="loading-container">
+      <div className="loading-container d-flex justify-content-center align-items-center vh-100">
         <div className="loading-spinner">Carregando...</div>
       </div>
     );

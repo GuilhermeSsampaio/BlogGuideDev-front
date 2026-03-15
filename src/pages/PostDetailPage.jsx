@@ -50,7 +50,7 @@ export default function PostDetailPage() {
   };
 
   return (
-    <div className="container py-5" style={{ maxWidth: "800px" }}>
+    <div className="container py-5" style={{ maxWidth: "1800px" }}>
       <Link
         to={ROUTES.CONTEUDO}
         className="btn btn-outline-secondary btn-sm mb-4"

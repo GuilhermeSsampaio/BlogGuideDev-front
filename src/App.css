@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Jersey 25", sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #333;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -41,7 +41,7 @@ body {
 .hero-image-center {
   background-image:
     linear-gradient(180deg, #fafafacc 0%, #fafafacc 100%),
-    url("./image-home.jpg");
+    url("./img/image-home.jpg");
   /* background-image:
     linear-gradient(180deg, #fafafaa1 0%, #fafafaa1 100%),
     url("./image-home.jpg"); */
@@ -52,6 +52,10 @@ body {
 
 footer {
   font-size: 1rem;
+}
+
+.ql-editor {
+  min-height: 250px;
 }
 
 .home-hero-section {
@@ -67,7 +71,8 @@ footer {
   font-size: 1.1rem;
   color: #6B7280;
   font-style: italic;
-  margin-bottom: 2.5rem;
+  margin-top: 0.4rem;
+  margin-bottom: 2rem;
   font-weight: 300 !important;
 }
 
@@ -91,7 +96,7 @@ footer {
 
 .home-about-section {
   background: #ffffff;
-  padding: 4rem 1rem;
+  padding: 5rem 1rem;
   text-align: center;
 }
 
@@ -99,19 +104,21 @@ footer {
   max-width: 900px;
   margin: 0 auto;
   color: #6B7280;
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   line-height: 1.625;
+  font-weight: 600;
 }
 
 .home-team-section {
   background: #f5f5f7;
-  padding: 3rem 0;
+  padding: 4rem 0;
 }
 
 .home-team-title {
   text-align: center;
   font-size: 2.8rem;
   font-weight: bold;
+  letter-spacing: 1px;
   margin-bottom: 2.5rem;
 }
 
@@ -154,13 +161,15 @@ footer {
 .home-team-name {
   font-size: 1.5rem;
   font-weight: bold;
+  letter-spacing: 1px;
   margin-bottom: 1rem;
 }
 
 .home-team-desc {
   color: #6B7280;
-  font-size: 1.1rem;
-  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: justify;
   margin-bottom: 2rem;
 }
 
@@ -185,14 +194,17 @@ footer {
   font-size: 1.2rem;
 }
 
+.text-btn-portfolio {
+  font-weight: 600;
+}
+
 /* Conteúdo */
 .text-primary-conteudo {
-  font-size: 2.5rem;
-  letter-spacing: 1px;
+  font-size: 2.2rem;
 }
 
 .text-secondary-conteudo {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
 .icon-tema-detail {
@@ -202,12 +214,18 @@ footer {
 }
 
 .text-title-detail {
-  font-size: 2.2rem;
-  letter-spacing: 0.8px;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .text-subtitle-detail {
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: bold;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -239,13 +257,13 @@ footer {
   }
   .home-about-title,
   .home-team-title {
-    font-size: 2.25rem;
+    font-size: 2.15rem;
     line-height: 2.5rem;
+    letter-spacing: 1px;
     font-weight: bold;
     margin-bottom: 2rem;
   }
 }
-
 @media (max-width: 767px) {
   footer .row > div {
     text-align: center !important;
@@ -255,7 +273,7 @@ footer {
     flex-direction: column;
   }
   .home-hero-title {
-    font-size: 3.75rem;
+    font-size: 4.75rem;
     font-weight: bold;
     line-height: 1;
   }
@@ -263,15 +281,25 @@ footer {
   .home-team-title {
     font-size: 1.875rem;
     line-height: 2.25rem;
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+  .home-about-title {
+    margin-bottom: 1.5rem;
+  }
+  .text-name-footer {
+    font-size: 2rem;
+  }
+  .home-about-content {
+    font-size: 0.95rem;
   }
 }
 @media only screen and (max-width: 480px) {
   .text-primary-conteudo {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
   }
   .text-secondary-conteudo {
-    font-size: 1.05rem;
-    text-align: justify;
+    font-size: 1rem;
   }
   .page-detail-container {
     padding: 0 15px;
@@ -285,6 +313,9 @@ footer {
   }
   .text-subtitle-detail {
     font-size: 1rem;
+  }
+  .navbar-project .container-fluid {
+    --bs-gutter-x: 0rem !important;
   }
 }
 @media only screen and (max-width: 320px) {

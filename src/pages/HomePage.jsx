@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../routes";
-import CtaBox from "../components/CtaBox";
 import Pedro from "../img/pedro.jpg";
 import Guilherme from "../img/guilherme.png";
 
@@ -9,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <section className="hero-image-center overflow-hidden d-flex align-items-center justify-content-center home-hero-section">
-        <div className="home-hero-content px-4">
+        <div className="home-hero-content px-4 jersey-25-regular">
           <h1 className="home-hero-title">
             <span style={{ color: "#222" }}>Blog</span>
             <span style={{ color: "#6c2bd7" }}>Guide</span>
@@ -25,7 +24,9 @@ export default function HomePage() {
         </div>
       </section>
       <section className="home-about-section">
-        <h2 className="home-about-title">Sobre o BlogGuide</h2>
+        <div className="jersey-25-regular">
+          <h2 className="home-about-title">Sobre o BlogGuide</h2>
+        </div>
         <div className="container home-about-content">
           <p>
             O BlogGuide é uma plataforma completa de conhecimento em programação,
@@ -47,7 +48,9 @@ export default function HomePage() {
       </section>
       {/* Seção Nossa Equipe */}
       <section className="home-team-section">
-        <h2 className="home-team-title">Nossa Equipe</h2>
+        <div className="jersey-25-regular">
+          <h2 className="home-team-title">Nossa Equipe</h2>
+        </div>
         <div className="container home-team-cards">
           <div className="home-team-card">
             <img
@@ -55,7 +58,9 @@ export default function HomePage() {
               alt="Guilherme Sampaio"
               className="home-team-img"
             />
-            <h3 className="home-team-name">Guilherme Sampaio</h3>
+            <div className="jersey-25-regular">
+              <h3 className="home-team-name">Guilherme Sampaio</h3>
+            </div>
             <p className="home-team-desc">
               Desenvolvedor Júnior com 4 anos de experiência em React, Python
               e Back-end. Formado em Tecnico em Informática para Internet pelo IFMS, especialista em
@@ -68,7 +73,7 @@ export default function HomePage() {
               style={{ textDecoration: "none" }}
             >
               <button className="home-team-btn">
-                <span className="home-team-btn-icon">🔗</span> Ver Portfólio
+                <span className="home-team-btn-icon">🔗</span> <span className="text-btn-portfolio">Ver Portfólio</span>
               </button>
             </a>
           </div>
@@ -79,11 +84,14 @@ export default function HomePage() {
               alt="Pedro Mota"
               className="home-team-img"
             />
-            <h3 className="home-team-name">Pedro Mota</h3>
+            <div className="jersey-25-regular">
+              <h3 className="home-team-name">Pedro Mota</h3>
+            </div>
             <p className="home-team-desc">
-              Especialista em Frontend e UX/UI com 6 anos de experiência. Formada
-              em Design Digital, possui certificações em React, Vue.js e Design
-              Systems. Apaixonada por criar interfaces intuitivas e acessíveis.
+              Especialista em Frontend com 4 anos de experiência. 
+              Técnico em Informática para Internet e graduando em 
+              Sistemas de Informação (UFGD), possui forte atuação 
+              com React.js, CSS e Bootstrap.
             </p>
             <a
               href="https://portfolio-website-bootstrap.vercel.app/"
@@ -92,7 +100,7 @@ export default function HomePage() {
               style={{ textDecoration: "none" }}
             >
               <button className="home-team-btn">
-                <span className="home-team-btn-icon">🔗</span> Ver Portfólio
+                <span className="home-team-btn-icon">🔗</span> <span className="text-btn-portfolio">Ver Portfólio</span>
               </button>
             </a>
           </div>

@@ -13,27 +13,15 @@ export default function Footer() {
       icon: "bi-journal-text",
       path: ROUTES.HOME,
     },
-    {
-      id: ROUTES.IDEIAS,
-      label: "Ideias",
-      icon: "bi-lightbulb",
-      path: ROUTES.IDEIAS,
-    },
-    {
-      id: ROUTES.SOBRE,
-      label: "Sobre",
-      icon: "bi-info-circle",
-      path: ROUTES.SOBRE,
-    },
   ];
 
   return (
     <>
-      <footer className="footer bg-body-tertiary pt-5 pb-2 border-top" style={{ borderTop: "2px solid #6c2bd7" }}>
+      <footer className="footer bg-body-tertiary pt-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
         <div className="container">
           <div className="row text-center text-md-start align-items-start">
             <div className="col-12 col-md-3 mb-4 mb-md-0">
-              <h4 className="jersey-25-regular mb-2 fw-bold">
+              <h4 className="jersey-25-regular text-name-footer mb-2 fw-bold">
                 <span style={{ color: "#222" }}>Blog</span>
                 <span style={{ color: "#6c2bd7" }}>Guide</span>
               </h4>
@@ -47,7 +35,7 @@ export default function Footer() {
               <ul className="list-unstyled">
                 <li>
                   <Link
-                    to={ROUTES.BLOG}
+                    to={ROUTES.CONTEUDO}
                     className="text-muted text-decoration-none"
                   >
                     Conteúdos
@@ -55,7 +43,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/forum"
+                    to={ROUTES.FORUM}
                     className="text-muted text-decoration-none"
                   >
                     Fórum
@@ -63,7 +51,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to={ROUTES.SOBRE}
+                    to="/sobre"
                     className="text-muted text-decoration-none"
                   >
                     Sobre
@@ -82,9 +70,9 @@ export default function Footer() {
             <div className="col-12 col-md-3 mb-4 mb-md-0">
               <h5 className="fw-bold mb-2">Contato</h5>
               <ul className="list-unstyled text-muted">
-                <li>contato@codedev.com</li>
-                <li>+55 (11) 9999-9999</li>
-                <li>São Paulo, SP</li>
+                <li>contatoblogguide@gmail.com</li>
+                <li>+55 (67) 9999-9999</li>
+                <li>Dourados, MS</li>
               </ul>
             </div>
             <div className="col-12 col-md-3">
@@ -112,7 +100,7 @@ export default function Footer() {
                   <i className="bi bi-twitter"></i>
                 </a>
                 <a
-                  href="#"
+                  href="mailto:contatoblogguide@gmail.com"
                   className="text-muted fs-4"
                   aria-label="Email"
                 >
@@ -127,7 +115,7 @@ export default function Footer() {
             className="text-center text-muted pb-3"
             style={{ fontSize: "1.1rem" }}
           >
-            © 2024 CodeDev. Todos os direitos reservados.
+            © 2026 BlogGuide. Todos os direitos reservados.
           </div>
       </footer>
       {/* tab navigation */}

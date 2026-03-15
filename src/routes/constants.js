@@ -5,7 +5,8 @@ export const ROUTES = {
   POST_DETAIL: "/conteudo/:postId",
   LOGIN: "/login",
   REGISTER: "/register",
-  IDEIAS: "/ideias",
+  FORUM: "/forum",
+  CRIAR_FORUM: "/criar-forum",
   FORUM_DETAIL: "/forum/:topicId",
   SOBRE: "/sobre",
   USUARIO: "/usuario",
@@ -14,6 +15,7 @@ export const ROUTES = {
   VAGAS: "/vagas",
   VAGA_DETAIL: "/vagas/:vagaId",
   SEARCH: "/search",
+  DIRETRIZES_FORUM: "/diretrizes-forum",
 };
 
 // Rotas que não precisam de autenticação
@@ -26,7 +28,7 @@ export const PUBLIC_ROUTES = [
 
 // Rotas que precisam de autenticação
 export const PROTECTED_ROUTES = [
-  ROUTES.IDEIAS,
+  ROUTES.FORUM,
   ROUTES.SOBRE,
   ROUTES.USUARIO,
   ROUTES.CRIAR_POST,

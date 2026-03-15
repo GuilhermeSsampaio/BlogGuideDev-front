@@ -75,7 +75,6 @@ export default function ContentDetailPage() {
                 fontSize: "1.5rem",
                 paddingBottom: 8,
                 display: "inline-block",
-                letterSpacing: "0.8px"
               }}
             >
               {section.heading}
@@ -184,7 +183,7 @@ export default function ContentDetailPage() {
 
       {/* Botão Voltar */}
       <div className="mt-5 pt-3">
-        <Link to="/conteudo" className="btn btn-outline-secondary">
+        <Link to="/conteudo" className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
           ← Voltar para Conteúdos
         </Link>
       </div>

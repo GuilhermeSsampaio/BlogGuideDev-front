@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import apiService from "../services/api/bridge";
 import { useAuth } from "../hooks/useAuth";
 
@@ -100,9 +101,12 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
           </div>
         </form>
       ) : (
-        <p className="text-muted mb-3">
+        <p className="text-muted mb-3" style={{fontSize: "1rem", fontWeight: "bold"}}>
           <i className="bi bi-lock me-1"></i>
-          Faça login para comentar.
+           <Link to="/login" className="text-decoration-none">
+            Faça login
+          </Link>{" "}
+          para comentar.
         </p>
       )}
 

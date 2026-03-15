@@ -363,10 +363,10 @@ export default function ContentGuidesPage() {
   return (
     <div className="container py-5">
       <h1 className="fw-bold mb-2 text-primary-conteudo">
-        Guias técnicos curados
+        Explore o Universo Dev
       </h1>
       <p className="mb-4 text-secondary-conteudo">
-        Explore tecnologias essenciais com artigos objetivos, exemplos de código e recursos de aprendizado.
+        As melhores ferramentas, linguagens e frameworks explicados de um jeito simples e direto ao ponto. Sem enrolação.
       </p>
       <div className="d-flex flex-wrap gap-2 mb-4">
         {categories.map((cat) => (
@@ -401,11 +401,11 @@ export default function ContentGuidesPage() {
                     <h5 className="card-title mb-1" style={{ color: "#333" }}>{guide.name}</h5>
                     <span
                       className="badge mb-2"
-                      style={{ background: guide.categoryColor, color: "#222", fontSize: "0.85rem", letterSpacing: "0.8px" }}
+                      style={{ background: guide.categoryColor, color: "#222", fontSize: "0.8rem", fontWeight: "700" }}
                     >
                       {guide.categoryLabel}
                     </span>
-                    <p className="card-text mb-0" style={{ fontSize: "0.97rem", color: "#666" }}>{guide.description}</p>
+                    <p className="card-text mb-0" style={{ fontSize: "0.9rem", fontWeight: "400", color: "#666" }}>{guide.description}</p>
                   </div>
                 </div>
               </div>

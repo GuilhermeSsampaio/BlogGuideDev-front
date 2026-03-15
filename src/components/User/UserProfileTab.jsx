@@ -10,50 +10,11 @@ export default function UserProfileTab({
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="azul mb-0">Sobre mim</h5>
-        {!isEditing && (
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            onClick={() => setIsEditing(true)}
-          >
-            <i className="bi bi-pencil me-1"></i>
-            Editar
-          </button>
-        )}
+        <h5 className="azul mb-0" style={{ fontSize: "1.2rem", fontWeight: "700" }}>Sobre mim</h5>
       </div>
+      <p className="text-muted mb-4">{formData.biografia}</p>
 
-      {isEditing ? (
-        <form onSubmit={handleSaveProfile}>
-          <div className="mb-3">
-            <label className="form-label">Biografia</label>
-            <textarea
-              className="form-control"
-              rows="4"
-              name="biografia"
-              value={formData.biografia}
-              onChange={handleInputChange}
-              placeholder="Conte um pouco sobre você..."
-            />
-          </div>
-          <div className="d-flex gap-2">
-            <button type="submit" className="btn btn-primary btn-sm">
-              <i className="bi bi-check me-1"></i>
-              Salvar
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary btn-sm"
-              onClick={() => setIsEditing(false)}
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-      ) : (
-        <p className="text-muted mb-4">{formData.biografia}</p>
-      )}
-
-      <h6 className="azul mb-2">Links</h6>
+      <h6 className="azul mb-2" style={{ fontWeight: "700" }}>Links</h6>
       <div>
         {formData.github && (
           <p className="mb-1">
@@ -62,7 +23,7 @@ export default function UserProfileTab({
               href={formData.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="azul text-decoration-none"
+              className="text-muted"
             >
               {formData.github.replace("https://", "")}
             </a>
@@ -75,7 +36,7 @@ export default function UserProfileTab({
               href={formData.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="azul text-decoration-none"
+              className="text-muted"
             >
               {formData.linkedin.replace("https://", "")}
             </a>

@@ -39,7 +39,7 @@ class AuthService {
 
   // Login
   async login(email, password) {
-    const url = `${this.baseURL}/users/login`;
+    const url = `${this.baseURL}/auth/login`;
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

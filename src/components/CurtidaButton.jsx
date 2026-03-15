@@ -20,7 +20,7 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
           referenciaId,
         );
         setTotal(data.total);
-        setCurtido(data.curtido);
+        setCurtido(!!data.curtido_por_usuario); // Corrigido para usar o campo correto do backend
       } else {
         const data = await apiService.getCurtidas(tipoReferencia, referenciaId);
         setTotal(data.total);

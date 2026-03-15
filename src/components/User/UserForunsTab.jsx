@@ -7,6 +7,10 @@ export default function UserForunsTab({
   handleDeleteTopic,
   showWarning,
 }) {
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("pt-BR", {
       day: "2-digit",
@@ -18,7 +22,7 @@ export default function UserForunsTab({
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="azul mb-0">Meus Fóruns</h5>
+        <h5 className="azul mb-0" style={{ fontSize: "1.2rem", fontWeight: "700" }}>Meus Fóruns</h5>
       </div>
 
       {loading ? (
@@ -59,9 +63,9 @@ export default function UserForunsTab({
                     </span>
                   )}
                   <p className="text-muted mb-1 small">
-                    {topic.descricao && topic.descricao.length > 100
-                      ? topic.descricao.substring(0, 100) + "..."
-                      : topic.descricao}
+                    {topic.descricao && stripHtml(topic.descricao).length > 100
+                      ? stripHtml(topic.descricao).substring(0, 100) + "..."
+                      : topic.descricao ? stripHtml(topic.descricao) : ""}
                   </p>
                   <small className="text-muted">
                     <i className="bi bi-calendar me-1"></i>

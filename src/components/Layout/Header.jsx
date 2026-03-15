@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <nav
-      className="navbar navbar-expand-lg bg-body-tertiary jersey-25-regular px-3"
+      className="navbar navbar-expand-lg bg-body-tertiary navbar-project jersey-25-regular px-3"
       style={{ borderBottom: "1px solid #e5e5e5" }}
     >
       <div className="container-fluid">
@@ -90,6 +90,7 @@ export default function Header() {
                     color: "#222",
                     fontSize: "1.15rem",
                     fontWeight: "normal",
+                    letterSpacing: "0.5px",
                   }}
                   onClick={handleNavLinkClick}
                 >
@@ -99,11 +100,11 @@ export default function Header() {
               {/* Menu: Fórum */}
               <li className="nav-item">
                 <Link
-                  to={ROUTES.IDEIAS}
+                  to={ROUTES.FORUM}
                   className={`nav-link ${
-                    isActive(ROUTES.IDEIAS) ? "fw-bold" : ""
+                    isActive(ROUTES.FORUM) ? "fw-bold" : ""
                   }`}
-                  style={{ color: "#222", fontSize: "1.15rem" }}
+                  style={{ color: "#222", fontSize: "1.15rem", letterSpacing: "0.5px" }}
                   onClick={handleNavLinkClick}
                 >
                   Fórum
@@ -116,7 +117,7 @@ export default function Header() {
                   className={`nav-link ${
                     isActive(ROUTES.VAGAS) ? "fw-bold" : ""
                   }`}
-                  style={{ color: "#222", fontSize: "1.15rem" }}
+                  style={{ color: "#222", fontSize: "1.15rem", letterSpacing: "0.5px" }}
                   onClick={handleNavLinkClick}
                 >
                   Vagas
@@ -130,7 +131,7 @@ export default function Header() {
                     className={`nav-link ${
                       isActive(ROUTES.ADMIN) ? "fw-bold" : ""
                     }`}
-                    style={{ color: "#dc3545", fontSize: "1.15rem" }}
+                    style={{ color: "#dc3545", fontSize: "1.15rem", letterSpacing: "0.5px" }}
                     onClick={handleNavLinkClick}
                   >
                     <i className="bi bi-shield-lock me-1"></i>
@@ -190,7 +191,6 @@ export default function Header() {
                   padding: "0",
                 }}
                 onClick={handleNavLinkClick}
-                title={user?.username || "Perfil"}
               >
                 <i className="bi bi-person-fill" style={{ fontSize: "1.2rem" }}></i>
               </Link>

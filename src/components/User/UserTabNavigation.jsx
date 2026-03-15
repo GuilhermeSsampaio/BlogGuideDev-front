@@ -12,7 +12,7 @@ export default function UserTabNavigation({ activeTab, setActiveTab, forunsCount
             onClick={() => setActiveTab("perfil")}
           >
             <i className="bi bi-person me-1"></i>
-            Perfil
+            <span style={{fontSize: "1rem"}}>Perfil</span>
           </button>
         </li>
         <li className="nav-item">
@@ -23,7 +23,7 @@ export default function UserTabNavigation({ activeTab, setActiveTab, forunsCount
             onClick={() => setActiveTab("foruns")}
           >
             <i className="bi bi-chat-square-text me-1"></i>
-            Meus Fóruns ({forunsCount})
+            <span style={{fontSize: "0.9rem"}}>Meus Fóruns ({forunsCount})</span>
           </button>
         </li>
         <li className="nav-item">
@@ -36,7 +36,7 @@ export default function UserTabNavigation({ activeTab, setActiveTab, forunsCount
             onClick={() => setActiveTab("configuracoes")}
           >
             <i className="bi bi-gear me-1"></i>
-            Configurações
+            <span style={{fontSize: "0.9rem"}}>Configurações</span>
           </button>
         </li>
       </ul>
