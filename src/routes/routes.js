@@ -1,7 +1,7 @@
 import HomePage from "../pages/HomePage";
 import ContentGuidesPage from "../pages/ContentGuidesPage";
 import ContentDetailPage from "../pages/ContentDetailPage";
-import PostDetailPage from "../pages/PostDetailPage";
+// import PostDetailPage from "../pages/PostDetailPage";
 import ForumPage from "../pages/ForumPage";
 import ForumDetailPage from "../pages/ForumDetailPage";
 import SobrePage from "../pages/SobrePage";
@@ -37,12 +37,12 @@ export const publicRoutes = [
     name: "Detalhe do Conteúdo",
     showInNav: false,
   },
-  {
-    path: ROUTES.POST_DETAIL,
-    component: PostDetailPage,
-    name: "Detalhe do Post",
-    showInNav: false,
-  },
+  // {
+  //   path: ROUTES.POST_DETAIL,
+  //   component: PostDetailPage,
+  //   name: "Detalhe do Post",
+  //   showInNav: false,
+  // },
   {
     path: ROUTES.VAGAS,
     component: VagasPage,

@@ -83,9 +83,9 @@ export default function VagaDetailPage() {
       user?.tipo_perfil === "admin");
 
   return (
-    <div className="container py-5" style={{ maxWidth: "800px" }}>
-      <Link to="/vagas" className="btn btn-outline-secondary btn-sm mb-4">
-        <i className="bi bi-arrow-left me-1"></i>Voltar
+    <div className="container py-5" style={{ maxWidth: "1000px" }}>
+      <Link to="/vagas" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
+        <i className="bi bi-arrow-left me-1"></i>Voltar para Vagas
       </Link>
 
       <article>
@@ -121,15 +121,15 @@ export default function VagaDetailPage() {
         </div>
 
         <div className="d-flex align-items-center gap-2 mb-4 text-muted">
-          <i className="bi bi-person-circle" style={{ fontSize: "1.2rem" }}></i>
+          <i className="bi bi-person-circle" style={{ fontSize: "1rem" }}></i>
           <span>{vaga.recrutador?.username}</span>
-          <span className="mx-2">·</span>
+          <span className="fw-bold">·</span>
           <span>{formatDate(vaga.data_criacao)}</span>
         </div>
 
         <div
           className="post-content"
-          style={{ fontSize: "1.1rem", lineHeight: "1.8" }}
+          style={{ fontSize: "1.1rem", lineHeight: "1.5" }}
         >
           {vaga.descricao.split("\n").map((p, i) => (
             <p key={i}>{p}</p>
@@ -142,7 +142,7 @@ export default function VagaDetailPage() {
               href={vaga.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-primary btn-lg"
+              className="btn btn-primary btn-md"
             >
               <i className="bi bi-box-arrow-up-right me-2"></i>
               Candidatar-se

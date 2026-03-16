@@ -82,51 +82,61 @@ export default function ForumPage() {
       ) : (
         <div className="list-group">
           {topics.map((topic) => (
-            <div
+            <Link
               key={topic.id}
-              className="list-group-item list-group-item-action border-1 mb-2 rounded shadow-sm"
+              to={`/forum/${topic.id}`}
+              className="list-group-item list-group-item-action border-1 mb-2 rounded shadow-sm text-decoration-none text-reset"
             >
               <div className="d-flex justify-content-between align-items-start">
                 <div className="flex-grow-1">
-                  <Link
-                    to={`/forum/${topic.id}`}
-                    className="text-decoration-none"
-                  >
-                    <h5 className="azul fw-bold mb-1">{topic.titulo}</h5>
-                  </Link>
+                  <h5 className="azul fw-bold mb-1">{topic.titulo}</h5>
+
                   {topic.tipo && (
-                    <span className="badge bg-info text-dark me-2 mb-2" style={{ color: "#222", fontWeight: "700", letterSpacing: "0.5px" }}>
+                    <span
+                      className="badge bg-info text-dark me-2 mb-2"
+                      style={{
+                        color: "#222",
+                        fontWeight: "700",
+                        letterSpacing: "0.5px",
+                      }}
+                    >
                       {topic.tipo}
                     </span>
                   )}
+
                   <p className="text-muted mb-3">
                     {stripHtml(topic.descricao).length > 150
                       ? stripHtml(topic.descricao).substring(0, 150) + "..."
                       : stripHtml(topic.descricao)}
                   </p>
+
                   <div className="d-flex align-items-center gap-3">
                     <small className="text-muted">
                       <i className="bi bi-person-circle me-1"></i>
                       {topic.autor?.username || "Anônimo"}
                     </small>
+
                     <small className="text-muted">
                       <i className="bi bi-calendar me-1"></i>
                       {formatDate(topic.data_criacao)}
                     </small>
                   </div>
                 </div>
-                {isAuthenticated &&
-                  user?.username === topic.autor?.username && (
-                    <button
-                      className="btn btn-sm btn-outline-danger ms-2"
-                      onClick={() => handleDelete(topic.id)}
-                      title="Excluir tópico"
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
-                  )}
+
+                {isAuthenticated && user?.username === topic.autor?.username && (
+                  <button
+                    className="btn btn-sm btn-outline-danger ms-2"
+                    onClick={(e) => {
+                      e.preventDefault(); // impede o Link de abrir
+                      handleDelete(topic.id);
+                    }}
+                    title="Excluir tópico"
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
+                )}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

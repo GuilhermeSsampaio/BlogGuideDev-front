@@ -100,7 +100,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="container my-4">
+    <div className="container-fluid my-4">
       <div className="row">
         <div className="col-md-8 mx-auto">
           <UserHeader

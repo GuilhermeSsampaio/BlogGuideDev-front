@@ -40,7 +40,7 @@ body {
 
 .hero-image-center {
   background-image:
-    linear-gradient(180deg, #fafafacc 0%, #fafafacc 100%),
+    linear-gradient(90deg, #fafafaad 0%, #fafafaad 100%),
     url("./img/image-home.jpg");
   /* background-image:
     linear-gradient(180deg, #fafafaa1 0%, #fafafaa1 100%),
@@ -261,7 +261,9 @@ footer {
     line-height: 2.5rem;
     letter-spacing: 1px;
     font-weight: bold;
-    margin-bottom: 2rem;
+  }
+  .home-about-title {
+    margin-bottom: 1.5rem;
   }
 }
 @media (max-width: 767px) {
