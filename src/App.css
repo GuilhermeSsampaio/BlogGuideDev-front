@@ -126,6 +126,7 @@ footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
   gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -190,6 +191,10 @@ footer {
   transition: border 0.2s;
 }
 
+.home-team-card a {
+  margin-top: auto; 
+}
+
 .home-team-btn-icon {
   font-size: 1.2rem;
 }
@@ -226,6 +231,16 @@ footer {
 .card-title {
   font-size: 1.05rem;
   font-weight: bold;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed; /* Força as colunas a respeitarem a largura da tabela */
+}
+
+td, th {
+  word-wrap: break-word; /* Quebra as palavras longas se necessário */
+  overflow-wrap: break-word;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -294,6 +309,12 @@ footer {
   }
   .home-about-content {
     font-size: 0.95rem;
+  }
+  .table-dark {
+    font-size: 0.9rem;
+  }
+  .table-conteudos tbody {
+    font-size: 0.8rem;
   }
 }
 @media only screen and (max-width: 480px) {

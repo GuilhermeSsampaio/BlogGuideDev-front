@@ -222,7 +222,7 @@ const techGuides = [
   // ===== 5. DESENVOLVIMENTO MOBILE (Mobile Development) =====
   {
     slug: "react-native-expo",
-    name: "React Native",
+    name: "React Native e Expo",
     category: "mobile",
     categoryLabel: "Mobile",
     categoryColor: "#e1bee7",

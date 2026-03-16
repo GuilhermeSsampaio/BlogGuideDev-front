@@ -69,7 +69,7 @@ export default function Footer() {
             </div>
             <div className="col-12 col-md-3 mb-4 mb-md-0">
               <h5 className="fw-bold mb-2">Contato</h5>
-              <ul className="list-unstyled text-muted">
+              <ul className="list-unstyled text-muted" style={{ cursor: "pointer" }}>
                 <li>contatoblogguide@gmail.com</li>
                 <li>+55 (67) 9999-9999</li>
                 <li>Dourados, MS</li>
