@@ -36,6 +36,11 @@ export function AuthProvider({ children }) {
     return response;
   };
 
+  const refreshUser = async () => {
+    const userData = await authService.getCurrentUser();
+    setUser(userData);
+  };
+
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -46,6 +51,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    refreshUser,
     isAuthenticated: !!user,
     loading,
   };

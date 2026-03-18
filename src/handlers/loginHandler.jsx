@@ -9,10 +9,15 @@ export const useHandlersLogin = () => {
   const handleLogin = async (loginData) => {
     try {
       await login(loginData.email, loginData.password);
-
       handleSuccess("Login realizado com sucesso!", ROUTES.HOME);
     } catch (error) {
-      handleError(error, "Email ou senha incorretos. Tente novamente.");
+      let msg = error.message;
+      if (msg === "Usuário não cadastrado, faça seu registro.") {
+        handleError(error, msg);
+      } else {
+        handleError(error, msg || "Email ou senha incorretos. Tente novamente.");
+      }
+      throw error;
     }
   };
 

@@ -2,13 +2,12 @@ import React from "react";
 
 export default function UserHeader({
   formData,
-  posts,
-  isEditing,
-  setIsEditing,
+  user,
+  userStats,
   showWarning,
 }) {
   return (
-    <div className="card border-0 shadow-sm mb-4">
+    <div className="card border-0 shadow-sm mb-4 jersey-25-regular">
       <div className="card-body p-4">
         <div className="d-flex align-items-center gap-3 mb-3">
           <div
@@ -20,7 +19,7 @@ export default function UserHeader({
               style={{ fontSize: "2rem" }}
             ></i>
             <button
-              className="btn btn-sm btn-light position-absolute bottom-0 end-0 rounded-circle p-1"
+              className="btn btn-sm btn-light position-absolute bottom-0 end-0 rounded-circle p-1 d-flex align-items-center justify-content-center"
               style={{ width: "24px", height: "24px" }}
               title="Alterar foto"
               onClick={() => showWarning("Funcionalidade em desenvolvimento")}
@@ -30,32 +29,25 @@ export default function UserHeader({
           </div>
           <div className="flex-grow-1">
             <h3 className="azul mb-0">{formData.nome}</h3>
-            <p className="text-muted mb-1">@guilherme_dev</p>
-            <small className="text-muted">Membro desde Janeiro 2025</small>
-          </div>
-          <div>
-            <button
-              className="btn btn-outline-primary btn-sm"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              <i className="bi bi-pencil me-1"></i>
-              {isEditing ? "Cancelar" : "Editar"}
-            </button>
+            <p className="text-muted mb-1">@{user?.username || "usuario"}</p>
+            <small className="text-muted">
+              {user?.tipo_perfil === "recrutador" ? "Recrutador" : "Estudante"}
+            </small>
           </div>
         </div>
 
         <div className="row text-center">
           <div className="col-4">
-            <h5 className="azul mb-0">{posts.length}</h5>
-            <small className="text-muted">Posts</small>
-          </div>
-          <div className="col-4">
-            <h5 className="azul mb-0">8</h5>
-            <small className="text-muted">Ideias</small>
-          </div>
-          <div className="col-4">
-            <h5 className="azul mb-0">23</h5>
+            <h5 className="azul mb-0">{userStats.curtidas}</h5>
             <small className="text-muted">Curtidas</small>
+          </div>
+          <div className="col-4">
+            <h5 className="azul mb-0">{userStats.comentarios}</h5>
+            <small className="text-muted">Comentários</small>
+          </div>
+          <div className="col-4">
+            <h5 className="azul mb-0">{userStats.foruns}</h5>
+            <small className="text-muted">Fóruns</small>
           </div>
         </div>
       </div>

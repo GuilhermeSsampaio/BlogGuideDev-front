@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import apiService from "../services/api/bridge";
+import { normalizePost, normalizePosts } from "../utils/postUtils";
 
 export function usePosts() {
   const [posts, setPosts] = useState([]);
@@ -12,9 +13,12 @@ export function usePosts() {
       setLoading(true);
       setError(null);
       const data = await apiService.getPublishedPosts();
-      setPosts(Array.isArray(data) ? data : []);
+      const normalizedPosts = normalizePosts(data);
+      setPosts(normalizedPosts);
+      return normalizedPosts;
     } catch (err) {
       setError(err.message);
+      return [];
     } finally {
       setLoading(false);
     }
@@ -25,10 +29,12 @@ export function usePosts() {
       setLoading(true);
       setError(null);
       const data = await apiService.getPostById(postId);
-      setPost(data);
-      return data;
+      const normalizedPost = normalizePost(data);
+      setPost(normalizedPost);
+      return normalizedPost;
     } catch (err) {
       setError(err.message);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -39,10 +45,13 @@ export function usePosts() {
       setLoading(true);
       setError(null);
       const data = await apiService.getMyPosts();
-      setPosts(Array.isArray(data) ? data : []);
+      const normalizedPosts = normalizePosts(data);
+      setPosts(normalizedPosts);
+      return normalizedPosts;
     } catch (err) {
       setError(err.message);
       console.error("Erro ao carregar posts:", err);
+      return [];
     } finally {
       setLoading(false);
     }
@@ -50,7 +59,7 @@ export function usePosts() {
 
   const createPost = async (postData) => {
     try {
-      const newPost = await apiService.savePost(postData);
+      const newPost = normalizePost(await apiService.savePost(postData));
       setPosts((prevPosts) => [newPost, ...prevPosts]);
       return newPost;
     } catch (err) {
@@ -61,9 +70,13 @@ export function usePosts() {
 
   const updatePost = async (postId, postData) => {
     try {
-      const updatedPost = await apiService.updatePost(postId, postData);
+      const updatedPost = normalizePost(
+        await apiService.updatePost(postId, postData),
+      );
       setPosts((prevPosts) =>
-        prevPosts.map((post) => (post.id === postId ? updatedPost : post)),
+        prevPosts.map((currentPost) =>
+          currentPost.id === postId ? updatedPost : currentPost,
+        ),
       );
       return updatedPost;
     } catch (err) {
@@ -75,7 +88,7 @@ export function usePosts() {
   const deletePost = async (postId) => {
     try {
       await apiService.deletePost(postId);
-      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      setPosts((prevPosts) => prevPosts.filter((currentPost) => currentPost.id !== postId));
     } catch (err) {
       setError(err.message);
       throw err;

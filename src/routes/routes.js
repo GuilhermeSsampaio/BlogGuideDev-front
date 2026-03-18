@@ -1,7 +1,8 @@
-import HomePage from "../pages/HomePage"; // nova página
-import BlogPage from "../pages/BlogPage";
-import PostDetailPage from "../pages/PostDetailPage";
-import IdeiasPage from "../pages/IdeiasPage";
+import HomePage from "../pages/HomePage";
+import ContentGuidesPage from "../pages/ContentGuidesPage";
+import ContentDetailPage from "../pages/ContentDetailPage";
+// import PostDetailPage from "../pages/PostDetailPage";
+import ForumPage from "../pages/ForumPage";
 import ForumDetailPage from "../pages/ForumDetailPage";
 import SobrePage from "../pages/SobrePage";
 import LoginPage from "../pages/LoginPage";
@@ -12,6 +13,8 @@ import AdminPage from "../pages/AdminPage";
 import VagasPage from "../pages/VagasPage";
 import VagaDetailPage from "../pages/VagaDetailPage";
 import SearchPage from "../pages/SearchPage";
+import DiretrizesForumPage from "../pages/DiretrizesForumPage";
+import CriarForumPage from "../pages/CriarForumPage";
 import { ROUTES } from "./constants";
 
 // Rotas públicas (não precisam de autenticação)
@@ -24,16 +27,22 @@ export const publicRoutes = [
   },
   {
     path: ROUTES.CONTEUDO,
-    component: BlogPage,
+    component: ContentGuidesPage,
     name: "Conteúdo",
     showInNav: true,
   },
   {
-    path: ROUTES.POST_DETAIL,
-    component: PostDetailPage,
-    name: "Detalhe do Post",
+    path: "/conteudo/:slug",
+    component: ContentDetailPage,
+    name: "Detalhe do Conteúdo",
     showInNav: false,
   },
+  // {
+  //   path: ROUTES.POST_DETAIL,
+  //   component: PostDetailPage,
+  //   name: "Detalhe do Post",
+  //   showInNav: false,
+  // },
   {
     path: ROUTES.VAGAS,
     component: VagasPage,
@@ -69,8 +78,8 @@ export const publicRoutes = [
 // Rotas protegidas (precisam de autenticação)
 export const protectedRoutes = [
   {
-    path: ROUTES.IDEIAS,
-    component: IdeiasPage,
+    path: ROUTES.FORUM,
+    component: ForumPage,
     name: "Fórum",
     showInNav: true,
   },
@@ -78,6 +87,12 @@ export const protectedRoutes = [
     path: ROUTES.FORUM_DETAIL,
     component: ForumDetailPage,
     name: "Detalhe do Tópico",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.CRIAR_FORUM,
+    component: CriarForumPage,
+    name: "Criar Tópico",
     showInNav: false,
   },
   {
@@ -102,6 +117,12 @@ export const protectedRoutes = [
     path: ROUTES.ADMIN,
     component: AdminPage,
     name: "Admin",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.DIRETRIZES_FORUM,
+    component: DiretrizesForumPage,
+    name: "Diretrizes do Fórum",
     showInNav: false,
   },
 ];

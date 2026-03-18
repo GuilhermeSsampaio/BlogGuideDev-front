@@ -30,6 +30,7 @@ export const useNavigation = () => {
   const goToSobre = () => navigate(ROUTES.SOBRE);
   const goToUsuario = () => navigate(ROUTES.USUARIO);
   const goToCriarPost = () => navigate(ROUTES.CRIAR_POST);
+  const goToForum = () => navigate(ROUTES.FORUM);
 
   const goBack = () => navigate(-1);
   const goToRoute = (route) => navigate(route);
@@ -42,6 +43,7 @@ export const useNavigation = () => {
     goToSobre,
     goToUsuario,
     goToCriarPost,
+    goToForum,
     goBack,
     goToRoute,
     navigate,
@@ -59,7 +61,7 @@ export const useFormHandlers = () => {
 
   const handleSuccess = (
     message = "Operação realizada com sucesso!",
-    redirectTo = ROUTES.HOME
+    redirectTo = ROUTES.HOME,
   ) => {
     showSuccess(message);
     goToRoute(redirectTo);
@@ -67,7 +69,7 @@ export const useFormHandlers = () => {
 
   const handleError = (
     error,
-    customMessage = "Erro ao realizar operação. Tente novamente."
+    customMessage = "Erro ao realizar operação. Tente novamente.",
   ) => {
     console.error(error);
     showError(customMessage);

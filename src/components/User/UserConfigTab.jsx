@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function UserConfigTab({
   formData,
@@ -7,11 +7,34 @@ export default function UserConfigTab({
   showWarning,
   logout,
 }) {
+
+  const [saveStatus, setSaveStatus] = useState("idle");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setSaveStatus("saving");
+
+    try {
+      await handleSaveProfile(e);
+
+      setSaveStatus("success");
+
+      setTimeout(() => {
+        setSaveStatus("idle");
+      }, 2000);
+
+    } catch (error) {
+      console.error(error);
+      setSaveStatus("idle");
+    }
+  };
+
   return (
     <div>
       <h5 className="azul mb-3">Configurações da Conta</h5>
 
-      <form onSubmit={handleSaveProfile}>
+      <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">
             <div className="mb-3">
@@ -26,6 +49,7 @@ export default function UserConfigTab({
               />
             </div>
           </div>
+
           <div className="col-md-6">
             <div className="mb-3">
               <label className="form-label">Email</label>
@@ -70,6 +94,7 @@ export default function UserConfigTab({
               />
             </div>
           </div>
+
           <div className="col-md-6">
             <div className="mb-3">
               <label className="form-label">
@@ -91,44 +116,41 @@ export default function UserConfigTab({
         <hr className="my-4" />
 
         <h6 className="azul mb-3">Preferências</h6>
+
         <div className="row">
           <div className="col-md-6">
-            <div className="mb-3">
-              <div className="form-check form-switch">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="notificacaoEmail"
-                  defaultChecked
-                />
-                <label className="form-check-label" htmlFor="notificacaoEmail">
-                  Receber notificações por email
-                </label>
-              </div>
+            <div className="form-check form-switch mb-3">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="notificacaoEmail"
+                defaultChecked
+              />
+              <label className="form-check-label" htmlFor="notificacaoEmail">
+                Receber notificações por email
+              </label>
             </div>
           </div>
+
           <div className="col-md-6">
-            <div className="mb-3">
-              <div className="form-check form-switch">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="perfilPublico"
-                  defaultChecked
-                />
-                <label className="form-check-label" htmlFor="perfilPublico">
-                  Perfil público
-                </label>
-              </div>
+            <div className="form-check form-switch mb-3">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="perfilPublico"
+                defaultChecked
+              />
+              <label className="form-check-label" htmlFor="perfilPublico">
+                Perfil público
+              </label>
             </div>
           </div>
         </div>
 
-        <div className="d-flex gap-2">
-          <button type="submit" className="btn btn-primary">
-            <i className="bi bi-check me-1"></i>
-            Salvar Alterações
-          </button>
+        {/* BOTÕES */}
+
+        <div className="d-flex justify-content-between align-items-center mt-4">
+
           <button
             type="button"
             className="btn btn-outline-danger"
@@ -139,12 +161,41 @@ export default function UserConfigTab({
             <i className="bi bi-trash me-1"></i>
             Excluir Conta
           </button>
+
+          <button
+            type="submit"
+            className="btn btn-primary px-4"
+            disabled={saveStatus === "saving"}
+          >
+            {saveStatus === "saving" && (
+              <>
+                <span className="spinner-border spinner-border-sm me-2"></span>
+                Salvando...
+              </>
+            )}
+
+            {saveStatus === "success" && (
+              <>
+                <i className="bi bi-check-circle me-2"></i>
+                Salvo com sucesso
+              </>
+            )}
+
+            {saveStatus === "idle" && (
+              <>
+                <i className="bi bi-check me-1"></i>
+                Salvar Alterações
+              </>
+            )}
+          </button>
+
         </div>
 
         <hr className="my-4" />
 
         <div>
           <h6 className="text-danger mb-3">Sessão</h6>
+
           <button
             type="button"
             className="btn btn-outline-danger"
@@ -154,6 +205,7 @@ export default function UserConfigTab({
             Sair da conta
           </button>
         </div>
+
       </form>
     </div>
   );

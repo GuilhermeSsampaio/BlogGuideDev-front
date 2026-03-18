@@ -53,7 +53,10 @@ export default function SearchPage() {
         </div>
       ) : totalResults === 0 ? (
         <div className="text-center py-5">
-          <i className="bi bi-search text-muted" style={{ fontSize: "3rem" }}></i>
+          <i
+            className="bi bi-search text-muted"
+            style={{ fontSize: "3rem" }}
+          ></i>
           <p className="text-muted mt-3">Nenhum resultado encontrado.</p>
         </div>
       ) : (
@@ -69,7 +72,7 @@ export default function SearchPage() {
                 {results.posts.map((p) => (
                   <Link
                     key={p.id}
-                    to={`/conteudo/${p.id}`}
+                    to={`/conteudo/${p.slug || p.id}`}
                     className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded"
                   >
                     <div className="d-flex justify-content-between align-items-start">
@@ -123,7 +126,9 @@ export default function SearchPage() {
                         </small>
                       </div>
                       {t.tipo && (
-                        <span className="badge bg-info text-dark">{t.tipo}</span>
+                        <span className="badge bg-info text-dark">
+                          {t.tipo}
+                        </span>
                       )}
                     </div>
                   </Link>
@@ -158,7 +163,9 @@ export default function SearchPage() {
                         </small>
                       </div>
                       {v.tipo_contrato && (
-                        <span className="badge bg-success">{v.tipo_contrato}</span>
+                        <span className="badge bg-success">
+                          {v.tipo_contrato}
+                        </span>
                       )}
                     </div>
                   </Link>

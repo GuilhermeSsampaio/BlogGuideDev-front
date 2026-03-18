@@ -30,7 +30,7 @@ export default function ForumDetailPage() {
           <i className="bi bi-exclamation-triangle me-2"></i>
           {error}
         </div>
-        <Link to="/ideias" className="btn btn-primary">
+        <Link to="/forum" className="btn btn-primary">
           Voltar para o fórum
         </Link>
       </div>
@@ -48,35 +48,40 @@ export default function ForumDetailPage() {
   };
 
   return (
-    <div className="container py-5" style={{ maxWidth: "800px" }}>
-      <Link to="/ideias" className="btn btn-outline-secondary btn-sm mb-4">
+    <div className="container py-5" style={{ maxWidth: "1000px" }}>
+      <Link to="/forum" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
         <i className="bi bi-arrow-left me-1"></i>
         Voltar ao Fórum
       </Link>
 
       <article>
         <div className="d-flex align-items-center gap-2 mb-2">
-          <h1 className="azul jersey-25-regular mb-0">{topic.titulo}</h1>
-          {topic.tipo && (
-            <span className="badge bg-info text-dark">{topic.tipo}</span>
-          )}
+          <h1 className="azul fw-bold mb-1 text-title-detail">{topic.titulo}</h1>
         </div>
 
         <div className="d-flex align-items-center gap-2 mb-4 text-muted">
-          <i className="bi bi-person-circle" style={{ fontSize: "1.2rem" }}></i>
+          <i className="bi bi-person-circle" style={{ fontSize: "1rem" }}></i>
           <span>{topic.autor?.username || "Anônimo"}</span>
           <span className="mx-2">·</span>
           <span>{formatDate(topic.data_criacao)}</span>
         </div>
 
+        {topic.imagem_url && (
+          <div className="mb-4">
+            <img
+              src={topic.imagem_url}
+              alt={topic.titulo}
+              className="img-fluid rounded shadow-sm"
+              style={{ maxHeight: "400px", width: "100%", objectFit: "cover" }}
+            />
+          </div>
+        )}
+
         <div
           className="post-content"
           style={{ fontSize: "1.1rem", lineHeight: "1.8" }}
-        >
-          {topic.descricao.split("\n").map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
-        </div>
+          dangerouslySetInnerHTML={{ __html: topic.descricao }}
+        />
 
         <div className="mt-4 d-flex gap-3">
           <CurtidaButton tipoReferencia="forum" referenciaId={topic.id} />

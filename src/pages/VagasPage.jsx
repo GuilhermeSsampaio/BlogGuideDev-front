@@ -26,8 +26,10 @@ function VagaCard({ vaga }) {
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-start">
           <div>
-            <h5 className="card-title azul mb-1">{vaga.titulo}</h5>
-            <div className="d-flex align-items-center gap-2 mb-2">
+            <h5 className="card-title azul mb-1" style={{ fontSize: "1.25rem" }}>
+              {vaga.titulo}
+            </h5>
+            <div className="d-flex align-items-center gap-2 mb-3">
               <i className="bi bi-building azul"></i>
               <span className="fw-semibold">{vaga.empresa}</span>
               {vaga.localidade && (
@@ -47,7 +49,10 @@ function VagaCard({ vaga }) {
           </div>
         </div>
 
-        <p className="card-text text-muted mb-2" style={{ whiteSpace: "pre-line" }}>
+        <p
+          className="card-text text-muted mb-3"
+          style={{ whiteSpace: "pre-line" }}
+        >
           {vaga.descricao.length > 200
             ? vaga.descricao.substring(0, 200) + "..."
             : vaga.descricao}
@@ -111,9 +116,9 @@ function VagaForm({ onSubmit, empresa, submitting }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card border-0 shadow-sm mb-4">
+    <form onSubmit={handleSubmit} className="card border-0 shadow-sm mb-5">
       <div className="card-body">
-        <h5 className="azul mb-3">
+        <h5 className="azul mb-3 fw-bold" style={{ fontSize: "1.1rem" }}>
           <i className="bi bi-plus-circle me-2"></i>Publicar Vaga
         </h5>
         <div className="row g-3">
@@ -184,7 +189,7 @@ function VagaForm({ onSubmit, empresa, submitting }) {
               required
             ></textarea>
           </div>
-          <div className="col-12">
+          <div className="col-12 d-flex justify-content-end">
             <button
               type="submit"
               className="btn btn-primary"
@@ -210,9 +215,7 @@ export default function VagasPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const isRecrutador =
-    isAuthenticated &&
-    user?.tipo_perfil === "recrutador";
+  const isRecrutador = isAuthenticated && user?.tipo_perfil === "recrutador";
 
   useEffect(() => {
     fetchVagas();
@@ -244,9 +247,12 @@ export default function VagasPage() {
 
   return (
     <div className="container py-4" style={{ maxWidth: "900px" }}>
-      <div className="d-flex align-items-center gap-3 mb-4">
-        <i className="bi bi-briefcase-fill azul" style={{ fontSize: "2rem" }}></i>
-        <h2 className="azul jersey-25-regular mb-0">Vagas</h2>
+      <div className="d-flex align-items-center justify-content-center gap-3 mb-4">
+        <i
+          className="bi bi-briefcase-fill azul"
+          style={{ fontSize: "2rem" }}
+        ></i>
+        <h1 className="azul jersey-25-regular mb-0">Vagas</h1>
       </div>
 
       {isRecrutador && (

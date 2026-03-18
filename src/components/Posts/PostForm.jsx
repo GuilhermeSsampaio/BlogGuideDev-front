@@ -1,33 +1,28 @@
 import React, { useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
 
 export default function PostForm({ onSubmit, initialData = null, onCancel }) {
-  const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
-    category: initialData?.category || "",
+    excerpt: initialData?.excerpt || "",
     content: initialData?.content || "",
     image_url: initialData?.image_url || "",
-    tags: initialData?.tags || [],
-    is_published: initialData?.is_published ?? true,
+    categoryLabel: initialData?.categoryLabel || "",
+    categoryColor: initialData?.categoryColor || "#6c2bd7",
+    icon: initialData?.icon || "",
+    description: initialData?.description || "",
+    is_published: initialData?.published ?? initialData?.is_published ?? true,
   });
-  const [tagInput, setTagInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const categories = [
-    "JavaScript",
-    "Python",
-    "React",
-    "Node.js",
-    "Backend",
-    "Frontend",
-    "DevOps",
-    "Mobile",
-    "Tutorial",
-    "Dicas",
-    "Projeto",
-    "Outro",
+  const categoryOptions = [
+    { label: "Frontend e Interface", color: "#4fc3f7" },
+    { label: "Linguagens e Plataformas", color: "#b2f2bb" },
+    { label: "Banco de Dados e CMS", color: "#ffd54f" },
+    { label: "Inteligência Artificial", color: "#ffb3c6" },
+    { label: "Mobile", color: "#e1bee7" },
+    { label: "DevOps e Cloud", color: "#ffe082" },
+    { label: "Sistemas Operacionais", color: "#b3c6ff" },
   ];
 
   const handleChange = (e) => {
@@ -37,7 +32,6 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Limpar erro quando usuário começa a digitar
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -46,21 +40,11 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     }
   };
 
-  const handleAddTag = (e) => {
-    e.preventDefault();
-    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim()],
-      }));
-      setTagInput("");
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove) => {
+  const handleCategoryChange = (label, color) => {
     setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
+      categoryLabel: label,
+      categoryColor: color,
     }));
   };
 
@@ -71,8 +55,8 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       newErrors.title = "Título é obrigatório";
     }
 
-    if (!formData.category) {
-      newErrors.category = "Categoria é obrigatória";
+    if (!formData.excerpt) {
+      newErrors.excerpt = "Categoria é obrigatória";
     }
 
     if (!formData.content.trim()) {
@@ -87,6 +71,20 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      excerpt: "",
+      content: "",
+      image_url: "",
+      categoryLabel: "",
+      categoryColor: "#6c2bd7",
+      icon: "",
+      description: "",
+      is_published: true,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -98,25 +96,21 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
 
     try {
       const postData = {
-        title: formData.title,
-        content: formData.content,
-        excerpt: formData.category || null,
+        title: formData.title.trim(),
+        content: formData.content.trim(),
+        excerpt: formData.excerpt || null,
         image_url: formData.image_url || null,
+        categoryLabel: formData.categoryLabel || null,
+        categoryColor: formData.categoryColor || null,
+        icon: formData.icon || null,
+        description: formData.description || null,
         published: formData.is_published,
       };
 
       await onSubmit(postData);
 
-      // Limpar formulário após sucesso (se não for edição)
       if (!initialData) {
-        setFormData({
-          title: "",
-          category: "",
-          content: "",
-          image_url: "",
-          tags: [],
-          is_published: true,
-        });
+        resetForm();
       }
     } catch (error) {
       console.error("Erro ao salvar post:", error);
@@ -128,7 +122,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
   return (
     <div className="container jersey-25-regular my-5">
       <div className="row">
-        <div className="col-md-8 mx-auto">
+        <div className="col-md-10 mx-auto">
           <div className="card border-1 shadow-sm">
             <div className="card-header bg-white border-bottom">
               <h4 className="azul mb-0 text-center">
@@ -138,16 +132,13 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
 
             <div className="card-body p-4">
               <form onSubmit={handleSubmit}>
-                {/* Título */}
                 <div className="mb-3">
                   <label className="form-label">
                     Título <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${
-                      errors.title ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.title ? "is-invalid" : ""}`}
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
@@ -162,93 +153,115 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </small>
                 </div>
 
-                {/* Categoria */}
                 <div className="mb-3">
                   <label className="form-label">
                     Categoria <span className="text-danger">*</span>
                   </label>
-                  <select
-                    className={`form-select ${
-                      errors.category ? "is-invalid" : ""
-                    }`}
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
+                  <div
+                    className="d-flex flex-wrap gap-2 mb-2"
+                    style={{
+                      padding: "10px",
+                      backgroundColor: "#f8f9fa",
+                      borderRadius: "6px",
+                    }}
                   >
-                    <option value="">Selecione uma categoria</option>
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
+                    {categoryOptions.map((cat) => (
+                      <button
+                        key={cat.label}
+                        type="button"
+                        onClick={() =>
+                          handleCategoryChange(cat.label, cat.color)
+                        }
+                        className={`btn btn-sm border-2 ${
+                          formData.categoryLabel === cat.label
+                            ? "btn-primary"
+                            : "btn-outline-secondary"
+                        }`}
+                        style={
+                          formData.categoryLabel === cat.label
+                            ? {
+                                backgroundColor: cat.color,
+                                borderColor: cat.color,
+                              }
+                            : {}
+                        }
+                      >
+                        {cat.label}
+                      </button>
                     ))}
-                  </select>
-                  {errors.category && (
-                    <div className="invalid-feedback">{errors.category}</div>
+                  </div>
+                  {errors.excerpt && (
+                    <div
+                      className="text-danger"
+                      style={{ fontSize: "0.875rem" }}
+                    >
+                      {errors.excerpt}
+                    </div>
                   )}
                 </div>
 
-                {/* Tags */}
                 <div className="mb-3">
-                  <label className="form-label">Tags</label>
-                  <div className="input-group mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      placeholder="Digite uma tag..."
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          handleAddTag(e);
-                        }
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={handleAddTag}
-                    >
-                      Adicionar
-                    </button>
-                  </div>
-
-                  {/* Tags adicionadas */}
-                  <div className="d-flex flex-wrap gap-2">
-                    {formData.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="badge bg-primary d-flex align-items-center gap-1"
-                      >
-                        {tag}
-                        <button
-                          type="button"
-                          className="btn-close btn-close-white"
-                          style={{ fontSize: "0.6rem" }}
-                          onClick={() => handleRemoveTag(tag)}
-                          aria-label="Remover tag"
-                        ></button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* URL da Imagem */}
-                <div className="mb-3">
-                  <label className="form-label">URL da Imagem (opcional)</label>
+                  <label className="form-label">Resumo da Categoria</label>
                   <input
-                    type="url"
+                    type="text"
                     className="form-control"
-                    name="image_url"
-                    value={formData.image_url}
+                    name="excerpt"
+                    value={formData.excerpt}
                     onChange={handleChange}
-                    placeholder="https://exemplo.com/imagem.jpg"
+                    placeholder="Ex: Frontend e Interface"
                   />
                   <small className="text-muted">
-                    Cole a URL de uma imagem para ilustrar seu post
+                    Este campo fica salvo como <code>categoryLabel</code> na
+                    API.
                   </small>
                 </div>
 
-                {/* Preview da imagem */}
+                <div className="mb-3">
+                  <label className="form-label">Descrição Breve</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Uma breve descrição do seu post"
+                    maxLength={200}
+                  />
+                  <small className="text-muted">
+                    {formData.description.length}/200 caracteres
+                  </small>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      URL da Imagem (opcional)
+                    </label>
+                    <input
+                      type="url"
+                      className="form-control"
+                      name="image_url"
+                      value={formData.image_url}
+                      onChange={handleChange}
+                      placeholder="https://exemplo.com/imagem.jpg"
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      URL do Ícone (opcional)
+                    </label>
+                    <input
+                      type="url"
+                      className="form-control"
+                      name="icon"
+                      value={formData.icon}
+                      onChange={handleChange}
+                      placeholder="https://exemplo.com/icon.svg"
+                    />
+                  </div>
+                </div>
+
                 {formData.image_url && (
                   <div className="mb-3">
                     <label className="form-label">Preview da Imagem</label>
@@ -265,19 +278,16 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </div>
                 )}
 
-                {/* Conteúdo */}
                 <div className="mb-3">
                   <label className="form-label">
                     Conteúdo <span className="text-danger">*</span>
                   </label>
                   <textarea
-                    className={`form-control ${
-                      errors.content ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.content ? "is-invalid" : ""}`}
                     name="content"
                     value={formData.content}
                     onChange={handleChange}
-                    rows="10"
+                    rows="12"
                     placeholder="Escreva o conteúdo do seu post aqui..."
                   ></textarea>
                   {errors.content && (
@@ -288,7 +298,6 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </small>
                 </div>
 
-                {/* Opções de publicação */}
                 <div className="mb-4">
                   <div className="form-check">
                     <input
@@ -305,12 +314,11 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </div>
                   <small className="text-muted">
                     {formData.is_published
-                      ? "Seu post será visível para todos"
-                      : "Seu post será salvo como rascunho"}
+                      ? "Seu post será visível na página pública de conteúdos."
+                      : "Seu post será salvo como rascunho no painel do admin."}
                   </small>
                 </div>
 
-                {/* Botões */}
                 <div className="d-flex gap-2">
                   <button
                     type="submit"

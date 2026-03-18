@@ -3,7 +3,7 @@ import { useProtectedPage } from "./globalHandlers";
 import { ROUTES } from "../routes/constants";
 
 export const useHandlersRegister = () => {
-  const { register } = useAuth();
+  const { register, login } = useAuth();
   const { handleSuccess, handleError } = useProtectedPage();
 
   const handleRegister = async (userData) => {
@@ -18,16 +18,19 @@ export const useHandlersRegister = () => {
         username: userData.username,
         email: userData.email,
         password: userData.password,
+        tipo_perfil: userData.tipoPerfil || "user",
+        nome_completo: userData.name || null,
+        bio: userData.bio || null,
       });
 
-      handleSuccess(
-        "Conta criada com sucesso! Faça login para continuar.",
-        ROUTES.LOGIN,
-      );
+      await login(userData.email, userData.password);
+
+      handleSuccess("Conta criada com sucesso! Bem vindo", ROUTES.FORUM);
     } catch (error) {
       handleError(
         error,
-        "Erro ao criar conta. Verifique os dados e tente novamente.",
+        error.message ||
+          "Erro ao criar conta. Verifique os dados e tente novamente.",
       );
     }
   };

@@ -11,6 +11,7 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
     bio: "",
+    tipoPerfil: "user",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -123,6 +124,40 @@ export default function RegisterPage() {
                     value={formData.bio}
                     onChange={handleChange}
                   ></textarea>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Tipo de perfil</label>
+                  <div className="d-flex gap-3">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="tipoPerfil"
+                        id="tipoEstudante"
+                        value="user"
+                        checked={formData.tipoPerfil === "user"}
+                        onChange={handleChange}
+                      />
+                      <label className="form-check-label" htmlFor="tipoEstudante">
+                        Estudante
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="tipoPerfil"
+                        id="tipoRecrutador"
+                        value="recrutador"
+                        checked={formData.tipoPerfil === "recrutador"}
+                        onChange={handleChange}
+                      />
+                      <label className="form-check-label" htmlFor="tipoRecrutador">
+                        Recrutador
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
                 <button

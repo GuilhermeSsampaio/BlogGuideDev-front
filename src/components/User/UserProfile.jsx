@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useAuth } from "../../hooks/useAuth";
-import { usePosts } from "../../hooks/usePosts";
+import { useForum } from "../../hooks/useForum";
+import authService from "../../services/auth";
 import UserHeader from "./UserHeader";
 import UserTabNavigation from "./UserTabNavigation";
 import UserProfileTab from "./UserProfileTab";
-import UserPostsTab from "./UserPostsTab";
+import UserForunsTab from "./UserForunsTab";
 import UserConfigTab from "./UserConfigTab";
 
 export default function UserProfile() {
   const [activeTab, setActiveTab] = useState("perfil");
-  const { user, logout } = useAuth();
-  const { posts, loading: postsLoading, fetchMyPosts, deletePost } = usePosts();
+  const { user, logout, refreshUser } = useAuth();
+  const { topics, loading: forunsLoading, fetchTopics, deleteTopic } = useForum();
+  const [userStats, setUserStats] = useState({ curtidas: 0, comentarios: 0, foruns: 0 });
+  const [userTopics, setUserTopics] = useState([]);
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
@@ -23,16 +26,34 @@ export default function UserProfile() {
   const { showSuccess, showError, showWarning } = useToast();
 
   useEffect(() => {
-    fetchMyPosts();
+    const loadData = async () => {
+      try {
+        const stats = await authService.getUserStats();
+        setUserStats(stats);
+      } catch (err) {
+        console.error("Erro ao carregar stats:", err);
+      }
+      await fetchTopics();
+    };
+    loadData();
   }, []);
+
+  useEffect(() => {
+    if (user && topics.length > 0) {
+      const myTopics = topics.filter((t) => t.autor?.username === user.username);
+      setUserTopics(myTopics);
+    }
+  }, [topics, user]);
 
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({
         ...prev,
-        nome: user.username || "",
+        nome: user.nome_completo || user.username || "",
         email: user.email || "",
         biografia: user.bio || "",
+        github: user.github || "",
+        linkedin: user.linkedin || "",
       }));
     }
   }, [user]);
@@ -45,10 +66,16 @@ export default function UserProfile() {
     }));
   };
 
-  const handleSaveProfile = (e) => {
+  const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      console.log("Dados salvos:", formData);
+      await authService.updateProfile({
+        nome_completo: formData.nome,
+        bio: formData.biografia,
+        github: formData.github,
+        linkedin: formData.linkedin,
+      });
+      await refreshUser();
       showSuccess("Perfil atualizado com sucesso!");
       setIsEditing(false);
     } catch (error) {
@@ -56,26 +83,30 @@ export default function UserProfile() {
     }
   };
 
-  const handleDeletePost = async (postId, postTitle) => {
+  const handleDeleteTopic = async (topicId, topicTitle) => {
     if (
-      window.confirm(`Tem certeza que deseja excluir o post "${postTitle}"?`)
+      window.confirm(`Tem certeza que deseja excluir o tópico "${topicTitle}"?`)
     ) {
       try {
-        await deletePost(postId);
-        showSuccess("Post excluído com sucesso!");
+        await deleteTopic(topicId);
+        setUserTopics((prev) => prev.filter((t) => t.id !== topicId));
+        const stats = await authService.getUserStats();
+        setUserStats(stats);
+        showSuccess("Tópico excluído com sucesso!");
       } catch (error) {
-        showError("Erro ao excluir o post. Tente novamente.");
+        showError("Erro ao excluir o tópico. Tente novamente.");
       }
     }
   };
 
   return (
-    <div className="container jersey-25-regular my-4">
+    <div className="container-fluid my-4">
       <div className="row">
         <div className="col-md-8 mx-auto">
           <UserHeader
             formData={formData}
-            posts={posts}
+            user={user}
+            userStats={userStats}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             showWarning={showWarning}
@@ -85,7 +116,7 @@ export default function UserProfile() {
             <UserTabNavigation
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              posts={posts}
+              forunsCount={userTopics.length}
             />
 
             <div className="card-body p-4">
@@ -99,11 +130,11 @@ export default function UserProfile() {
                 />
               )}
 
-              {activeTab === "posts" && (
-                <UserPostsTab
-                  posts={posts}
-                  loading={postsLoading}
-                  handleDeletePost={handleDeletePost}
+              {activeTab === "foruns" && (
+                <UserForunsTab
+                  topics={userTopics}
+                  loading={forunsLoading}
+                  handleDeleteTopic={handleDeleteTopic}
                   showWarning={showWarning}
                 />
               )}
