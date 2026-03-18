@@ -1,15 +1,9 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
 
-export default function PostsTab({ posts, loading, onDelete }) {
-  if (loading) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border azul" role="status"></div>
-      </div>
-    );
-  }
+export default function PostsTab({ posts, loading, onDelete, onEdit }) {
+  const [searchTerm, setSearchTerm] = useState("");
 
   const formatDate = (d) =>
     new Date(d).toLocaleDateString("pt-BR", {
@@ -18,9 +12,30 @@ export default function PostsTab({ posts, loading, onDelete }) {
       year: "numeric",
     });
 
+  // Filtrar posts com base no termo de busca
+  const filteredPosts = useMemo(() => {
+    if (!searchTerm.trim()) return posts;
+
+    const lowerSearch = searchTerm.toLowerCase();
+    return posts.filter(
+      (p) =>
+        p.title.toLowerCase().includes(lowerSearch) ||
+        (p.author || p.authorName || "").toLowerCase().includes(lowerSearch) ||
+        (p.excerpt || "").toLowerCase().includes(lowerSearch),
+    );
+  }, [posts, searchTerm]);
+
+  if (loading) {
+    return (
+      <div className="text-center py-5">
+        <div className="spinner-border azul" role="status"></div>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="d-flex justify-content-between align-items-center gap-3 mb-3">
+      <div className="d-flex justify-content-between align-items-center gap-3 mb-4">
         <div>
           <h5 className="mb-1 azul">Posts do admin</h5>
           <p className="text-muted mb-0">
@@ -31,6 +46,31 @@ export default function PostsTab({ posts, loading, onDelete }) {
           <i className="bi bi-plus-lg me-2"></i>
           Novo post
         </Link>
+      </div>
+
+      {/* Barra de Pesquisa */}
+      <div className="mb-3">
+        <div className="input-group">
+          <span className="input-group-text bg-light border-end-0">
+            <i className="bi bi-search"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control border-start-0"
+            placeholder="Pesquisar por título, autor ou categoria..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchTerm && (
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setSearchTerm("")}
+            >
+              <i className="bi bi-x"></i>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="table-responsive">
@@ -46,10 +86,14 @@ export default function PostsTab({ posts, loading, onDelete }) {
             </tr>
           </thead>
           <tbody>
-            {posts.map((p) => (
+            {filteredPosts.map((p) => (
               <tr key={p.id}>
-                <td>{p.title}</td>
-                <td className="text-muted">{p.author || p.authorName || "—"}</td>
+                <td>
+                  <span className="fw-500">{p.title}</span>
+                </td>
+                <td className="text-muted">
+                  {p.author || p.authorName || "—"}
+                </td>
                 <td>
                   {p.published ? (
                     <span className="badge bg-success">Publicado</span>
@@ -60,21 +104,42 @@ export default function PostsTab({ posts, loading, onDelete }) {
                 <td className="text-muted">{p.excerpt || "Sem categoria"}</td>
                 <td className="text-muted small">{formatDate(p.created_at)}</td>
                 <td className="text-end">
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => onDelete(p.id, p.title)}
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
+                  <div className="btn-group btn-group-sm" role="group">
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => onEdit(p.id)}
+                      title="Editar post"
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </button>
+                    <button
+                      className="btn btn-outline-danger"
+                      onClick={() => onDelete(p.id, p.title)}
+                      title="Deletar post"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {posts.length === 0 && (
-          <p className="text-center text-muted py-3">Nenhum post encontrado.</p>
+        {filteredPosts.length === 0 && (
+          <p className="text-center text-muted py-3">
+            {searchTerm
+              ? "Nenhum post encontrado com esses critérios."
+              : "Nenhum post encontrado."}
+          </p>
         )}
       </div>
+
+      {/* Informações de resultados */}
+      {searchTerm && filteredPosts.length > 0 && (
+        <small className="text-muted d-block mt-2">
+          Mostrando {filteredPosts.length} de {posts.length} posts
+        </small>
+      )}
     </div>
   );
 }
