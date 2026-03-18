@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import apiService from "../services/api/bridge";
+import { getPostCategoryLabel, normalizePosts } from "../utils/postUtils";
 
 const categories = [
   { key: "all", label: "Todos" },
@@ -353,66 +355,264 @@ const techGuides = [
 ];
 
 export default function ContentGuidesPage() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchParams] = useSearchParams();
+  const highlightedPostId = searchParams.get("highlight");
+  const [selectedGuideCategory, setSelectedGuideCategory] = useState("all");
+  const [selectedPostCategory, setSelectedPostCategory] = useState("all");
+  const [publishedPosts, setPublishedPosts] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [postsError, setPostsError] = useState("");
 
   const filteredGuides =
-    selectedCategory === "all"
+    selectedGuideCategory === "all"
       ? techGuides
-      : techGuides.filter((g) => g.category === selectedCategory);
+      : techGuides.filter((guide) => guide.category === selectedGuideCategory);
+
+  const postCategories = [
+    { key: "all", label: "Todos os posts" },
+    ...Array.from(
+      new Set(
+        publishedPosts
+          .map((post) => getPostCategoryLabel(post))
+          .filter(Boolean),
+      ),
+    ).map((category) => ({
+      key: category,
+      label: category,
+    })),
+  ];
+
+  const filteredPosts =
+    selectedPostCategory === "all"
+      ? publishedPosts
+      : publishedPosts.filter(
+          (post) => getPostCategoryLabel(post) === selectedPostCategory,
+        );
+
+  useEffect(() => {
+    const loadPublishedPosts = async () => {
+      setLoadingPosts(true);
+      setPostsError("");
+
+      try {
+        const data = await apiService.getPublishedPosts();
+        setPublishedPosts(normalizePosts(data));
+      } catch (error) {
+        console.error("Erro ao carregar posts publicados:", error);
+        setPostsError("Não foi possível carregar os posts publicados no momento.");
+      } finally {
+        setLoadingPosts(false);
+      }
+    };
+
+    loadPublishedPosts();
+  }, []);
 
   return (
     <div className="container py-5">
       <h1 className="fw-bold mb-2 text-primary-conteudo">
         Explore o Universo Dev
       </h1>
-      <p className="mb-4 text-secondary-conteudo">
-        As melhores ferramentas, linguagens e frameworks explicados de um jeito simples e direto ao ponto. Sem enrolação.
+      <p className="mb-5 text-secondary-conteudo">
+        Os guias fixos continuam disponíveis e agora os posts publicados pelo admin também aparecem aqui em cards, consumindo a API.
       </p>
-      <div className="d-flex flex-wrap gap-2 mb-4">
-        {categories.map((cat) => (
-          <button
-            key={cat.key}
-            className={`btn ${selectedCategory === cat.key ? "btn-primary" : "btn-outline-secondary"} btn-sm px-3`}
-            onClick={() => setSelectedCategory(cat.key)}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
-      <div className="row g-4">
-        {filteredGuides.map((guide) => (
-          <div className="col-md-6 col-lg-4" key={guide.slug}>
-            <Link to={`/conteudo/${guide.slug}`} className="text-decoration-none">
-              <div
-                className="card h-100 shadow-sm"
-                style={{ cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "";
-                }}
+
+      <section className="mb-5">
+        <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-3">
+          <div>
+            <h2 className="fw-bold mb-1" style={{ color: "#333" }}>
+              Posts publicados
+            </h2>
+            <p className="mb-0 text-secondary-conteudo">
+              Conteúdos vindos do endpoint de posts, mantendo o mesmo estilo visual em cards da vitrine atual.
+            </p>
+          </div>
+          <div className="d-flex flex-wrap gap-2">
+            {postCategories.map((category) => (
+              <button
+                key={category.key}
+                className={`btn ${selectedPostCategory === category.key ? "btn-primary" : "btn-outline-secondary"} btn-sm px-3`}
+                onClick={() => setSelectedPostCategory(category.key)}
               >
-                <div className="card-body d-flex align-items-center gap-3">
-                  <img src={guide.icon} alt={guide.name} style={{ width: 48, height: 48 }} />
-                  <div>
-                    <h5 className="card-title mb-1" style={{ color: "#333" }}>{guide.name}</h5>
-                    <span
-                      className="badge mb-2"
-                      style={{ background: guide.categoryColor, color: "#222", fontSize: "0.8rem", fontWeight: "700" }}
-                    >
-                      {guide.categoryLabel}
-                    </span>
-                    <p className="card-text mb-0" style={{ fontSize: "0.9rem", fontWeight: "400", color: "#666" }}>{guide.description}</p>
+                {category.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {loadingPosts ? (
+          <div className="text-center py-5">
+            <div className="spinner-border azul" role="status"></div>
+            <p className="text-muted mt-3 mb-0">Carregando posts publicados...</p>
+          </div>
+        ) : postsError ? (
+          <div className="alert alert-warning" role="alert">
+            {postsError}
+          </div>
+        ) : filteredPosts.length === 0 ? (
+          <div className="card border-0 shadow-sm">
+            <div className="card-body text-center py-5 text-muted">
+              Nenhum post publicado encontrado para esta categoria.
+            </div>
+          </div>
+        ) : (
+          <div className="row g-4">
+            {filteredPosts.map((post) => (
+              <div className="col-md-6 col-lg-4" key={post.id}>
+                <Link
+                  to={`/conteudo/${post.id}`}
+                  className="text-decoration-none"
+                >
+                  <div
+                    className="card h-100 shadow-sm border-0"
+                    style={{
+                      cursor: "pointer",
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      border: highlightedPostId === String(post.id)
+                        ? "2px solid #6c2bd7"
+                        : undefined,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-4px)";
+                      e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow = "";
+                    }}
+                  >
+                    {post.image_url ? (
+                      <div
+                        className="card-img-top"
+                        style={{
+                          height: 180,
+                          backgroundImage: `url('${post.image_url}')`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                      ></div>
+                    ) : (
+                      <div
+                        className="card-img-top d-flex align-items-center justify-content-center"
+                        style={{
+                          height: 180,
+                          background: "linear-gradient(135deg, #6c2bd7, #23a6d5)",
+                          color: "#fff",
+                          fontSize: "2.5rem",
+                        }}
+                      >
+                        <i className="bi bi-file-earmark-richtext"></i>
+                      </div>
+                    )}
+                    <div className="card-body d-flex flex-column gap-2">
+                      <div className="d-flex justify-content-between align-items-start gap-2">
+                        <span
+                          className="badge"
+                          style={{
+                            background: "#e9d8fd",
+                            color: "#5b21b6",
+                            fontSize: "0.8rem",
+                            fontWeight: "700",
+                          }}
+                        >
+                          {getPostCategoryLabel(post)}
+                        </span>
+                        <small className="text-muted text-end">
+                          {new Date(post.created_at).toLocaleDateString("pt-BR")}
+                        </small>
+                      </div>
+                      <h5 className="card-title mb-0" style={{ color: "#333" }}>
+                        {post.title}
+                      </h5>
+                      {highlightedPostId === String(post.id) && (
+                        <small className="fw-semibold" style={{ color: "#6c2bd7" }}>
+                          Recém-publicado
+                        </small>
+                      )}
+                      <p
+                        className="card-text mb-0"
+                        style={{ fontSize: "0.95rem", color: "#666" }}
+                      >
+                        {(post.content || "").slice(0, 140)}
+                        {post.content && post.content.length > 140 ? "..." : ""}
+                      </p>
+                      <div className="mt-auto pt-2 d-flex align-items-center justify-content-between">
+                        <small className="text-muted">
+                          <i className="bi bi-person me-1"></i>
+                          {post.authorName}
+                        </small>
+                        <span className="azul fw-semibold">Ler mais →</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section>
+        <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+          <div>
+            <h2 className="fw-bold mb-1" style={{ color: "#333" }}>
+              Guias do BlogGuide
+            </h2>
+            <p className="mb-0 text-secondary-conteudo">
+              A vitrine original baseada em array continua disponível para os conteúdos fixos e educativos.
+            </p>
+          </div>
+          <div className="d-flex flex-wrap gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat.key}
+                className={`btn ${selectedGuideCategory === cat.key ? "btn-primary" : "btn-outline-secondary"} btn-sm px-3`}
+                onClick={() => setSelectedGuideCategory(cat.key)}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="row g-4">
+          {filteredGuides.map((guide) => (
+            <div className="col-md-6 col-lg-4" key={guide.slug}>
+              <Link to={`/conteudo/${guide.slug}`} className="text-decoration-none">
+                <div
+                  className="card h-100 shadow-sm"
+                  style={{
+                    cursor: "pointer",
+                    transition: "transform 0.2s, box-shadow 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "";
+                  }}
+                >
+                  <div className="card-body d-flex align-items-center gap-3">
+                    <img src={guide.icon} alt={guide.name} style={{ width: 48, height: 48 }} />
+                    <div>
+                      <h5 className="card-title mb-1" style={{ color: "#333" }}>{guide.name}</h5>
+                      <span
+                        className="badge mb-2"
+                        style={{ background: guide.categoryColor, color: "#222", fontSize: "0.8rem", fontWeight: "700" }}
+                      >
+                        {guide.categoryLabel}
+                      </span>
+                      <p className="card-text mb-0" style={{ fontSize: "0.9rem", fontWeight: "400", color: "#666" }}>{guide.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          </div>
-        ))}
-      </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

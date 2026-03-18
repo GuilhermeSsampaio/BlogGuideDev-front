@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
 import apiService from "../services/api/bridge";
 import DashboardTab from "../components/Admin/DashboardTab";
 import UsersTab from "../components/Admin/UsersTab";
@@ -9,46 +9,64 @@ import ForumTab from "../components/Admin/ForumTab";
 
 export default function AdminPage() {
   const { user, isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || "dashboard";
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Redirect non-admin users
-  if (!isAuthenticated || user?.tipo_perfil !== "admin") {
-    return <Navigate to="/" replace />;
-  }
+  const tabs = useMemo(
+    () => [
+      { key: "dashboard", label: "Dashboard", icon: "bi-speedometer2" },
+      { key: "users", label: "Usuários", icon: "bi-people" },
+      { key: "posts", label: "Posts", icon: "bi-file-earmark-text" },
+      { key: "forum", label: "Fórum", icon: "bi-chat-square-text" },
+    ],
+    [],
+  );
 
-  const loadTab = async (tab) => {
-    setActiveTab(tab);
-    setLoading(true);
-    try {
-      switch (tab) {
-        case "dashboard":
-          setStats(await apiService.getAdminStats());
-          break;
-        case "users":
-          setUsers(await apiService.getAdminUsers());
-          break;
-        case "posts":
-          setPosts(await apiService.getAdminPosts());
-          break;
-        case "forum":
-          setTopics(await apiService.getAdminForum());
-          break;
+  const loadTab = useCallback(
+    async (tab) => {
+      setActiveTab(tab);
+      setSearchParams((currentParams) => {
+        const nextParams = new URLSearchParams(currentParams);
+        nextParams.set("tab", tab);
+        return nextParams;
+      });
+      setLoading(true);
+
+      try {
+        switch (tab) {
+          case "dashboard":
+            setStats(await apiService.getAdminStats());
+            break;
+          case "users":
+            setUsers(await apiService.getAdminUsers());
+            break;
+          case "posts":
+            setPosts(await apiService.getAdminPosts());
+            break;
+          case "forum":
+            setTopics(await apiService.getAdminForum());
+            break;
+          default:
+            setStats(await apiService.getAdminStats());
+        }
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Erro ao carregar dados:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [setSearchParams],
+  );
 
   useEffect(() => {
-    loadTab("dashboard");
-  }, []);
+    loadTab(initialTab);
+  }, [initialTab, loadTab]);
 
   const handleChangeRole = async (profileId, newRole) => {
     try {
@@ -73,8 +91,10 @@ export default function AdminPage() {
       !window.confirm(
         `Tem certeza que deseja deletar o usuário "${username}"? Esta ação é irreversível.`,
       )
-    )
+    ) {
       return;
+    }
+
     try {
       await apiService.deleteUser(profileId);
       setUsers((prev) => prev.filter((u) => u.id !== profileId));
@@ -85,6 +105,7 @@ export default function AdminPage() {
 
   const handleDeletePost = async (postId, title) => {
     if (!window.confirm(`Deletar o post "${title}"?`)) return;
+
     try {
       await apiService.adminDeletePost(postId);
       setPosts((prev) => prev.filter((p) => p.id !== postId));
@@ -95,6 +116,7 @@ export default function AdminPage() {
 
   const handleDeleteTopic = async (topicId, titulo) => {
     if (!window.confirm(`Deletar o tópico "${titulo}"?`)) return;
+
     try {
       await apiService.adminDeleteTopic(topicId);
       setTopics((prev) => prev.filter((t) => t.id !== topicId));
@@ -103,12 +125,9 @@ export default function AdminPage() {
     }
   };
 
-  const tabs = [
-    { key: "dashboard", label: "Dashboard", icon: "bi-speedometer2" },
-    { key: "users", label: "Usuários", icon: "bi-people" },
-    { key: "posts", label: "Posts", icon: "bi-file-earmark-text" },
-    { key: "forum", label: "Fórum", icon: "bi-chat-square-text" },
-  ];
+  if (!isAuthenticated || user?.tipo_perfil !== "admin") {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="container py-4">
@@ -120,7 +139,6 @@ export default function AdminPage() {
         <h2 className="azul jersey-25-regular mb-0">Painel Admin</h2>
       </div>
 
-      {/* Tabs */}
       <ul className="nav nav-tabs mb-4">
         {tabs.map((tab) => (
           <li className="nav-item" key={tab.key}>
@@ -135,7 +153,6 @@ export default function AdminPage() {
         ))}
       </ul>
 
-      {/* Tab content */}
       {activeTab === "dashboard" && (
         <DashboardTab stats={stats} loading={loading} />
       )}
