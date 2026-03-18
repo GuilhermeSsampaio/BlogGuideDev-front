@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
 
 export default function PostForm({ onSubmit, initialData = null, onCancel }) {
-  const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
-    category: initialData?.category || "",
+    category: initialData?.excerpt || initialData?.category || "",
     content: initialData?.content || "",
     image_url: initialData?.image_url || "",
     tags: initialData?.tags || [],
-    is_published: initialData?.is_published ?? true,
+    is_published: initialData?.published ?? initialData?.is_published ?? true,
   });
   const [tagInput, setTagInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,7 +35,6 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Limpar erro quando usuário começa a digitar
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -87,6 +84,17 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      category: "",
+      content: "",
+      image_url: "",
+      tags: [],
+      is_published: true,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -98,8 +106,8 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
 
     try {
       const postData = {
-        title: formData.title,
-        content: formData.content,
+        title: formData.title.trim(),
+        content: formData.content.trim(),
         excerpt: formData.category || null,
         image_url: formData.image_url || null,
         published: formData.is_published,
@@ -107,16 +115,8 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
 
       await onSubmit(postData);
 
-      // Limpar formulário após sucesso (se não for edição)
       if (!initialData) {
-        setFormData({
-          title: "",
-          category: "",
-          content: "",
-          image_url: "",
-          tags: [],
-          is_published: true,
-        });
+        resetForm();
       }
     } catch (error) {
       console.error("Erro ao salvar post:", error);
@@ -138,16 +138,13 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
 
             <div className="card-body p-4">
               <form onSubmit={handleSubmit}>
-                {/* Título */}
                 <div className="mb-3">
                   <label className="form-label">
                     Título <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${
-                      errors.title ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.title ? "is-invalid" : ""}`}
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
@@ -162,15 +159,12 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </small>
                 </div>
 
-                {/* Categoria */}
                 <div className="mb-3">
                   <label className="form-label">
                     Categoria <span className="text-danger">*</span>
                   </label>
                   <select
-                    className={`form-select ${
-                      errors.category ? "is-invalid" : ""
-                    }`}
+                    className={`form-select ${errors.category ? "is-invalid" : ""}`}
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
@@ -185,9 +179,11 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   {errors.category && (
                     <div className="invalid-feedback">{errors.category}</div>
                   )}
+                  <small className="text-muted">
+                    A categoria será usada no resumo curto do card enquanto a API usa o campo <code>excerpt</code>.
+                  </small>
                 </div>
 
-                {/* Tags */}
                 <div className="mb-3">
                   <label className="form-label">Tags</label>
                   <div className="input-group mb-2">
@@ -197,7 +193,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       placeholder="Digite uma tag..."
-                      onKeyPress={(e) => {
+                      onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleAddTag(e);
                         }
@@ -211,8 +207,10 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                       Adicionar
                     </button>
                   </div>
+                  <small className="text-muted d-block mb-2">
+                    As tags continuam no formulário para preservar o layout atual, mas a API de posts ainda não persiste esse campo.
+                  </small>
 
-                  {/* Tags adicionadas */}
                   <div className="d-flex flex-wrap gap-2">
                     {formData.tags.map((tag, index) => (
                       <span
@@ -232,7 +230,6 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </div>
                 </div>
 
-                {/* URL da Imagem */}
                 <div className="mb-3">
                   <label className="form-label">URL da Imagem (opcional)</label>
                   <input
@@ -244,11 +241,10 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                     placeholder="https://exemplo.com/imagem.jpg"
                   />
                   <small className="text-muted">
-                    Cole a URL de uma imagem para ilustrar seu post
+                    Cole a URL de uma imagem para ilustrar seu post.
                   </small>
                 </div>
 
-                {/* Preview da imagem */}
                 {formData.image_url && (
                   <div className="mb-3">
                     <label className="form-label">Preview da Imagem</label>
@@ -265,15 +261,12 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </div>
                 )}
 
-                {/* Conteúdo */}
                 <div className="mb-3">
                   <label className="form-label">
                     Conteúdo <span className="text-danger">*</span>
                   </label>
                   <textarea
-                    className={`form-control ${
-                      errors.content ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.content ? "is-invalid" : ""}`}
                     name="content"
                     value={formData.content}
                     onChange={handleChange}
@@ -288,7 +281,6 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </small>
                 </div>
 
-                {/* Opções de publicação */}
                 <div className="mb-4">
                   <div className="form-check">
                     <input
@@ -305,12 +297,11 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   </div>
                   <small className="text-muted">
                     {formData.is_published
-                      ? "Seu post será visível para todos"
-                      : "Seu post será salvo como rascunho"}
+                      ? "Seu post será visível na página pública de conteúdos."
+                      : "Seu post será salvo como rascunho no painel do admin."}
                   </small>
                 </div>
 
-                {/* Botões */}
                 <div className="d-flex gap-2">
                   <button
                     type="submit"

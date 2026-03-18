@@ -1,43 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
 import contentData from "../utils/contentData";
 import CurtidaButton from "../components/CurtidaButton";
 import ComentarioSection from "../components/ComentarioSection";
 import apiService from "../services/api/bridge";
+import { normalizePost } from "../utils/postUtils";
 
-export default function ContentDetailPage() {
-  const { slug } = useParams();
-  const content = contentData.find((item) => item.slug === slug);
-  const [conteudoId, setConteudoId] = useState(null);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (slug) {
-      apiService
-        .getConteudoBySlug(slug)
-        .then((data) => setConteudoId(data.id))
-        .catch((err) => console.error("Erro ao buscar conteudo:", err));
+function renderInlineMarkdown(text) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
     }
-  }, [slug]);
 
-  if (!content) {
-    return (
-      <div className="container py-5 text-center">
-        <h2 className="mb-4">Conteúdo não encontrado</h2>
-        <Link to="/conteudo" className="btn btn-primary">Voltar para Conteúdos</Link>
-      </div>
-    );
-  }
+    return <React.Fragment key={index}>{part}</React.Fragment>;
+  });
+}
 
+function renderTextSection(text) {
+  return text.split(/\n\n+/).map((paragraph, index) => (
+    <p key={index} style={{ whiteSpace: "pre-line" }}>
+      {renderInlineMarkdown(paragraph)}
+    </p>
+  ));
+}
+
+function ContentArticle({ content, conteudoId }) {
   return (
     <div className="container py-5 page-detail-container">
-      {/* Header */}
       <div className="d-flex align-items-center gap-4 mb-4">
         <img
           src={content.icon}
@@ -45,9 +34,7 @@ export default function ContentDetailPage() {
           className="icon-tema-detail"
         />
         <div>
-          <h1 className="fw-bold mb-1 text-title-detail">
-            {content.title}
-          </h1>
+          <h1 className="fw-bold mb-1 text-title-detail">{content.title}</h1>
           {content.subtitle && (
             <p className="text-muted mb-2 text-subtitle-detail">
               {content.subtitle}
@@ -56,7 +43,6 @@ export default function ContentDetailPage() {
         </div>
       </div>
 
-      {/* Imagem principal */}
       {content.image && (
         <div className="mb-4">
           <img
@@ -68,7 +54,6 @@ export default function ContentDetailPage() {
         </div>
       )}
 
-      {/* Seções de conteúdo */}
       {content.sections.map((section, idx) => (
         <div key={idx} className="mb-4">
           {section.heading && (
@@ -84,24 +69,15 @@ export default function ContentDetailPage() {
             </h2>
           )}
 
-          {/* Renderização do texto com ReactMarkdown para interpretar as Tabelas e Negritos */}
           {section.text && (
-            <div className="markdown-content" style={{ fontSize: "1.05rem", lineHeight: 1.8, textAlign: "justify" }}>
-              <ReactMarkdown 
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  // Estilizando a tabela automaticamente com as classes do Bootstrap
-                  table: ({node, ...props}) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
-                  thead: ({node, ...props}) => <thead className="table-dark" {...props} />,
-                  p: ({node, ...props}) => <p style={{ whiteSpace: "pre-line" }} {...props} />
-                }}
-              >
-                {section.text}
-              </ReactMarkdown>
+            <div
+              className="markdown-content"
+              style={{ fontSize: "1.05rem", lineHeight: 1.8, textAlign: "justify" }}
+            >
+              {renderTextSection(section.text)}
             </div>
           )}
 
-          {/* Restante do seu código (Listas, Código, Links) mantido igual... */}
           {section.list && (
             <ul className="mb-3" style={{ fontSize: "1.05rem", lineHeight: 1.8 }}>
               {section.list.map((item, i) => (
@@ -186,7 +162,6 @@ export default function ContentDetailPage() {
         </div>
       ))}
 
-      {/* Curtida e Comentários */}
       {conteudoId && (
         <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
           <div className="mb-4">
@@ -196,12 +171,154 @@ export default function ContentDetailPage() {
         </div>
       )}
 
-      {/* Botão Voltar */}
       <div className="mt-5 pt-3">
-        <Link to="/conteudo" className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
+        <Link
+          to="/conteudo"
+          className="btn"
+          style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}
+        >
           ← Voltar para Conteúdos
         </Link>
       </div>
+    </div>
+  );
+}
+
+function PostArticle({ post }) {
+  const formattedDate = useMemo(
+    () =>
+      new Date(post.created_at).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+    [post.created_at],
+  );
+
+  return (
+    <div className="container py-5" style={{ maxWidth: "1000px" }}>
+      <Link to="/conteudo" className="btn btn-outline-secondary btn-sm mb-4">
+        <i className="bi bi-arrow-left me-1"></i>
+        Voltar para conteúdos
+      </Link>
+
+      <article className="card border-0 shadow-sm overflow-hidden">
+        {post.image_url && (
+          <div
+            style={{
+              height: 320,
+              backgroundImage: `url('${post.image_url}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          ></div>
+        )}
+
+        <div className="card-body p-4 p-lg-5">
+          <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span className="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle">
+              {post.excerpt || "Post publicado"}
+            </span>
+            <span className="text-muted small">{formattedDate}</span>
+          </div>
+
+          <h1 className="azul jersey-25-regular mb-3">{post.title}</h1>
+
+          <div className="d-flex align-items-center gap-2 mb-4 text-muted">
+            <i className="bi bi-person-circle" style={{ fontSize: "1.2rem" }}></i>
+            <span>{post.authorName}</span>
+          </div>
+
+          <div className="post-content" style={{ fontSize: "1.08rem", lineHeight: "1.9" }}>
+            {post.content.split("\n").map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
+
+          <div className="mt-4 d-flex gap-3">
+            <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
+          </div>
+
+          <hr className="my-4" />
+
+          <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
+        </div>
+      </article>
+    </div>
+  );
+}
+
+export default function ContentDetailPage() {
+  const { slug } = useParams();
+  const staticContent = contentData.find((item) => item.slug === slug);
+  const [conteudoId, setConteudoId] = useState(null);
+  const [post, setPost] = useState(null);
+  const [loadingPost, setLoadingPost] = useState(false);
+  const [postError, setPostError] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
+
+  useEffect(() => {
+    if (staticContent) {
+      apiService
+        .getConteudoBySlug(slug)
+        .then((data) => setConteudoId(data.id))
+        .catch((err) => console.error("Erro ao buscar conteudo:", err));
+      setPost(null);
+      setPostError("");
+      return;
+    }
+
+    if (!slug) {
+      return;
+    }
+
+    const loadPost = async () => {
+      setLoadingPost(true);
+      setPostError("");
+
+      try {
+        const data = await apiService.getPostById(slug);
+        setPost(normalizePost(data));
+      } catch (error) {
+        console.error("Erro ao buscar post:", error);
+        setPostError("Conteúdo não encontrado.");
+      } finally {
+        setLoadingPost(false);
+      }
+    };
+
+    loadPost();
+  }, [slug, staticContent]);
+
+  if (staticContent) {
+    return <ContentArticle content={staticContent} conteudoId={conteudoId} />;
+  }
+
+  if (loadingPost) {
+    return (
+      <div className="container text-center py-5">
+        <div className="spinner-border azul mt-5" role="status">
+          <span className="visually-hidden">Carregando...</span>
+        </div>
+        <p className="mt-3 text-muted">Carregando post...</p>
+      </div>
+    );
+  }
+
+  if (post) {
+    return <PostArticle post={post} />;
+  }
+
+  return (
+    <div className="container py-5 text-center">
+      <h2 className="mb-3">Conteúdo não encontrado</h2>
+      <p className="text-muted mb-4">{postError || "Não localizamos esse conteúdo."}</p>
+      <Link to="/conteudo" className="btn btn-primary">
+        Voltar para Conteúdos
+      </Link>
     </div>
   );
 }
