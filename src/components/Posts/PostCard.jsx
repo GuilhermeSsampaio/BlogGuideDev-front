@@ -45,17 +45,17 @@ export default function PostCard({ post }) {
           <Link to={`/conteudo/${postLink}`} className="text-decoration-none">
             <h5 className="mb-0 azul">{postData.title}</h5>
           </Link>
-          {postData.tags &&
-            postData.tags.map((tag, index) => (
-              <span
-                key={index}
-                className={`badge ${
-                  index % 2 === 0 ? "bg-success" : "bg-warning text-dark"
-                }`}
-              >
-                {tag}
-              </span>
-            ))}
+          {postData.categoryLabel && (
+            <span
+              className="badge"
+              style={{
+                backgroundColor: postData.categoryColor || "#6c757d",
+                color: "#000"
+              }}
+            >
+              {postData.categoryLabel}
+            </span>
+          )}
         </div>
         <p className="mb-3 text-muted">{postData.content}</p>
       </div>

@@ -559,7 +559,7 @@ export default function ContentGuidesPage() {
                           className="badge mb-2"
                           style={{
                             background: post.categoryColor || "#6c2bd7",
-                            color: "#fff",
+                            color: "#110000",
                             fontSize: "0.8rem",
                             fontWeight: "700",
                           }}

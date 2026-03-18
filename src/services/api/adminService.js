@@ -31,6 +31,13 @@ export default (api) => ({
     return api.authRequest("/admin/posts");
   },
 
+  async adminUpdatePost(postId, postData) {
+    return api.authRequest(`/admin/posts/${postId}`, {
+      method: "PUT",
+      body: JSON.stringify(postData),
+    });
+  },
+
   async adminDeletePost(postId) {
     return api.authRequest(`/admin/posts/${postId}`, {
       method: "DELETE",

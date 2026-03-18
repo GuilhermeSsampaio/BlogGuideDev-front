@@ -9,6 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import UserPage from "../pages/UserPage";
 import CriarPostPage from "../pages/CriarPostPage";
+import EditarPostPage from "../pages/EditarPostPage";
 import AdminPage from "../pages/AdminPage";
 import VagasPage from "../pages/VagasPage";
 import VagaDetailPage from "../pages/VagaDetailPage";
@@ -112,6 +113,12 @@ export const protectedRoutes = [
     component: CriarPostPage,
     name: "Criar Post",
     showInNav: true,
+  },
+  {
+    path: "/editar-post/:postId",
+    component: EditarPostPage,
+    name: "Editar Post",
+    showInNav: false,
   },
   {
     path: ROUTES.ADMIN,

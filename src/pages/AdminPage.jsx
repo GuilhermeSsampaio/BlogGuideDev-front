@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import apiService from "../services/api/bridge";
 import DashboardTab from "../components/Admin/DashboardTab";
@@ -9,6 +9,7 @@ import ForumTab from "../components/Admin/ForumTab";
 
 export default function AdminPage() {
   const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "dashboard";
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -103,6 +104,10 @@ export default function AdminPage() {
     }
   };
 
+  const handleEditPost = (postId) => {
+    navigate(`/editar-post/${postId}`);
+  };
+
   const handleDeletePost = async (postId, title) => {
     if (!window.confirm(`Deletar o post "${title}"?`)) return;
 
@@ -166,7 +171,12 @@ export default function AdminPage() {
         />
       )}
       {activeTab === "posts" && (
-        <PostsTab posts={posts} loading={loading} onDelete={handleDeletePost} />
+        <PostsTab
+          posts={posts}
+          loading={loading}
+          onEdit={handleEditPost}
+          onDelete={handleDeletePost}
+        />
       )}
       {activeTab === "forum" && (
         <ForumTab

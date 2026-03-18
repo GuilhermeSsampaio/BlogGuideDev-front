@@ -54,4 +54,4 @@ export const normalizePosts = (posts) =>
   Array.isArray(posts) ? posts.map(normalizePost).filter(Boolean) : [];
 
 export const getPostCategoryLabel = (post) =>
-  normalizePost(post)?.excerpt || "Sem categoria";
+  normalizePost(post)?.categoryLabel || "Sem categoria";
