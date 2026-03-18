@@ -23,6 +23,7 @@ export default function PostCard({ post }) {
   };
 
   const displayAuthor = postData.author?.username || "User";
+  const postLink = postData.slug || postData.id;
 
   return (
     <div className="container jersey-25-regular my-4">
@@ -41,10 +42,7 @@ export default function PostCard({ post }) {
       {/* Title and Tags */}
       <div className="mb-3">
         <div className="d-flex flex-wrap gap-2 align-items-center mb-2">
-          <Link
-            to={`/conteudo/${postData.id}`}
-            className="text-decoration-none"
-          >
+          <Link to={`/conteudo/${postLink}`} className="text-decoration-none">
             <h5 className="mb-0 azul">{postData.title}</h5>
           </Link>
           {postData.tags &&
@@ -79,7 +77,7 @@ export default function PostCard({ post }) {
       <div className="d-flex gap-3 mt-3 align-items-center">
         <CurtidaButton tipoReferencia="post" referenciaId={postData.id} />
         <Link
-          to={`/conteudo/${postData.id}`}
+          to={`/conteudo/${postLink}`}
           className="btn btn-sm btn-outline-secondary"
         >
           <i className="bi bi-chat me-1"></i>

@@ -72,14 +72,21 @@ function ContentArticle({ content, conteudoId }) {
           {section.text && (
             <div
               className="markdown-content"
-              style={{ fontSize: "1.05rem", lineHeight: 1.8, textAlign: "justify" }}
+              style={{
+                fontSize: "1.05rem",
+                lineHeight: 1.8,
+                textAlign: "justify",
+              }}
             >
               {renderTextSection(section.text)}
             </div>
           )}
 
           {section.list && (
-            <ul className="mb-3" style={{ fontSize: "1.05rem", lineHeight: 1.8 }}>
+            <ul
+              className="mb-3"
+              style={{ fontSize: "1.05rem", lineHeight: 1.8 }}
+            >
               {section.list.map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
@@ -144,11 +151,18 @@ function ContentArticle({ content, conteudoId }) {
                         e.currentTarget.style.borderColor = "#dee2e6";
                       }}
                     >
-                      <span style={{ fontSize: "1.2rem" }}>{link.icon || "🔗"}</span>
+                      <span style={{ fontSize: "1.2rem" }}>
+                        {link.icon || "🔗"}
+                      </span>
                       <div>
-                        <strong style={{ fontSize: "0.95rem" }}>{link.label}</strong>
+                        <strong style={{ fontSize: "0.95rem" }}>
+                          {link.label}
+                        </strong>
                         {link.description && (
-                          <p className="mb-0 text-muted" style={{ fontSize: "0.85rem" }}>
+                          <p
+                            className="mb-0 text-muted"
+                            style={{ fontSize: "0.85rem" }}
+                          >
                             {link.description}
                           </p>
                         )}
@@ -165,9 +179,15 @@ function ContentArticle({ content, conteudoId }) {
       {conteudoId && (
         <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
           <div className="mb-4">
-            <CurtidaButton tipoReferencia="conteudo" referenciaId={conteudoId} />
+            <CurtidaButton
+              tipoReferencia="conteudo"
+              referenciaId={conteudoId}
+            />
           </div>
-          <ComentarioSection tipoReferencia="conteudo" referenciaId={conteudoId} />
+          <ComentarioSection
+            tipoReferencia="conteudo"
+            referenciaId={conteudoId}
+          />
         </div>
       )}
 
@@ -175,7 +195,11 @@ function ContentArticle({ content, conteudoId }) {
         <Link
           to="/conteudo"
           className="btn"
-          style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}
+          style={{
+            backgroundColor: "#7C3AED",
+            color: "#ffffff",
+            fontWeight: "500",
+          }}
         >
           ← Voltar para Conteúdos
         </Link>
@@ -195,6 +219,186 @@ function PostArticle({ post }) {
     [post.created_at],
   );
 
+  // Se o post tem sections, renderiza igual ao ContentArticle
+  if (post.sections && Array.isArray(post.sections)) {
+    return (
+      <div className="container py-5 page-detail-container">
+        <div className="d-flex align-items-center gap-4 mb-4">
+          {post.icon && (
+            <img
+              src={post.icon}
+              alt={post.title}
+              className="icon-tema-detail"
+            />
+          )}
+          <div>
+            <h1 className="fw-bold mb-1 text-title-detail">{post.title}</h1>
+            {post.subtitle && (
+              <p className="text-muted mb-2 text-subtitle-detail">
+                {post.subtitle}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {post.image_url && (
+          <div className="mb-4">
+            <img
+              src={post.image_url}
+              alt={post.title}
+              className="img-fluid rounded shadow-sm"
+              style={{ maxHeight: 400, width: "100%" }}
+            />
+          </div>
+        )}
+
+        {post.sections.map((section, idx) => (
+          <div key={idx} className="mb-4">
+            {section.heading && (
+              <h2
+                className="fw-bold mb-3"
+                style={{
+                  fontSize: "1.5rem",
+                  paddingBottom: 8,
+                  display: "inline-block",
+                }}
+              >
+                {section.heading}
+              </h2>
+            )}
+
+            {section.text && (
+              <div
+                className="markdown-content"
+                style={{
+                  fontSize: "1.05rem",
+                  lineHeight: 1.8,
+                  textAlign: "justify",
+                }}
+              >
+                {renderTextSection(section.text)}
+              </div>
+            )}
+
+            {section.list && (
+              <ul
+                className="mb-3"
+                style={{ fontSize: "1.05rem", lineHeight: 1.8 }}
+              >
+                {section.list.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            )}
+
+            {section.code && (
+              <div className="position-relative mt-3 mb-4">
+                <pre
+                  className="p-4 rounded"
+                  style={{
+                    background: "#1e1e1e",
+                    color: "#d4d4d4",
+                    fontSize: "0.95rem",
+                    overflowX: "auto",
+                    border: "1px solid #333",
+                  }}
+                >
+                  <code>{section.code}</code>
+                </pre>
+                {section.codeLabel && (
+                  <span
+                    className="position-absolute"
+                    style={{
+                      top: 8,
+                      right: 12,
+                      background: "#333",
+                      color: "#aaa",
+                      padding: "2px 8px",
+                      borderRadius: 4,
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    {section.codeLabel}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {section.links && section.links.length > 0 && (
+              <div className="mt-3">
+                <div className="row g-3">
+                  {section.links.map((link, i) => (
+                    <div className="col-md-6" key={i}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="d-flex align-items-center gap-2 p-3 rounded text-decoration-none"
+                        style={{
+                          background: "#f8f9fa",
+                          border: "1px solid #dee2e6",
+                          color: "#333",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#e9ecef";
+                          e.currentTarget.style.borderColor = "#4fc3f7";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "#f8f9fa";
+                          e.currentTarget.style.borderColor = "#dee2e6";
+                        }}
+                      >
+                        <span style={{ fontSize: "1.2rem" }}>
+                          {link.icon || "🔗"}
+                        </span>
+                        <div>
+                          <strong style={{ fontSize: "0.95rem" }}>
+                            {link.label}
+                          </strong>
+                          {link.description && (
+                            <p
+                              className="mb-0 text-muted"
+                              style={{ fontSize: "0.85rem" }}
+                            >
+                              {link.description}
+                            </p>
+                          )}
+                        </div>
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
+          <div className="mb-4">
+            <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
+          </div>
+          <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
+        </div>
+
+        <div className="mt-5 pt-3">
+          <Link
+            to="/conteudo"
+            className="btn"
+            style={{
+              backgroundColor: "#7C3AED",
+              color: "#ffffff",
+              fontWeight: "500",
+            }}
+          >
+            ← Voltar para Conteúdos
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Renderização antiga para posts sem sections
   return (
     <div className="container py-5" style={{ maxWidth: "1000px" }}>
       <Link to="/conteudo" className="btn btn-outline-secondary btn-sm mb-4">
@@ -225,11 +429,17 @@ function PostArticle({ post }) {
           <h1 className="azul jersey-25-regular mb-3">{post.title}</h1>
 
           <div className="d-flex align-items-center gap-2 mb-4 text-muted">
-            <i className="bi bi-person-circle" style={{ fontSize: "1.2rem" }}></i>
+            <i
+              className="bi bi-person-circle"
+              style={{ fontSize: "1.2rem" }}
+            ></i>
             <span>{post.authorName}</span>
           </div>
 
-          <div className="post-content" style={{ fontSize: "1.08rem", lineHeight: "1.9" }}>
+          <div
+            className="post-content"
+            style={{ fontSize: "1.08rem", lineHeight: "1.9" }}
+          >
             {post.content.split("\n").map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
@@ -315,7 +525,9 @@ export default function ContentDetailPage() {
   return (
     <div className="container py-5 text-center">
       <h2 className="mb-3">Conteúdo não encontrado</h2>
-      <p className="text-muted mb-4">{postError || "Não localizamos esse conteúdo."}</p>
+      <p className="text-muted mb-4">
+        {postError || "Não localizamos esse conteúdo."}
+      </p>
       <Link to="/conteudo" className="btn btn-primary">
         Voltar para Conteúdos
       </Link>

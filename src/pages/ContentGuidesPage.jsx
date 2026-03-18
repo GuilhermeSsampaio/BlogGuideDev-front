@@ -32,7 +32,8 @@ const techGuides = [
     categoryLabel: "Frontend e Interface",
     categoryColor: "#4fc3f7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg",
-    description: "Framework para criação rápida de layouts responsivos e padronizados.",
+    description:
+      "Framework para criação rápida de layouts responsivos e padronizados.",
   },
   {
     slug: "vuejs",
@@ -41,7 +42,8 @@ const techGuides = [
     categoryLabel: "Frontend e Interface",
     categoryColor: "#4fc3f7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
-    description: "Framework progressivo focado em interfaces reativas e componentes.",
+    description:
+      "Framework progressivo focado em interfaces reativas e componentes.",
   },
   {
     slug: "react",
@@ -50,7 +52,8 @@ const techGuides = [
     categoryLabel: "Frontend e Interface",
     categoryColor: "#4fc3f7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-    description: "Biblioteca declarativa para construção de interfaces dinâmicas e escaláveis.",
+    description:
+      "Biblioteca declarativa para construção de interfaces dinâmicas e escaláveis.",
   },
   {
     slug: "nextjs",
@@ -59,7 +62,8 @@ const techGuides = [
     categoryLabel: "Frontend e Interface",
     categoryColor: "#4fc3f7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-    description: "Framework full-stack baseado em React com foco em performance e SEO.",
+    description:
+      "Framework full-stack baseado em React com foco em performance e SEO.",
   },
   {
     slug: "quasar",
@@ -68,7 +72,8 @@ const techGuides = [
     categoryLabel: "Frontend e Interface",
     categoryColor: "#4fc3f7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/quasar/quasar-original.svg",
-    description: "Solução multiplataforma (Web, Mobile, Desktop) baseada em Vue.",
+    description:
+      "Solução multiplataforma (Web, Mobile, Desktop) baseada em Vue.",
   },
   {
     slug: "angular",
@@ -77,7 +82,8 @@ const techGuides = [
     categoryLabel: "Frontend e Interface",
     categoryColor: "#4fc3f7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg",
-    description: "Framework corporativo modular de alta escala com reatividade baseada em Signals.",
+    description:
+      "Framework corporativo modular de alta escala com reatividade baseada em Signals.",
   },
 
   // ===== 2. LINGUAGENS DE PROGRAMAÇÃO E LÓGICA (Languages & Platforms) =====
@@ -88,7 +94,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
-    description: "Linguagem essencial da web e a biblioteca clássica para manipulação de DOM.",
+    description:
+      "Linguagem essencial da web e a biblioteca clássica para manipulação de DOM.",
   },
   {
     slug: "php",
@@ -97,7 +104,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
-    description: "Linguagem amplamente utilizada no lado do servidor para aplicações dinâmicas.",
+    description:
+      "Linguagem amplamente utilizada no lado do servidor para aplicações dinâmicas.",
   },
   {
     slug: "laravel",
@@ -106,7 +114,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg",
-    description: "Framework PHP elegante que segue o padrão MVC e automatiza tarefas complexas.",
+    description:
+      "Framework PHP elegante que segue o padrão MVC e automatiza tarefas complexas.",
   },
   {
     slug: "python",
@@ -115,7 +124,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-    description: "Linguagem versátil, pilar para automação e Inteligência Artificial.",
+    description:
+      "Linguagem versátil, pilar para automação e Inteligência Artificial.",
   },
   {
     slug: "java",
@@ -124,7 +134,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
-    description: "Linguagem robusta e orientada a objetos, padrão em sistemas corporativos e bancários.",
+    description:
+      "Linguagem robusta e orientada a objetos, padrão em sistemas corporativos e bancários.",
   },
   {
     slug: "c-language",
@@ -133,7 +144,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
-    description: "A base da computação moderna, essencial para sistemas operacionais e alta performance.",
+    description:
+      "A base da computação moderna, essencial para sistemas operacionais e alta performance.",
   },
   {
     slug: "nodejs-express",
@@ -142,7 +154,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-    description: "Arquitetura orientada a eventos não bloqueante e camada flexível para construção de APIs escaláveis.",
+    description:
+      "Arquitetura orientada a eventos não bloqueante e camada flexível para construção de APIs escaláveis.",
   },
   {
     slug: "typescript",
@@ -151,7 +164,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-    description: "Verificador de tipagem estática avançada para escalabilidade e manutenibilidade de código.",
+    description:
+      "Verificador de tipagem estática avançada para escalabilidade e manutenibilidade de código.",
   },
   {
     slug: "cobol",
@@ -160,7 +174,8 @@ const techGuides = [
     categoryLabel: "Linguagens e Plataformas",
     categoryColor: "#b2f2bb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/devicon/devicon-original.svg", // Ícone genérico de fallback
-    description: "Pilar de alta precisão em sistemas legados bancários com adoção crescente de modernização via IA.",
+    description:
+      "Pilar de alta precisão em sistemas legados bancários com adoção crescente de modernização via IA.",
   },
 
   // ===== 3. PERSISTÊNCIA DE DADOS E CMS (Databases) =====
@@ -171,7 +186,8 @@ const techGuides = [
     categoryLabel: "Banco de Dados e CMS",
     categoryColor: "#ffd54f",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
-    description: "Banco de dados relacional (SQL) líder em integridade e transações seguras.",
+    description:
+      "Banco de dados relacional (SQL) líder em integridade e transações seguras.",
   },
   {
     slug: "strapi-neondb",
@@ -180,7 +196,8 @@ const techGuides = [
     categoryLabel: "Banco de Dados e CMS",
     categoryColor: "#ffd54f",
     icon: "https://cdn.simpleicons.org/strapi/4945FF",
-    description: "Headless CMS em Node.js que permite gerenciar conteúdo e expor APIs rapidamente.",
+    description:
+      "Headless CMS em Node.js que permite gerenciar conteúdo e expor APIs rapidamente.",
   },
   {
     slug: "oracle",
@@ -189,7 +206,8 @@ const techGuides = [
     categoryLabel: "Banco de Dados e CMS",
     categoryColor: "#ffd54f",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg",
-    description: "Infraestrutura MultiCloud, provisionamento via Autonomous Database e ERP integrado por IA.",
+    description:
+      "Infraestrutura MultiCloud, provisionamento via Autonomous Database e ERP integrado por IA.",
   },
 
   // ===== 4. INTELIGÊNCIA ARTIFICIAL E "VIBE CODING" (AI & Machine Learning) =====
@@ -200,7 +218,8 @@ const techGuides = [
     categoryLabel: "Inteligência Artificial",
     categoryColor: "#ffb3c6",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
-    description: "Assistente de IA que sugere código e documentação em tempo real no editor.",
+    description:
+      "Assistente de IA que sugere código e documentação em tempo real no editor.",
   },
   {
     slug: "framework-agno",
@@ -209,7 +228,8 @@ const techGuides = [
     categoryLabel: "Inteligência Artificial",
     categoryColor: "#ffb3c6",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-    description: "Framework Python para construção de sistemas de múltiplos agentes de IA autônomos.",
+    description:
+      "Framework Python para construção de sistemas de múltiplos agentes de IA autônomos.",
   },
   {
     slug: "lovable-bolt",
@@ -218,7 +238,8 @@ const techGuides = [
     categoryLabel: "Inteligência Artificial",
     categoryColor: "#ffb3c6",
     icon: "https://lovable.dev/favicon.svg",
-    description: "Ferramenta de criação de aplicações full-stack via linguagem natural e interface visual.",
+    description:
+      "Ferramenta de criação de aplicações full-stack via linguagem natural e interface visual.",
   },
 
   // ===== 5. DESENVOLVIMENTO MOBILE (Mobile Development) =====
@@ -238,7 +259,8 @@ const techGuides = [
     categoryLabel: "Mobile",
     categoryColor: "#e1bee7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/androidstudio/androidstudio-original.svg",
-    description: "Ambiente oficial para desenvolvimento nativo no ecossistema Google.",
+    description:
+      "Ambiente oficial para desenvolvimento nativo no ecossistema Google.",
   },
   {
     slug: "flutter",
@@ -247,7 +269,8 @@ const techGuides = [
     categoryLabel: "Mobile",
     categoryColor: "#e1bee7",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg",
-    description: "Construção de interfaces multiplataforma de alta fidelidade baseadas em Widgets e renderização autônoma.",
+    description:
+      "Construção de interfaces multiplataforma de alta fidelidade baseadas em Widgets e renderização autônoma.",
   },
 
   // ===== 6. DEVOPS, CLOUD E DEPLOY (DevOps / Infrastructure) =====
@@ -258,7 +281,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
-    description: "Conteinerização que garante a padronização do ambiente em qualquer máquina.",
+    description:
+      "Conteinerização que garante a padronização do ambiente em qualquer máquina.",
   },
   {
     slug: "git-github",
@@ -267,7 +291,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
-    description: "Sistema de controle de versão e plataforma de colaboração e automação (CI/CD).",
+    description:
+      "Sistema de controle de versão e plataforma de colaboração e automação (CI/CD).",
   },
   {
     slug: "vercel",
@@ -276,7 +301,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg",
-    description: "Plataforma cloud focada em frontends, funções serverless e Next.js.",
+    description:
+      "Plataforma cloud focada em frontends, funções serverless e Next.js.",
   },
   {
     slug: "render",
@@ -285,7 +311,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://avatars.githubusercontent.com/u/36424661?s=200&v=4",
-    description: "Hospedagem focada em processos longos, workers e tarefas agendadas.",
+    description:
+      "Hospedagem focada em processos longos, workers e tarefas agendadas.",
   },
   {
     slug: "railway",
@@ -294,7 +321,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://railway.app/brand/logo-light.png",
-    description: "Plataforma de deploy simplificado que detecta linguagens e provisiona bancos instantaneamente.",
+    description:
+      "Plataforma de deploy simplificado que detecta linguagens e provisiona bancos instantaneamente.",
   },
   {
     slug: "flyio",
@@ -303,7 +331,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://fly.io/static/images/brand/brandmark.svg",
-    description: "Infraestrutura baseada em MicroVMs para rodar aplicações próximas ao usuário globalmente.",
+    description:
+      "Infraestrutura baseada em MicroVMs para rodar aplicações próximas ao usuário globalmente.",
   },
   {
     slug: "aws",
@@ -312,7 +341,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
-    description: "Nuvem elástica de alta disponibilidade balizada no rígido Modelo de Responsabilidade Compartilhada.",
+    description:
+      "Nuvem elástica de alta disponibilidade balizada no rígido Modelo de Responsabilidade Compartilhada.",
   },
   {
     slug: "scrum-kanban",
@@ -321,7 +351,8 @@ const techGuides = [
     categoryLabel: "DevOps e Cloud",
     categoryColor: "#ffe082",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg",
-    description: "Metodologias ágeis de gestão e filosofias de fluxo, integrando cadência com o modelo híbrido Scrumban.",
+    description:
+      "Metodologias ágeis de gestão e filosofias de fluxo, integrando cadência com o modelo híbrido Scrumban.",
   },
 
   // ===== 7. SISTEMAS OPERACIONAIS E AMBIENTE LOCAL (OS & Systems) =====
@@ -332,7 +363,8 @@ const techGuides = [
     categoryLabel: "Sistemas Operacionais",
     categoryColor: "#b3c6ff",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
-    description: "Sistema operacional padrão para servidores e ambiente de desenvolvimento robusto.",
+    description:
+      "Sistema operacional padrão para servidores e ambiente de desenvolvimento robusto.",
   },
   {
     slug: "windows",
@@ -341,7 +373,8 @@ const techGuides = [
     categoryLabel: "Sistemas Operacionais",
     categoryColor: "#b3c6ff",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows11/windows11-original.svg",
-    description: "Plataforma de desenvolvimento moderna com suporte a WSL2 (Subsystem for Linux).",
+    description:
+      "Plataforma de desenvolvimento moderna com suporte a WSL2 (Subsystem for Linux).",
   },
   {
     slug: "macos",
@@ -350,7 +383,8 @@ const techGuides = [
     categoryLabel: "Sistemas Operacionais",
     categoryColor: "#b3c6ff",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg",
-    description: "Ambiente fluido de desenvolvimento embasado na arquitetura híbrida profunda do kernel XNU e Darwin.",
+    description:
+      "Ambiente fluido de desenvolvimento embasado na arquitetura híbrida profunda do kernel XNU e Darwin.",
   },
 ];
 
@@ -399,7 +433,9 @@ export default function ContentGuidesPage() {
         setPublishedPosts(normalizePosts(data));
       } catch (error) {
         console.error("Erro ao carregar posts publicados:", error);
-        setPostsError("Não foi possível carregar os posts publicados no momento.");
+        setPostsError(
+          "Não foi possível carregar os posts publicados no momento.",
+        );
       } finally {
         setLoadingPosts(false);
       }
@@ -414,7 +450,8 @@ export default function ContentGuidesPage() {
         Explore o Universo Dev
       </h1>
       <p className="mb-5 text-secondary-conteudo">
-        Os guias fixos continuam disponíveis e agora os posts publicados pelo admin também aparecem aqui em cards, consumindo a API.
+        Os guias fixos continuam disponíveis e agora os posts publicados pelo
+        admin também aparecem aqui em cards, consumindo a API.
       </p>
 
       <section className="mb-5">
@@ -424,7 +461,8 @@ export default function ContentGuidesPage() {
               Posts publicados
             </h2>
             <p className="mb-0 text-secondary-conteudo">
-              Conteúdos vindos do endpoint de posts, mantendo o mesmo estilo visual em cards da vitrine atual.
+              Conteúdos vindos do endpoint de posts, mantendo o mesmo estilo
+              visual em cards da vitrine atual.
             </p>
           </div>
           <div className="d-flex flex-wrap gap-2">
@@ -443,7 +481,9 @@ export default function ContentGuidesPage() {
         {loadingPosts ? (
           <div className="text-center py-5">
             <div className="spinner-border azul" role="status"></div>
-            <p className="text-muted mt-3 mb-0">Carregando posts publicados...</p>
+            <p className="text-muted mt-3 mb-0">
+              Carregando posts publicados...
+            </p>
           </div>
         ) : postsError ? (
           <div className="alert alert-warning" role="alert">
@@ -460,88 +500,96 @@ export default function ContentGuidesPage() {
             {filteredPosts.map((post) => (
               <div className="col-md-6 col-lg-4" key={post.id}>
                 <Link
-                  to={`/conteudo/${post.id}`}
+                  to={`/conteudo/${post.slug}`}
                   className="text-decoration-none"
                 >
                   <div
-                    className="card h-100 shadow-sm border-0"
+                    className="card h-100 shadow-sm"
                     style={{
                       cursor: "pointer",
                       transition: "transform 0.2s, box-shadow 0.2s",
-                      border: highlightedPostId === String(post.id)
-                        ? "2px solid #6c2bd7"
-                        : undefined,
+                      border:
+                        highlightedPostId === String(post.id)
+                          ? "2px solid #6c2bd7"
+                          : undefined,
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "translateY(-4px)";
-                      e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                      e.currentTarget.style.boxShadow =
+                        "0 8px 25px rgba(0,0,0,0.15)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = "translateY(0)";
                       e.currentTarget.style.boxShadow = "";
                     }}
                   >
-                    {post.image_url ? (
-                      <div
-                        className="card-img-top"
-                        style={{
-                          height: 180,
-                          backgroundImage: `url('${post.image_url}')`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }}
-                      ></div>
-                    ) : (
-                      <div
-                        className="card-img-top d-flex align-items-center justify-content-center"
-                        style={{
-                          height: 180,
-                          background: "linear-gradient(135deg, #6c2bd7, #23a6d5)",
-                          color: "#fff",
-                          fontSize: "2.5rem",
-                        }}
-                      >
-                        <i className="bi bi-file-earmark-richtext"></i>
-                      </div>
-                    )}
-                    <div className="card-body d-flex flex-column gap-2">
-                      <div className="d-flex justify-content-between align-items-start gap-2">
-                        <span
-                          className="badge"
+                    <div className="card-body d-flex align-items-center gap-3">
+                      {post.icon ? (
+                        <img
+                          src={post.icon}
+                          alt={post.title}
+                          style={{ width: 48, height: 48, flexShrink: 0 }}
+                        />
+                      ) : (
+                        <div
                           style={{
-                            background: "#e9d8fd",
-                            color: "#5b21b6",
+                            width: 48,
+                            height: 48,
+                            flexShrink: 0,
+                            background: post.categoryColor || "#6c2bd7",
+                            borderRadius: "4px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#fff",
+                            fontSize: "1.5rem",
+                          }}
+                        >
+                          <i className="bi bi-file-earmark-richtext"></i>
+                        </div>
+                      )}
+                      <div style={{ flex: 1 }}>
+                        <h5
+                          className="card-title mb-1"
+                          style={{ color: "#333" }}
+                        >
+                          {post.title}
+                        </h5>
+                        <span
+                          className="badge mb-2"
+                          style={{
+                            background: post.categoryColor || "#6c2bd7",
+                            color: "#fff",
                             fontSize: "0.8rem",
                             fontWeight: "700",
                           }}
                         >
                           {getPostCategoryLabel(post)}
                         </span>
-                        <small className="text-muted text-end">
-                          {new Date(post.created_at).toLocaleDateString("pt-BR")}
-                        </small>
-                      </div>
-                      <h5 className="card-title mb-0" style={{ color: "#333" }}>
-                        {post.title}
-                      </h5>
-                      {highlightedPostId === String(post.id) && (
-                        <small className="fw-semibold" style={{ color: "#6c2bd7" }}>
-                          Recém-publicado
-                        </small>
-                      )}
-                      <p
-                        className="card-text mb-0"
-                        style={{ fontSize: "0.95rem", color: "#666" }}
-                      >
-                        {(post.content || "").slice(0, 140)}
-                        {post.content && post.content.length > 140 ? "..." : ""}
-                      </p>
-                      <div className="mt-auto pt-2 d-flex align-items-center justify-content-between">
-                        <small className="text-muted">
-                          <i className="bi bi-person me-1"></i>
-                          {post.authorName}
-                        </small>
-                        <span className="azul fw-semibold">Ler mais →</span>
+                        <p
+                          className="card-text mb-0"
+                          style={{
+                            fontSize: "0.9rem",
+                            fontWeight: "400",
+                            color: "#666",
+                          }}
+                        >
+                          {(post.description || post.content || "").slice(
+                            0,
+                            100,
+                          )}
+                          {(post.description || post.content || "").length > 100
+                            ? "..."
+                            : ""}
+                        </p>
+                        {highlightedPostId === String(post.id) && (
+                          <small
+                            className="fw-semibold d-block mt-1"
+                            style={{ color: "#6c2bd7" }}
+                          >
+                            Recém-publicado ✨
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -551,7 +599,7 @@ export default function ContentGuidesPage() {
           </div>
         )}
       </section>
-
+      {/* 
       <section>
         <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
           <div>
@@ -559,7 +607,8 @@ export default function ContentGuidesPage() {
               Guias do BlogGuide
             </h2>
             <p className="mb-0 text-secondary-conteudo">
-              A vitrine original baseada em array continua disponível para os conteúdos fixos e educativos.
+              A vitrine original baseada em array continua disponível para os
+              conteúdos fixos e educativos.
             </p>
           </div>
           <div className="d-flex flex-wrap gap-2">
@@ -578,7 +627,10 @@ export default function ContentGuidesPage() {
         <div className="row g-4">
           {filteredGuides.map((guide) => (
             <div className="col-md-6 col-lg-4" key={guide.slug}>
-              <Link to={`/conteudo/${guide.slug}`} className="text-decoration-none">
+              <Link
+                to={`/conteudo/${guide.slug}`}
+                className="text-decoration-none"
+              >
                 <div
                   className="card h-100 shadow-sm"
                   style={{
@@ -587,7 +639,8 @@ export default function ContentGuidesPage() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                    e.currentTarget.style.boxShadow =
+                      "0 8px 25px rgba(0,0,0,0.15)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
@@ -595,16 +648,36 @@ export default function ContentGuidesPage() {
                   }}
                 >
                   <div className="card-body d-flex align-items-center gap-3">
-                    <img src={guide.icon} alt={guide.name} style={{ width: 48, height: 48 }} />
+                    <img
+                      src={guide.icon}
+                      alt={guide.name}
+                      style={{ width: 48, height: 48 }}
+                    />
                     <div>
-                      <h5 className="card-title mb-1" style={{ color: "#333" }}>{guide.name}</h5>
+                      <h5 className="card-title mb-1" style={{ color: "#333" }}>
+                        {guide.name}
+                      </h5>
                       <span
                         className="badge mb-2"
-                        style={{ background: guide.categoryColor, color: "#222", fontSize: "0.8rem", fontWeight: "700" }}
+                        style={{
+                          background: guide.categoryColor,
+                          color: "#222",
+                          fontSize: "0.8rem",
+                          fontWeight: "700",
+                        }}
                       >
                         {guide.categoryLabel}
                       </span>
-                      <p className="card-text mb-0" style={{ fontSize: "0.9rem", fontWeight: "400", color: "#666" }}>{guide.description}</p>
+                      <p
+                        className="card-text mb-0"
+                        style={{
+                          fontSize: "0.9rem",
+                          fontWeight: "400",
+                          color: "#666",
+                        }}
+                      >
+                        {guide.description}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -613,6 +686,7 @@ export default function ContentGuidesPage() {
           ))}
         </div>
       </section>
+      */}
     </div>
   );
 }

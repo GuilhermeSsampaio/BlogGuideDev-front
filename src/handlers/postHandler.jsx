@@ -8,8 +8,9 @@ export const useHandlersPosts = () => {
   const handleCreatePost = async (postData) => {
     try {
       const newPost = await apiService.savePost(postData);
+      const postIdentifier = newPost?.slug || newPost?.id;
       const redirectTo = newPost?.published
-        ? `${ROUTES.CONTEUDO}?tab=posts&highlight=${newPost.id}`
+        ? `${ROUTES.CONTEUDO}?highlight=${newPost.id}`
         : `${ROUTES.ADMIN}?tab=posts`;
 
       handleSuccess(

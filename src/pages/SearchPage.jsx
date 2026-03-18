@@ -72,7 +72,7 @@ export default function SearchPage() {
                 {results.posts.map((p) => (
                   <Link
                     key={p.id}
-                    to={`/conteudo/${p.id}`}
+                    to={`/conteudo/${p.slug || p.id}`}
                     className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded"
                   >
                     <div className="d-flex justify-content-between align-items-start">
