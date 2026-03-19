@@ -214,7 +214,7 @@ function PostArticle({ post }) {
 export default function ContentDetailPage() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
-  const [loadingPost, setLoadingPost] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [postError, setPostError] = useState("");
 
   useEffect(() => {
@@ -223,11 +223,12 @@ export default function ContentDetailPage() {
 
   useEffect(() => {
     if (!slug) {
+      setLoading(false);
       return;
     }
 
     const loadPost = async () => {
-      setLoadingPost(true);
+      setLoading(true);
       setPostError("");
 
       try {
@@ -236,15 +237,16 @@ export default function ContentDetailPage() {
       } catch (error) {
         console.error("Erro ao buscar post:", error);
         setPostError("Conteúdo não encontrado.");
+        setPost(null);
       } finally {
-        setLoadingPost(false);
+        setLoading(false);
       }
     };
 
     loadPost();
   }, [slug]);
 
-  if (loadingPost) {
+  if (loading) {
     return (
       <div className="container text-center py-5">
         <div className="spinner-border azul mt-5" role="status">
