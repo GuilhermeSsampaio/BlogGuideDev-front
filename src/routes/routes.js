@@ -74,6 +74,12 @@ export const publicRoutes = [
     name: "Registrar",
     showInNav: false,
   },
+  {
+    path: ROUTES.SOBRE,
+    component: SobrePage,
+    name: "Sobre",
+    showInNav: true,
+  },
 ];
 
 // Rotas protegidas (precisam de autenticação)
@@ -95,12 +101,6 @@ export const protectedRoutes = [
     component: CriarForumPage,
     name: "Criar Tópico",
     showInNav: false,
-  },
-  {
-    path: ROUTES.SOBRE,
-    component: SobrePage,
-    name: "Sobre",
-    showInNav: true,
   },
   {
     path: ROUTES.USUARIO,

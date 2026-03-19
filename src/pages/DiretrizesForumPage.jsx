@@ -7,19 +7,19 @@ export default function DiretrizesForumPage() {
       <div className="row">
         <div className="col-md-10 mx-auto">
           <Link to="/criar-forum" className="btn mb-5" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
-            <i className="bi bi-arrow-left me-1"></i>
+            <i className="bi bi-arrow-left me-2"></i>
             Voltar ao Fórum
           </Link>
 
-          <div className="text-center mb-5">
+          <div className="text-center mb-4">
             <h2 className="azul fw-bold">
               Tentando construir um pedaço de internet mais massa
             </h2>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <div style={{ lineHeight: "1.8", fontSize: "1.05rem" }}>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 Não sei se você compartilha da visão de que a internet, pelo
                 menos em sites onde a mídia principal é o texto, deixou de ser
                 um lugar "massa" recentemente. O ruído está ensurdecedor. É tanta
@@ -27,31 +27,31 @@ export default function DiretrizesForumPage() {
                 sensação de sermos presas cercadas por predadores, enquanto
                 tentamos extrair algum valor no meio dessa confusão.
               </p>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 Mas, para deixar claro desde o início: não temos nada contra
                 marketing, ofertas ou propagandas. Produtos e serviços precisam
                 de visibilidade, e projetos na internet precisam ser
                 financeiramente viáveis. Caso contrário, é apenas uma questão de
                 tempo até sumirem do mapa.
               </p>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 O problema é quando isso ofusca a informação. E é isso que nos
                 leva ao principal objetivo do BlogGuide:
               </p>
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <div style={{ lineHeight: "1.8", fontSize: "1.05rem" }}>
               <h4 className="azul fw-bold mb-3">Conteúdos com Valor Concreto e Confiável</h4>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 Quem trabalha com tecnologia de forma séria precisa consumir
                 conteúdos de fontes confiáveis e com valor concreto. Acreditamos
                 que chegou a hora de dar um cavalo de pau de 180 graus na
                 contramão das redes sociais atuais e resgatar o espírito
                 colaborativo dos fóruns de antigamente.
               </p>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 Aqui, a ideia é criar tópicos (threads) que entreguem
                 informações valiosas tanto na postagem principal quanto nas
                 respostas (que, muitas vezes, são ainda mais ricas que o post
@@ -60,7 +60,7 @@ export default function DiretrizesForumPage() {
                 teste: clique em responder e compare o espaço que você tem aqui
                 para elaborar sua ideia com o de outras redes.
               </p>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 Tudo no BlogGuide é tratado como conteúdo de primeira classe,
                 possuindo um link exclusivo — seja a postagem original, a
                 resposta, ou a resposta da resposta. Por isso, temos uma mecânica
@@ -71,10 +71,10 @@ export default function DiretrizesForumPage() {
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <div style={{ lineHeight: "1.8", fontSize: "1.05rem" }}>
               <h4 className="azul fw-bold mb-3">Participação e Sustentabilidade (Revenue Share)</h4>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 A participação ativa na plataforma gera oportunidades. 
                 Isso é extremamente empolgante. Esse "algo" a ser divulgado pode
                 ser um produto, um serviço, um repositório seu no GitHub (que
@@ -86,22 +86,22 @@ export default function DiretrizesForumPage() {
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <div style={{ lineHeight: "1.8", fontSize: "1.05rem" }}>
               <h4 className="azul fw-bold mb-3">A Cultura do BlogGuide: Exatidão e Empatia</h4>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 <strong>
                   Nós somos pessoas brutalmente exatas e empáticas,
                   simultaneamente.
                 </strong>
               </p>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 Pare para pensar como esses dois pontos, quando levados ao máximo
                 ao mesmo tempo, criam interações incrivelmente valiosas. Não pode
                 ser só exatidão técnica, nem só empatia cega — precisam ser os
                 dois.
               </p>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 O termômetro para saber se estamos no caminho certo é simples: as
                 discussões estão aproximando ou afastando as pessoas? Se de um
                 tópico as pessoas só se afastam, ou se as respostas contêm apenas
@@ -114,16 +114,17 @@ export default function DiretrizesForumPage() {
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <div style={{ lineHeight: "1.8", fontSize: "1.05rem" }}>
               <h4 className="azul fw-bold mb-3">Tecnologia e Open Source</h4>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 O nosso cuidado não é somente com as pessoas, mas também com a
                 tecnologia por trás de tudo. O projeto está sendo desenvolvido
                 com React + Vite + FastAPI e, o mais massa de tudo, de forma Open Source!
               </p>
-              <p>
-                O repositório do BlogGuide ficará público em breve para que você
+              <p style={{ textAlign: "justify" }}>
+                O repositório do <a href="https://github.com/GuilhermeSsampaio/BlogGuideDev-front" target="_blank" rel="noopener noreferrer" style={{ color: "initial" }}>BlogGuide</a> {""}
+                ficará público em breve para que você
                 possa acompanhar todo o desenvolvimento. Fica aqui o nosso enorme
                 agradecimento a todos da comunidade que estão ajudando a
                 construir isso. Sem vocês — colocando a mão na massa,
@@ -134,10 +135,10 @@ export default function DiretrizesForumPage() {
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4">
             <div style={{ lineHeight: "1.8", fontSize: "1.05rem" }}>
               <h4 className="azul fw-bold mb-3">Conclusão</h4>
-              <p>
+              <p style={{ textAlign: "justify" }}>
                 <strong>Seja extremamente bem-vindo ou bem-vinda!</strong>
               </p>
               <p className="text-muted fst-italic">

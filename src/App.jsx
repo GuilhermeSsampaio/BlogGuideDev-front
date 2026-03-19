@@ -7,11 +7,13 @@ import Footer from "./components/Layout/Footer";
 import AppRoutes from "./routes";
 import { AuthProvider } from "./contexts/AuthProvider";
 import ToastTestButtons from "./components/ToastTestButtons";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <div className="app-container d-flex flex-column min-vh-100">
           <Header />
           <main className="main-content flex-grow-1">

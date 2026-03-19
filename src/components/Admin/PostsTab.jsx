@@ -35,14 +35,14 @@ export default function PostsTab({ posts, loading, onDelete, onEdit }) {
 
   return (
     <div>
-      <div className="d-flex justify-content-between align-items-center gap-3 mb-4">
+      <div className="d-flex justify-content-between align-items-center gap-3 mb-4" style={{ flexWrap: "wrap" }}>
         <div>
           <h5 className="mb-1 azul">Posts do admin</h5>
           <p className="text-muted mb-0">
             Crie, acompanhe rascunhos e remova conteúdos publicados.
           </p>
         </div>
-        <Link to={ROUTES.CRIAR_POST} className="btn btn-primary">
+        <Link to={ROUTES.CRIAR_POST} className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
           <i className="bi bi-plus-lg me-2"></i>
           Novo post
         </Link>
@@ -78,20 +78,20 @@ export default function PostsTab({ posts, loading, onDelete, onEdit }) {
           <thead className="table-light">
             <tr>
               <th>Título</th>
-              <th>Autor</th>
+              <th className="d-none d-md-table-cell">Autor</th>
               <th>Status</th>
-              <th>Categoria</th>
-              <th>Data</th>
+              <th className="d-none d-md-table-cell">Categoria</th>
+              <th className="d-none d-md-table-cell">Data</th>
               <th className="text-end">Ações</th>
             </tr>
           </thead>
           <tbody>
             {filteredPosts.map((p) => (
               <tr key={p.id}>
-                <td>
+                <td style={{whiteSpace: "normal", wordBreak: "break-word"}}>
                   <span className="fw-500">{p.title}</span>
                 </td>
-                <td className="text-muted">
+                <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120}}>
                   {p.author || p.authorName || "—"}
                 </td>
                 <td>
@@ -101,8 +101,8 @@ export default function PostsTab({ posts, loading, onDelete, onEdit }) {
                     <span className="badge bg-warning text-dark">Rascunho</span>
                   )}
                 </td>
-                <td className="text-muted">{p.excerpt || "Sem categoria"}</td>
-                <td className="text-muted small">{formatDate(p.created_at)}</td>
+                <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120}}>{p.excerpt || "Sem categoria"}</td>
+                <td className="d-none d-md-table-cell text-muted small">{formatDate(p.created_at)}</td>
                 <td className="text-end">
                   <div className="btn-group btn-group-sm" role="group">
                     <button

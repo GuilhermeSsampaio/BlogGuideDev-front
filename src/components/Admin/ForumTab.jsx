@@ -22,25 +22,25 @@ export default function ForumTab({ topics, loading, onDelete }) {
         <thead className="table-light">
           <tr>
             <th>Título</th>
-            <th>Tipo</th>
+            <th className="d-none d-md-table-cell">Tipo</th>
             <th>Autor</th>
-            <th>Data</th>
+            <th className="d-none d-md-table-cell">Data</th>
             <th className="text-end">Ações</th>
           </tr>
         </thead>
         <tbody>
           {topics.map((t) => (
             <tr key={t.id}>
-              <td>{t.titulo}</td>
-              <td>
+              <td style={{whiteSpace: "normal", wordBreak: "break-word"}}>{t.titulo}</td>
+              <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120}}>
                 {t.tipo ? (
                   <span className="badge bg-info text-dark">{t.tipo}</span>
                 ) : (
                   <span className="text-muted">-</span>
                 )}
               </td>
-              <td className="text-muted">{t.autor}</td>
-              <td className="text-muted small">{formatDate(t.data_criacao)}</td>
+              <td>{t.autor}</td>
+              <td className="d-none d-md-table-cell text-muted small">{formatDate(t.data_criacao)}</td>
               <td className="text-end">
                 <button
                   className="btn btn-sm btn-outline-danger"

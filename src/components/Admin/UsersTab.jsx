@@ -28,14 +28,14 @@ export default function UsersTab({
   return (
     <div>
       <CreateUserForm onCreate={onCreate} />
-      <div className="table-responsive">
+      <div style={{ height: "200px" }}>
         <table className="table table-hover align-middle">
           <thead className="table-light">
             <tr>
               <th>Usuário</th>
-              <th>Email</th>
+              <th className="d-none d-md-table-cell">Email</th>
               <th>Role</th>
-              <th>Verificado</th>
+              <th className="d-none d-md-table-cell">Verificado</th>
               <th className="text-end">Ações</th>
             </tr>
           </thead>
@@ -46,13 +46,13 @@ export default function UsersTab({
                   <i className="bi bi-person-circle me-2 azul"></i>
                   {u.username}
                 </td>
-                <td className="text-muted">{u.email}</td>
+                <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120}}>{u.email}</td>
                 <td>
                   <span className={`badge ${roleBadge(u.tipo_perfil)}`}>
                     {u.tipo_perfil}
                   </span>
                 </td>
-                <td>
+                <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120}}>
                   {u.verified ? (
                     <i className="bi bi-check-circle-fill text-success"></i>
                   ) : (

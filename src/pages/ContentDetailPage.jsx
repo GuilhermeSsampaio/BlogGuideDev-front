@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import contentData from "../utils/contentData";
 import CurtidaButton from "../components/CurtidaButton";
 import ComentarioSection from "../components/ComentarioSection";
@@ -69,16 +71,20 @@ function ContentArticle({ content, conteudoId }) {
             </h2>
           )}
 
+          {/* Renderização do texto com ReactMarkdown para interpretar as Tabelas e Negritos */}
           {section.text && (
-            <div
-              className="markdown-content"
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.8,
-                textAlign: "justify",
-              }}
-            >
-              {renderTextSection(section.text)}
+            <div className="markdown-content" style={{ fontSize: "1.05rem", lineHeight: 1.8, textAlign: "justify" }}>
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  // Estilizando a tabela automaticamente com as classes do Bootstrap
+                  table: ({node, ...props}) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
+                  thead: ({node, ...props}) => <thead className="table-dark" {...props} />,
+                  p: ({node, ...props}) => <p style={{ whiteSpace: "pre-line" }} {...props} />
+                }}
+              >
+                {section.text}
+              </ReactMarkdown>
             </div>
           )}
 
@@ -276,7 +282,16 @@ function PostArticle({ post }) {
                   textAlign: "justify",
                 }}
               >
-                {renderTextSection(section.text)}
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    table: ({node, ...props}) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
+                    thead: ({node, ...props}) => <thead className="table-dark" {...props} />,
+                    p: ({node, ...props}) => <p style={{ whiteSpace: "pre-line" }} {...props} />
+                  }}
+                >
+                  {section.text}
+                </ReactMarkdown>
               </div>
             )}
 
