@@ -17,8 +17,8 @@ export default function ForumTab({ topics, loading, onDelete }) {
     });
 
   return (
-    <div className="table-responsive">
-      <table className="table table-hover align-middle">
+    <div>
+      <table className="table table-hover align-middle tables-admin">
         <thead className="table-light">
           <tr>
             <th>Título</th>

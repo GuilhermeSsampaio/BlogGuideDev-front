@@ -6,8 +6,7 @@ import { getPostCategoryLabel, normalizePosts } from "../utils/postUtils";
 export default function ContentGuidesPage() {
   const [searchParams] = useSearchParams();
   const highlightedPostId = searchParams.get("highlight");
-  const [selectedGuideCategory, setSelectedGuideCategory] = useState("all");
-  const [selectedPostCategory, setSelectedPostCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [publishedPosts, setPublishedPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [postsError, setPostsError] = useState("");
@@ -53,10 +52,10 @@ export default function ContentGuidesPage() {
   ];
 
   const filteredPosts = (
-    selectedPostCategory === "all"
+    selectedCategory === "all"
       ? publishedPosts
       : publishedPosts.filter(
-          (post) => getPostCategoryLabel(post) === selectedPostCategory,
+          (post) => getPostCategoryLabel(post) === selectedCategory,
         )
   ).slice().sort((a, b) => {
     if (!a.created_at || !b.created_at) return 0;
@@ -97,19 +96,19 @@ export default function ContentGuidesPage() {
         <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-3">
           {/* <div>
             <h2 className="fw-bold mb-1" style={{ color: "#333" }}>
-              Posts publicados
+              Conteúdos Publicados
             </h2>
             <p className="mb-0 text-secondary-conteudo">
-              Conteúdos vindos do endpoint de posts, mantendo o mesmo estilo
-              visual em cards da vitrine atual.
+              Guias e tutoriais publicados pelo time de desenvolvimento sobre
+              tecnologias, ferramentas e melhores práticas.
             </p>
           </div> */}
           <div className="d-flex flex-wrap gap-2">
             {postCategories.map((category) => (
               <button
                 key={category.key}
-                className={`btn ${selectedPostCategory === category.key ? "btn-primary" : "btn-outline-secondary"} btn-sm px-3`}
-                onClick={() => setSelectedPostCategory(category.key)}
+                className={`btn ${selectedCategory === category.key ? "btn-primary" : "btn-outline-secondary"} btn-sm px-3`}
+                onClick={() => setSelectedCategory(category.key)}
               >
                 {category.label}
               </button>
@@ -238,94 +237,6 @@ export default function ContentGuidesPage() {
           </div>
         )}
       </section>
-      {/* 
-      <section>
-        <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
-          <div>
-            <h2 className="fw-bold mb-1" style={{ color: "#333" }}>
-              Guias do BlogGuide
-            </h2>
-            <p className="mb-0 text-secondary-conteudo">
-              A vitrine original baseada em array continua disponível para os
-              conteúdos fixos e educativos.
-            </p>
-          </div>
-          <div className="d-flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat.key}
-                className={`btn ${selectedGuideCategory === cat.key ? "btn-primary" : "btn-outline-secondary"} btn-sm px-3`}
-                onClick={() => setSelectedGuideCategory(cat.key)}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="row g-4">
-          {filteredGuides.map((guide) => (
-            <div className="col-md-6 col-lg-4" key={guide.slug}>
-              <Link
-                to={`/conteudo/${guide.slug}`}
-                className="text-decoration-none"
-              >
-                <div
-                  className="card h-100 shadow-sm"
-                  style={{
-                    cursor: "pointer",
-                    transition: "transform 0.2s, box-shadow 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 25px rgba(0,0,0,0.15)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "";
-                  }}
-                >
-                  <div className="card-body d-flex align-items-center gap-3">
-                    <img
-                      src={guide.icon}
-                      alt={guide.name}
-                      style={{ width: 48, height: 48 }}
-                    />
-                    <div>
-                      <h5 className="card-title mb-1" style={{ color: "#333" }}>
-                        {guide.name}
-                      </h5>
-                      <span
-                        className="badge mb-2"
-                        style={{
-                          background: guide.categoryColor,
-                          color: "#222",
-                          fontSize: "0.8rem",
-                          fontWeight: "700",
-                        }}
-                      >
-                        {guide.categoryLabel}
-                      </span>
-                      <p
-                        className="card-text mb-0"
-                        style={{
-                          fontSize: "0.9rem",
-                          fontWeight: "400",
-                          color: "#666",
-                        }}
-                      >
-                        {guide.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
-      */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -247,18 +247,19 @@ function PostArticle({ post }) {
           </div>
         </div>
 
-        {post.image_url && (
-          <div className="mb-4">
-            <img
-              src={post.image_url}
-              alt={post.title}
-              className="img-fluid rounded shadow-sm"
-              style={{ maxHeight: 400, width: "100%" }}
-            />
-          </div>
-        )}
+      {(post.image_url || post.image) && (
+        <div className="mb-4">
+          <img
+            src={post.image_url || post.image}
+            alt={post.title}
+            className="img-fluid rounded shadow-sm"
+            style={{ maxHeight: 400, width: "100%" }}
+          />
+        </div>
+      )}
 
-        {post.sections.map((section, idx) => (
+      {post.sections && Array.isArray(post.sections) ? (
+        post.sections.map((section, idx) => (
           <div key={idx} className="mb-4">
             {section.heading && (
               <h2
@@ -387,98 +388,49 @@ function PostArticle({ post }) {
               </div>
             )}
           </div>
-        ))}
-
-        <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
-          <div className="mb-4">
-            <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
-          </div>
-          <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
+        ))
+      ) : (
+        <div
+          className="markdown-content"
+          style={{
+            fontSize: "1.05rem",
+            lineHeight: 1.8,
+            textAlign: "justify",
+          }}
+        >
+          {post.content && renderTextSection(post.content)}
         </div>
+      )}
 
-        <div className="mt-5 pt-3">
-          <Link
-            to="/conteudo"
-            className="btn"
-            style={{
-              backgroundColor: "#7C3AED",
-              color: "#ffffff",
-              fontWeight: "500",
-            }}
-          >
-            ← Voltar para Conteúdos
-          </Link>
+      <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
+        <div className="mb-4">
+          <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
         </div>
+        <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
       </div>
+
+      <div className="mt-5 pt-3">
+        <Link
+          to="/conteudo"
+          className="btn"
+          style={{
+            backgroundColor: "#7C3AED",
+            color: "#ffffff",
+            fontWeight: "500",
+          }}
+        >
+          ← Voltar para Conteúdos
+        </Link>
+      </div>
+    </div>
     );
   }
-
-  // Renderização antiga para posts sem sections
-  return (
-    <div className="container py-5" style={{ maxWidth: "1000px" }}>
-      <Link to="/conteudo" className="btn btn-outline-secondary btn-sm mb-4">
-        <i className="bi bi-arrow-left me-1"></i>
-        Voltar para conteúdos
-      </Link>
-
-      <article className="card border-0 shadow-sm overflow-hidden">
-        {post.image_url && (
-          <div
-            style={{
-              height: 320,
-              backgroundImage: `url('${post.image_url}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          ></div>
-        )}
-
-        <div className="card-body p-4 p-lg-5">
-          <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
-            <span className="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle">
-              {post.excerpt || "Post publicado"}
-            </span>
-            <span className="text-muted small">{formattedDate}</span>
-          </div>
-
-          <h1 className="azul jersey-25-regular mb-3">{post.title}</h1>
-
-          <div className="d-flex align-items-center gap-2 mb-4 text-muted">
-            <i
-              className="bi bi-person-circle"
-              style={{ fontSize: "1.2rem" }}
-            ></i>
-            <span>{post.authorName}</span>
-          </div>
-
-          <div
-            className="post-content"
-            style={{ fontSize: "1.08rem", lineHeight: "1.9" }}
-          >
-            {post.content.split("\n").map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
-
-          <div className="mt-4 d-flex gap-3">
-            <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
-          </div>
-
-          <hr className="my-4" />
-
-          <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
-        </div>
-      </article>
-    </div>
-  );
 }
 
 export default function ContentDetailPage() {
   const { slug } = useParams();
-  const staticContent = contentData.find((item) => item.slug === slug);
-  const [conteudoId, setConteudoId] = useState(null);
   const [post, setPost] = useState(null);
-  const [loadingPost, setLoadingPost] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [postError, setPostError] = useState("");
 
   useEffect(() => {
@@ -486,22 +438,13 @@ export default function ContentDetailPage() {
   }, [slug]);
 
   useEffect(() => {
-    if (staticContent) {
-      apiService
-        .getConteudoBySlug(slug)
-        .then((data) => setConteudoId(data.id))
-        .catch((err) => console.error("Erro ao buscar conteudo:", err));
-      setPost(null);
-      setPostError("");
-      return;
-    }
-
     if (!slug) {
+      setLoading(false);
       return;
     }
 
     const loadPost = async () => {
-      setLoadingPost(true);
+      setLoading(true);
       setPostError("");
 
       try {
@@ -510,25 +453,22 @@ export default function ContentDetailPage() {
       } catch (error) {
         console.error("Erro ao buscar post:", error);
         setPostError("Conteúdo não encontrado.");
+        setPost(null);
       } finally {
-        setLoadingPost(false);
+        setLoading(false);
       }
     };
 
     loadPost();
-  }, [slug, staticContent]);
+  }, [slug]);
 
-  if (staticContent) {
-    return <ContentArticle content={staticContent} conteudoId={conteudoId} />;
-  }
-
-  if (loadingPost) {
+  if (loading) {
     return (
       <div className="container text-center py-5">
         <div className="spinner-border azul mt-5" role="status">
           <span className="visually-hidden">Carregando...</span>
         </div>
-        <p className="mt-3 text-muted">Carregando post...</p>
+        <p className="mt-3 text-muted">Carregando conteúdo...</p>
       </div>
     );
   }

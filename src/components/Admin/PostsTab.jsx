@@ -73,8 +73,8 @@ export default function PostsTab({ posts, loading, onDelete, onEdit }) {
         </div>
       </div>
 
-      <div className="table-responsive">
-        <table className="table table-hover align-middle">
+      <div>
+        <table className="table table-hover align-middle tables-admin">
           <thead className="table-light">
             <tr>
               <th>Título</th>

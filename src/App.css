@@ -234,7 +234,7 @@ footer {
 }
 
 /* Responsividade para tabelas de admin */
-.table td, .table th {
+.tables-admin td, .tables-admin th {
   white-space: nowrap;
   vertical-align: middle;
 }
@@ -247,7 +247,7 @@ footer {
   white-space: nowrap;
 }
 
-table {
+.tables-admin {
   width: 100%;
   table-layout: fixed;
 }

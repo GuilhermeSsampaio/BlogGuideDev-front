@@ -29,7 +29,7 @@ export default function UsersTab({
     <div>
       <CreateUserForm onCreate={onCreate} />
       <div style={{ height: "200px" }}>
-        <table className="table table-hover align-middle">
+        <table className="table table-hover align-middle tables-admin">
           <thead className="table-light">
             <tr>
               <th>Usuário</th>
