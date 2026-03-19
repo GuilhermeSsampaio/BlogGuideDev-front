@@ -1,16 +1,3 @@
-/* Responsividade para tabelas de admin */
-.table td, .table th {
-  white-space: nowrap;
-  vertical-align: middle;
-}
-
-.text-truncate {
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-  white-space: nowrap;
-}
 body {
   margin: 0;
   padding: 0;
@@ -246,13 +233,27 @@ footer {
   font-weight: bold;
 }
 
+/* Responsividade para tabelas de admin */
+.table td, .table th {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.text-truncate {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: nowrap;
+}
+
 table {
   width: 100%;
-  table-layout: fixed; /* Força as colunas a respeitarem a largura da tabela */
+  table-layout: fixed;
 }
 
 td, th {
-  word-wrap: break-word; /* Quebra as palavras longas se necessário */
+  word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
