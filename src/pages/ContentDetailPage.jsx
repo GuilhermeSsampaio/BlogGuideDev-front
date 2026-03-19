@@ -29,11 +29,7 @@ function PostArticle({ post }) {
     <div className="container py-5 page-detail-container">
       <div className="d-flex align-items-center gap-4 mb-4">
         {post.icon && (
-          <img
-            src={post.icon}
-            alt={post.title}
-            className="icon-tema-detail"
-          />
+          <img src={post.icon} alt={post.title} className="icon-tema-detail" />
         )}
         <div>
           <h1 className="fw-bold mb-1 text-title-detail">{post.title}</h1>
