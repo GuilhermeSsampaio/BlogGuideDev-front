@@ -37,7 +37,7 @@ export default function SearchPage() {
     results.posts.length + results.forum.length + results.vagas.length;
 
   return (
-    <div className="container py-4" style={{ maxWidth: "900px" }}>
+    <div className="container my-5" style={{ maxWidth: "1000px" }}>
       <h2 className="azul jersey-25-regular mb-1">
         <i className="bi bi-search me-2"></i>Resultados da Pesquisa
       </h2>
@@ -73,13 +73,35 @@ export default function SearchPage() {
                   <Link
                     key={p.id}
                     to={`/conteudo/${p.slug || p.id}`}
-                    className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded"
+                    className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded post-card-responsive"
                   >
-                    <div className="d-flex justify-content-between align-items-start">
+                    {/* Mobile layout: imagem em cima, depois título, excerpt, infos */}
+                    <div className="post-card-mobile d-flex d-md-none flex-column align-items-center text-center">
+                      {p.image_url && (
+                        <img
+                          src={p.image_url}
+                          alt=""
+                          className="rounded mb-2"
+                          style={{ width: '100%', height: "auto" }}
+                        />
+                      )}
+                      <h5 className="mb-1 azul fw-bold mt-2">{p.title}</h5>
+                      {p.excerpt && (
+                        <small className="text-muted d-block mb-1" style={{ fontWeight: "600" }}>
+                          {p.excerpt}
+                        </small>
+                      )}
+                      <small className="text-muted">
+                        <i className="bi bi-person me-1"></i>
+                        {p.author} · {formatDate(p.created_at)}
+                      </small>
+                    </div>
+                    {/* Desktop layout: imagem à direita, texto à esquerda */}
+                    <div className="d-none d-md-flex justify-content-between align-items-start">
                       <div className="flex-grow-1">
-                        <h6 className="mb-1 azul">{p.title}</h6>
+                        <h6 className="mb-1 azul fw-bold">{p.title}</h6>
                         {p.excerpt && (
-                          <small className="text-muted d-block mb-1">
+                          <small className="text-muted d-block mb-1" style={{ fontWeight: "600" }}>
                             {p.excerpt}
                           </small>
                         )}
@@ -93,7 +115,7 @@ export default function SearchPage() {
                           src={p.image_url}
                           alt=""
                           className="rounded ms-3"
-                          style={{ width: 60, height: 60, objectFit: "cover" }}
+                          style={{ width: 120, height: 60, objectFit: "cover" }}
                         />
                       )}
                     </div>

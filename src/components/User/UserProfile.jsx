@@ -100,9 +100,9 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="container-fluid my-4">
+    <div className="container-fluid my-5">
       <div className="row">
-        <div className="col-md-8 mx-auto">
+        <div className="col-md-10 mx-auto">
           <UserHeader
             formData={formData}
             user={user}
@@ -119,7 +119,7 @@ export default function UserProfile() {
               forunsCount={userTopics.length}
             />
 
-            <div className="card-body p-4">
+            <div className="card-body p-3">
               {activeTab === "perfil" && (
                 <UserProfileTab
                   formData={formData}

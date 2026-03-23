@@ -1,10 +1,32 @@
 import React, { useState } from "react";
 
 export default function PostForm({ onSubmit, initialData = null, onCancel }) {
+  // Extrai textos das sections ou usa content como fallback
+  const extractContentFromSections = (data) => {
+    if (data?.sections && Array.isArray(data.sections)) {
+      return data.sections
+        .filter((section) => section.text)
+        .map((section) => section.text)
+        .join("\n\n");
+    }
+    return data?.content || "";
+  };
+
+  // Extrai links das sections existentes
+  const extractLinksFromSections = (data) => {
+    if (data?.sections && Array.isArray(data.sections)) {
+      const linksSection = data.sections.find(
+        (section) => section.links && Array.isArray(section.links)
+      );
+      return linksSection?.links || [];
+    }
+    return [];
+  };
+
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     excerpt: initialData?.excerpt || "",
-    content: initialData?.content || "",
+    content: extractContentFromSections(initialData),
     image_url: initialData?.image_url || "",
     categoryLabel: initialData?.categoryLabel || "",
     categoryColor: initialData?.categoryColor || "#6c2bd7",
@@ -14,6 +36,13 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [links, setLinks] = useState(extractLinksFromSections(initialData));
+  const [newLink, setNewLink] = useState({
+    label: "",
+    url: "",
+    icon: "",
+    description: "",
+  });
 
   const categoryOptions = [
     { label: "Frontend e Interface", color: "#4fc3f7" },
@@ -46,6 +75,30 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       categoryLabel: label,
       categoryColor: color,
     }));
+  };
+
+  // Funções para gerenciar links
+  const handleNewLinkChange = (e) => {
+    const { name, value } = e.target;
+    setNewLink((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const addLink = () => {
+    if (!newLink.label.trim() || !newLink.url.trim()) {
+      return;
+    }
+    setLinks((prev) => [...prev, { ...newLink }]);
+    setNewLink({ label: "", url: "", icon: "", description: "" });
+  };
+
+  const removeLink = (index) => {
+    setLinks((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const updateLink = (index, field, value) => {
+    setLinks((prev) =>
+      prev.map((link, i) => (i === index ? { ...link, [field]: value } : link))
+    );
   };
 
   const validateForm = () => {
@@ -83,6 +136,8 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       description: "",
       is_published: true,
     });
+    setLinks([]);
+    setNewLink({ label: "", url: "", icon: "", description: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -95,6 +150,22 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     setLoading(true);
 
     try {
+      // Construir sections com conteúdo e links
+      const sections = [];
+
+      // Adicionar seção de conteúdo
+      if (formData.content.trim()) {
+        sections.push({ text: formData.content.trim() });
+      }
+
+      // Adicionar seção de links se houver
+      if (links.length > 0) {
+        sections.push({
+          heading: "Links Úteis",
+          links: links,
+        });
+      }
+
       const postData = {
         title: formData.title.trim(),
         content: formData.content.trim(),
@@ -105,6 +176,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
         icon: formData.icon || null,
         description: formData.description || null,
         published: formData.is_published,
+        sections: sections.length > 0 ? sections : null,
       };
 
       await onSubmit(postData);
@@ -266,15 +338,21 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   <div className="mb-3">
                     <label className="form-label">Preview da Imagem</label>
                     <div
-                      className="border rounded"
-                      style={{
-                        height: "200px",
-                        backgroundImage: `url('${formData.image_url}')`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                    ></div>
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <img
+                        src={formData.image_url}
+                        alt="Preview"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "400px",
+                          objectFit: "contain",
+                        }}
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                        }}
+                      />
+                    </div>
                   </div>
                 )}
 
@@ -295,6 +373,128 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                   )}
                   <small className="text-muted">
                     {formData.content.length} caracteres (mínimo 50)
+                  </small>
+                </div>
+
+                {/* Seção de Links */}
+                <div className="mb-3">
+                  <label className="form-label">Links Úteis (opcional)</label>
+                  <div
+                    className="p-3 mb-2"
+                    style={{
+                      backgroundColor: "#f8f9fa",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    {/* Lista de links existentes */}
+                    {links.length > 0 && (
+                      <div className="mb-3">
+                        {links.map((link, index) => (
+                          <div
+                            key={index}
+                            className="mb-2 p-2 bg-white rounded border"
+                          >
+                            <div className="row g-2 align-items-center">
+                              <div className="col-auto">
+                                <input
+                                  type="text"
+                                  className="form-control form-control-sm"
+                                  value={link.icon}
+                                  onChange={(e) =>
+                                    updateLink(index, "icon", e.target.value)
+                                  }
+                                  placeholder="🔗"
+                                  style={{ width: "50px" }}
+                                />
+                              </div>
+                              <div className="col-12 col-md">
+                                <input
+                                  type="text"
+                                  className="form-control form-control-sm"
+                                  value={link.label}
+                                  onChange={(e) =>
+                                    updateLink(index, "label", e.target.value)
+                                  }
+                                  placeholder="Nome do link"
+                                />
+                              </div>
+                              <div className="col-12 col-md-5">
+                                <input
+                                  type="url"
+                                  className="form-control form-control-sm"
+                                  value={link.url}
+                                  onChange={(e) =>
+                                    updateLink(index, "url", e.target.value)
+                                  }
+                                  placeholder="https://..."
+                                />
+                              </div>
+                              <div className="col-auto">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-danger btn-sm"
+                                  onClick={() => removeLink(index)}
+                                  title="Remover link"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Formulário para adicionar novo link */}
+                    <div className="row g-2 align-items-end">
+                      <div className="col-auto">
+                        <label className="form-label small">Ícone</label>
+                        <input
+                          type="text"
+                          className="form-control form-control-sm"
+                          name="icon"
+                          value={newLink.icon}
+                          onChange={handleNewLinkChange}
+                          placeholder="🔗"
+                          style={{ width: "50px" }}
+                        />
+                      </div>
+                      <div className="col-12 col-md">
+                        <label className="form-label small">Nome</label>
+                        <input
+                          type="text"
+                          className="form-control form-control-sm"
+                          name="label"
+                          value={newLink.label}
+                          onChange={handleNewLinkChange}
+                          placeholder="Nome do link"
+                        />
+                      </div>
+                      <div className="col-12 col-md-4">
+                        <label className="form-label small">URL</label>
+                        <input
+                          type="url"
+                          className="form-control form-control-sm"
+                          name="url"
+                          value={newLink.url}
+                          onChange={handleNewLinkChange}
+                          placeholder="https://exemplo.com"
+                        />
+                      </div>
+                      <div className="col-12 col-md-auto">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary btn-sm w-100"
+                          onClick={addLink}
+                          disabled={!newLink.label.trim() || !newLink.url.trim()}
+                        >
+                          + Adicionar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <small className="text-muted">
+                    {links.length} link(s) adicionado(s)
                   </small>
                 </div>
 
