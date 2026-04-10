@@ -2,7 +2,7 @@ import React from "react";
 
 export default function SobrePage() {
   return (
-    <div className="container-fluid my-4">
+    <div className="container-fluid my-5">
       <div className="row">
         <div className="col-md-8 mx-auto">
           <div className="text-center mb-5 jersey-25-regular">
@@ -25,7 +25,7 @@ export default function SobrePage() {
 
           <div className="card border-0 shadow-sm mb-4">
             <div className="card-body p-4">
-              <h3 className="azul mb-3 jersey-25-regular">💻 Tecnologias</h3>
+              <h3 className="azul mb-3 jersey-25-regular">💻 Tecnologias Utilizadas</h3>
               <div className="d-flex flex-wrap gap-2">
                 <span className="badge bg-primary" style={{ fontWeight: "500" }}>React</span>
                 <span className="badge bg-success" style={{ fontWeight: "500" }}>FastAPI</span>
@@ -36,19 +36,23 @@ export default function SobrePage() {
             </div>
           </div>
 
-          <div className="card border-0 shadow-sm jersey-25-regular">
+          <div className="card border-0 shadow-sm">
             <div className="card-body p-4">
-              <h3 className="azul mb-3">👤 Desenvolvedores</h3>
+              <h3 className="azul mb-3 jersey-25-regular">👤 Desenvolvedores</h3>
               <p>
-                <span style={{ letterSpacing: "1px", fontWeight: "600" }}>Guilherme Sampaio</span>
+                <span style={{ fontWeight: "600" }}>Guilherme Sampaio</span>
                 <br />
-                Desenvolvedor apaixonado por tecnologia e compartilhamento de
-                conhecimento.
+                <p className="jersey-25-regular">
+                  Desenvolvedor apaixonado por tecnologia e compartilhamento de
+                  conhecimento.
+                </p>
               </p>
               <p>
-                <span style={{ letterSpacing: "1px", fontWeight: "600" }}>Pedro Mota</span>
+                <span style={{ fontWeight: "600" }}>Pedro Mota</span>
                 <br />
-                Desenvolvedor Front-end.
+                <p className="jersey-25-regular">
+                  Desenvolvedor Front-end.
+                </p>
               </p>
             </div>
           </div>

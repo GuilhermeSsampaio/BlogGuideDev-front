@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHandlersRegister } from "../handlers/registerHandler";
 import { ROUTES } from "../routes/constants";
+import { cnpj } from "cpf-cnpj-validator";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,13 @@ export default function RegisterPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cnpjData, setCnpjData] = useState({
+    value: "",
+    loading: false,
+    error: "",
+    companyName: "",
+    isValid: false,
+  });
 
   const { handleRegister } = useHandlersRegister();
 
@@ -25,13 +33,76 @@ export default function RegisterPage() {
     });
   };
 
+  const handleCnpjChange = async (e) => {
+    const rawValue = e.target.value.replace(/\D/g, "").slice(0, 14);
+    const maskedValue = cnpj.format(rawValue);
+
+    setCnpjData((prev) => ({
+      ...prev,
+      value: maskedValue,
+      error: "",
+      companyName: "",
+      isValid: false,
+    }));
+
+    if (rawValue.length === 14) {
+      if (cnpj.isValid(rawValue)) {
+        await fetchCnpjData(rawValue);
+      } else {
+        setCnpjData((prev) => ({
+          ...prev,
+          error: "CNPJ matematicamente inválido.",
+          isValid: false,
+        }));
+      }
+    }
+  };
+
+  const fetchCnpjData = async (value) => {
+    setCnpjData((prev) => ({ ...prev, loading: true }));
+    try {
+      const resp = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${value}`);
+      if (!resp.ok) throw new Error("CNPJ não encontrado.");
+      const data = await resp.json();
+
+      const isAtiva = data.descricao_situacao_cadastral === "ATIVA";
+
+      setCnpjData({
+        value: cnpj.format(value),
+        loading: false,
+        error: isAtiva
+          ? ""
+          : `Empresa não permitida: Situação ${data.descricao_situacao_cadastral}`,
+        companyName: data.razao_social,
+        isValid: isAtiva,
+      });
+    } catch (err) {
+      setCnpjData((prev) => ({
+        ...prev,
+        loading: false,
+        error: "Erro ao consultar API do CNPJ.",
+        isValid: false,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.tipoPerfil === "recrutador" && !cnpjData.isValid) {
+      setError("CNPJ inválido ou empresa não ativa.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     try {
-      await handleRegister(formData);
+      const payload = { ...formData };
+      if (formData.tipoPerfil === "recrutador") {
+        payload.cnpj = cnpjData.value.replace(/\D/g, "");
+      }
+      await handleRegister(payload);
     } catch (error) {
       setError("Erro inesperado. Tente novamente.");
       console.error(error);
@@ -159,6 +230,32 @@ export default function RegisterPage() {
                     </div>
                   </div>
                 </div>
+
+                {formData.tipoPerfil === "recrutador" && (
+                  <div className="mb-3">
+                    <label className="form-label">CNPJ da Empresa</label>
+                    <input
+                      type="text"
+                      className={`form-control ${
+                        cnpjData.error ? "is-invalid" : cnpjData.isValid ? "is-valid" : ""
+                      }`}
+                      name="cnpj"
+                      value={cnpjData.value}
+                      onChange={handleCnpjChange}
+                      placeholder="00.000.000/0000-00"
+                      required
+                    />
+                    <div className="form-text">
+                      {cnpjData.loading && <span className="text-info">Consultando dados...</span>}
+                      {cnpjData.error && <span className="text-danger">{cnpjData.error}</span>}
+                      {cnpjData.isValid && (
+                        <span className="text-success d-block">
+                          <strong>Razão Social:</strong> {cnpjData.companyName}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <button
                   type="submit"

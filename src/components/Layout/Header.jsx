@@ -181,18 +181,19 @@ export default function Header() {
             {isAuthenticated ? (
               <Link
                 to={ROUTES.USUARIO}
-                className="btn d-flex align-items-center justify-content-center"
+                className="btn px-3"
                 style={{
                   background: "#6c2bd7",
                   color: "#fff",
-                  borderRadius: "50%",
-                  width: "40px",
-                  height: "40px",
-                  padding: "0",
+                  borderRadius: "1.5rem",
+                  fontWeight: "500",
+                  fontSize: "1rem",
+                  padding: "0.5rem 1.3rem",
                 }}
                 onClick={handleNavLinkClick}
               >
-                <i className="bi bi-person-fill" style={{ fontSize: "1.2rem" }}></i>
+                <i className="bi bi-person-fill me-2"></i>
+                Perfil
               </Link>
             ) : (
               <Link
@@ -205,7 +206,6 @@ export default function Header() {
                   fontWeight: "500",
                   fontSize: "1rem",
                   padding: "0.5rem 1.3rem",
-                  gap: ".5rem",
                 }}
                 onClick={handleNavLinkClick}
               >

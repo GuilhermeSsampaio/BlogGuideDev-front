@@ -86,7 +86,7 @@ export default function UserConfigTab({
               </label>
               <input
                 type="url"
-                className="form-control"
+                className="form-control text-muted"
                 name="github"
                 value={formData.github}
                 onChange={handleInputChange}
@@ -103,7 +103,7 @@ export default function UserConfigTab({
               </label>
               <input
                 type="url"
-                className="form-control"
+                className="form-control text-muted"
                 name="linkedin"
                 value={formData.linkedin}
                 onChange={handleInputChange}
@@ -149,7 +149,7 @@ export default function UserConfigTab({
 
         {/* BOTÕES */}
 
-        <div className="d-flex justify-content-between align-items-center mt-4">
+        <div className="d-flex justify-content-end gap-2 mt-4">
 
           <button
             type="button"
@@ -164,7 +164,7 @@ export default function UserConfigTab({
 
           <button
             type="submit"
-            className="btn btn-primary px-4"
+            className="btn btn-primary"
             disabled={saveStatus === "saving"}
           >
             {saveStatus === "saving" && (

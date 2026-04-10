@@ -18,9 +18,10 @@ export const useHandlersRegister = () => {
         username: userData.username,
         email: userData.email,
         password: userData.password,
-        tipo_perfil: userData.tipoPerfil || "user",
-        nome_completo: userData.name || null,
+        tipo_perfil: userData.tipo_perfil || userData.tipoPerfil || "user",
+        nome_completo: userData.name || userData.nome_completo || null,
         bio: userData.bio || null,
+        cnpj: userData.cnpj || null,
       });
 
       await login(userData.email, userData.password);

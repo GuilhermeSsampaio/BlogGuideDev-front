@@ -102,7 +102,7 @@ export default function CriarForumPage() {
               <i className="bi bi-arrow-left me-2"></i>
               Voltar ao Fórum
             </Link>
-            <h2 className="fw-bold">Criar Novo Tópico</h2>
+            <h2 className="text-title-forum fw-bold">Criar Novo Tópico</h2>
           </div>
 
           {/* Alerta de diretrizes */}
@@ -203,7 +203,7 @@ export default function CriarForumPage() {
                       }}
                     >
                       <i className="bi bi-upload me-1"></i>
-                      Do Computador
+                      Do Aparelho
                     </button>
                   </div>
 

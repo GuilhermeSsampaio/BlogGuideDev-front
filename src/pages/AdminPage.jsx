@@ -135,7 +135,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container py-4">
+    <div className="container-fluid my-5" style={{ maxWidth: "1200px" }}>
       <div className="d-flex align-items-center gap-3 mb-4">
         <i
           className="bi bi-shield-lock-fill azul"

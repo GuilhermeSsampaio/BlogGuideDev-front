@@ -11,26 +11,56 @@ export default function ContentGuidesPage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [postsError, setPostsError] = useState("");
 
-  const postCategories = [
-    { key: "all", label: "Todos" },
-    ...Array.from(
-      new Set(
-        publishedPosts
-          .map((post) => getPostCategoryLabel(post))
-          .filter(Boolean),
-      ),
-    ).map((category) => ({
-      key: category,
-      label: category,
-    })),
+  // const filteredGuides =
+  //   selectedGuideCategory === "all"
+  //     ? techGuides
+  //     : techGuides.filter((guide) => guide.category === selectedGuideCategory);
+
+  const desiredOrder = [
+    "Frontend e Interface",
+    "Linguagens e Plataformas",
+    "Banco de Dados e CMS",
+    "Inteligência Artificial",
+    "Mobile",
+    "DevOps e Cloud",
+    "Sistemas Operacionais"
   ];
 
-  const filteredPosts =
+  // Gera as categorias normalmente
+  let dynamicCategories = Array.from(
+    new Set(
+      publishedPosts
+        .map((post) => getPostCategoryLabel(post))
+        .filter(Boolean),
+    ),
+  ).map((category) => ({
+    key: category,
+    label: category,
+  }));
+
+  // Ordena as categorias conforme a ordem desejada
+  dynamicCategories = [
+    ...desiredOrder
+      .map((cat) => dynamicCategories.find((c) => c.key === cat))
+      .filter(Boolean),
+    ...dynamicCategories.filter((c) => !desiredOrder.includes(c.key)),
+  ];
+
+  const postCategories = [
+    { key: "all", label: "Todos os posts" },
+    ...dynamicCategories,
+  ];
+
+  const filteredPosts = (
     selectedCategory === "all"
       ? publishedPosts
       : publishedPosts.filter(
           (post) => getPostCategoryLabel(post) === selectedCategory,
-        );
+        )
+  ).slice().sort((a, b) => {
+    if (!a.created_at || !b.created_at) return 0;
+    return new Date(a.created_at) - new Date(b.created_at);
+  });
 
   useEffect(() => {
     const loadPublishedPosts = async () => {
@@ -59,13 +89,12 @@ export default function ContentGuidesPage() {
         Explore o Universo Dev
       </h1>
       <p className="mb-5 text-secondary-conteudo">
-        Os guias fixos continuam disponíveis e agora os posts publicados pelo
-        admin também aparecem aqui em cards, consumindo a API.
+        As melhores ferramentas, linguagens e frameworks explicados de um jeito simples e direto ao ponto. Sem enrolação.
       </p>
 
       <section className="mb-5">
         <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-3">
-          <div>
+          {/* <div>
             <h2 className="fw-bold mb-1" style={{ color: "#333" }}>
               Conteúdos Publicados
             </h2>
@@ -73,7 +102,7 @@ export default function ContentGuidesPage() {
               Guias e tutoriais publicados pelo time de desenvolvimento sobre
               tecnologias, ferramentas e melhores práticas.
             </p>
-          </div>
+          </div> */}
           <div className="d-flex flex-wrap gap-2">
             {postCategories.map((category) => (
               <button

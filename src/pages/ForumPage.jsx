@@ -59,8 +59,8 @@ export default function ForumPage() {
 
       {/* Botão de novo tópico */}
       {isAuthenticated && (
-        <div className="text-end mb-3">
-          <Link to="/criar-forum" className="btn btn-primary" style={{ fontWeight: "500" }}>
+        <div className="text-center mb-3">
+          <Link to="/criar-forum" className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
             <i className="bi bi-plus-circle me-1"></i>
             Novo Tópico
           </Link>
