@@ -6,6 +6,7 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
   const [curtido, setCurtido] = useState(false);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [animateLike, setAnimateLike] = useState(false);
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -37,6 +38,9 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
       const data = await apiService.toggleCurtida(tipoReferencia, referenciaId);
       setCurtido(data.curtido);
       setTotal(data.total);
+      // Dispara uma microanimacao de feedback ao curtir.
+      setAnimateLike(true);
+      setTimeout(() => setAnimateLike(false), 300);
     } catch (err) {
       console.error("Erro ao curtir:", err);
     } finally {
@@ -46,7 +50,7 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
 
   return (
     <button
-      className={`btn btn-sm ${curtido ? "btn-danger" : "btn-outline-danger"} d-inline-flex align-items-center gap-1`}
+      className={`btn btn-sm ${curtido ? "btn-danger" : "btn-outline-danger"} d-inline-flex align-items-center gap-1 ${animateLike ? "like-animate" : ""}`}
       onClick={handleToggle}
       disabled={!isAuthenticated || loading}
       title={

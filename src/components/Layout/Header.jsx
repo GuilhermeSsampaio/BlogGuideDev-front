@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
 import { useAuth } from "../../hooks/useAuth";
+import logoBlog from "../../img/logoblogprincipal.png";
 
 export default function Header() {
   const location = useLocation();
@@ -39,12 +40,19 @@ export default function Header() {
       <div className="container-fluid">
         <div className="d-flex align-items-center">
           <Link
-            className="navbar-brand fw-bold text-decoration-none"
-            style={{ fontSize: "2rem", color: "#6c2bd7", lineHeight: "2rem" }}
+            className="navbar-brand fw-bold text-decoration-none d-flex align-items-center"
+            style={{ fontSize: "1.8rem", color: "#6c2bd7", lineHeight: "2rem" }}
             to={ROUTES.HOME}
           >
-            <span style={{ color: "#222" }}>Blog</span>
-            <span style={{ color: "#6c2bd7" }}>Guide</span>
+            <img
+              src={logoBlog}
+              alt="BlogGuide"
+              className="logo-blog-principal"
+            />
+            <div style={{ marginLeft: "0.5rem" }}>
+              <span style={{ color: "#222" }}>Blog</span>
+              <span style={{ color: "#6c2bd7" }}>Guide</span>
+            </div>
           </Link>
         </div>
 

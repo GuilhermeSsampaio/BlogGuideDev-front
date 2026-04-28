@@ -1,4 +1,6 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function UserProfileTab({
   formData,
@@ -12,7 +14,22 @@ export default function UserProfileTab({
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="azul mb-0" style={{ fontSize: "1.2rem", fontWeight: "700" }}>Sobre mim</h5>
       </div>
-      <p className="text-muted mb-4">{formData.biografia}</p>
+      {formData.biografia ? (
+        <div className="text-muted mb-4">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: ({ node, ...props }) => (
+                <p style={{ whiteSpace: "pre-line" }} {...props} />
+              ),
+            }}
+          >
+            {formData.biografia}
+          </ReactMarkdown>
+        </div>
+      ) : (
+        <p className="text-muted mb-4">Nenhuma biografia adicionada.</p>
+      )}
 
       <h6 className="azul mb-2" style={{ fontWeight: "700" }}>Links</h6>
       <div>

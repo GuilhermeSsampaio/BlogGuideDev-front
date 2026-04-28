@@ -23,6 +23,8 @@ export default function UserProfile() {
     linkedin: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
   const { showSuccess, showError, showWarning } = useToast();
 
   useEffect(() => {
@@ -58,6 +60,15 @@ export default function UserProfile() {
     }
   }, [user]);
 
+  useEffect(() => {
+    return () => {
+      // Evita vazamento de memoria das URLs criadas para preview.
+      if (avatarPreview && avatarPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    };
+  }, [avatarPreview]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -69,12 +80,27 @@ export default function UserProfile() {
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      await authService.updateProfile({
-        nome_completo: formData.nome,
-        bio: formData.biografia,
-        github: formData.github,
-        linkedin: formData.linkedin,
-      });
+      if (avatarFile) {
+        // Envia multipart/form-data para atualizar o avatar junto do perfil.
+        const payload = new FormData();
+        payload.append("nome_completo", formData.nome);
+        payload.append("bio", formData.biografia || "");
+        payload.append("github", formData.github || "");
+        payload.append("linkedin", formData.linkedin || "");
+        payload.append("avatar", avatarFile);
+        const updated = await authService.updateProfileWithAvatar(payload);
+        if (updated?.profile_picture) {
+          setAvatarPreview(resolveProfilePicture(updated.profile_picture));
+        }
+        setAvatarFile(null);
+      } else {
+        await authService.updateProfile({
+          nome_completo: formData.nome,
+          bio: formData.biografia,
+          github: formData.github,
+          linkedin: formData.linkedin,
+        });
+      }
       await refreshUser();
       showSuccess("Perfil atualizado com sucesso!");
       setIsEditing(false);
@@ -82,6 +108,26 @@ export default function UserProfile() {
       showError("Erro ao salvar o perfil. Tente novamente.");
     }
   };
+
+  const handleAvatarFileSelected = (file) => {
+    if (!file) return;
+    // Preview local e arquivo pronto para envio no salvamento.
+    const nextUrl = URL.createObjectURL(file);
+    if (avatarPreview && avatarPreview.startsWith("blob:")) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+    setAvatarPreview(nextUrl);
+    setAvatarFile(file);
+  };
+
+  const resolveProfilePicture = (path) => {
+    if (!path) return "";
+    if (path.startsWith("http")) return path;
+    const baseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+    return `${baseUrl}${path}`;
+  };
+
+  const avatarUrl = avatarPreview || resolveProfilePicture(user?.profile_picture);
 
   const handleDeleteTopic = async (topicId, topicTitle) => {
     if (
@@ -109,7 +155,8 @@ export default function UserProfile() {
             userStats={userStats}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
-            showWarning={showWarning}
+            avatarPreview={avatarUrl}
+            onAvatarFileSelected={handleAvatarFileSelected}
           />
 
           <div className="card border-0 shadow-sm">

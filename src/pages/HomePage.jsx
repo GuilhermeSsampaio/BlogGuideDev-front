@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "../routes";
 import Pedro from "../img/pedro.jpg";
 import Guilherme from "../img/guilherme.png";
+import LogoBlog from "../img/logoblog.png";
 
 export default function HomePage() {
   return (
     <>
       <section className="hero-image-center overflow-hidden d-flex align-items-center justify-content-center home-hero-section">
         <div className="home-hero-content px-4 jersey-25-regular">
+          {/* <img
+            src={LogoBlog}
+            alt="BlogGuide"
+            className="home-hero-logo"
+          /> */}
           <h1 className="home-hero-title">
             <span style={{ color: "#222" }}>Blog</span>
             <span style={{ color: "#6c2bd7" }}>Guide</span>

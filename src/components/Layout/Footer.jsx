@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
+import logoBlog from "../../img/logoblogprincipal.png";
+import logoUfgd from "../../img/logotipo-ufgd.png";
 
 export default function Footer() {
   const location = useLocation();
@@ -18,19 +20,29 @@ export default function Footer() {
   return (
     <>
       <footer className="footer bg-body-tertiary pt-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
-        <div className="container">
-          <div className="row text-center text-md-start align-items-start">
-            <div className="col-12 col-md-3 mb-4 mb-md-0">
-              <h4 className="jersey-25-regular text-name-footer mb-2 fw-bold">
-                <span style={{ color: "#222" }}>Blog</span>
-                <span style={{ color: "#6c2bd7" }}>Guide</span>
+        <div className="container-fluid px-4 px-lg-5">
+          <div className="row text-center text-md-start align-items-start gx-5 gy-4 justify-content-between">
+            <div className="col-12 col-md-3 mb-3 mb-md-0">
+              <h4 className="jersey-25-regular text-name-footer mb-2 fw-bold footer-brand">
+                <span className="footer-brand-main">
+                  <img
+                    src={logoBlog}
+                    alt="BlogGuide"
+                    className="logo-blog-footer"
+                  />
+                  <span className="footer-brand-text">
+                    <span style={{ color: "#222" }}>Blog</span>
+                    <span style={{ color: "#6c2bd7" }}>Guide</span>
+                  </span>
+                </span>
+                <img
+                  src={logoUfgd}
+                  alt="UFGD"
+                  className="logo-ufgd-footer"
+                />
               </h4>
-              <p className="text-muted" style={{ fontSize: "1.1rem" }}>
-                Plataforma de conhecimento em programação para desenvolvedores de
-                todos os níveis.
-              </p>
             </div>
-            <div className="col-12 col-md-3 mb-4 mb-md-0">
+            <div className="col-12 col-md-3 mb-3 mb-md-0">
               <h5 className="fw-bold mb-2">Links Importantes</h5>
               <ul className="list-unstyled">
                 <li>
@@ -79,9 +91,11 @@ export default function Footer() {
               <h5 className="fw-bold mb-2">Redes Sociais</h5>
               <div className="d-flex gap-3 justify-content-center justify-content-md-start">
                 <a
-                  href="#"
+                  href="https://github.com/GuilhermeSsampaio"
                   className="text-muted fs-4"
                   aria-label="GitHub"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <i className="bi bi-github"></i>
                 </a>
@@ -100,7 +114,7 @@ export default function Footer() {
                   <i className="bi bi-twitter"></i>
                 </a>
                 <a
-                  href="mailto:contatoblogguide@gmail.com"
+                  href="mailto:guilhermesampaio.dev.contato@gmail.com"
                   className="text-muted fs-4"
                   aria-label="Email"
                 >

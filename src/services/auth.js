@@ -98,6 +98,31 @@ class AuthService {
     });
   }
 
+  // Atualizar perfil com avatar (multipart/form-data)
+  async updateProfileWithAvatar(formData) {
+    const token = this.getToken();
+    const url = `${this.baseURL}/users/edit_profile_with_avatar`;
+
+    // Mantem o Content-Type implicito para multipart/form-data.
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        this.logout();
+        window.location.href = "/login";
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
   // Obter estatísticas do usuário
   async getUserStats() {
     return this.authRequest("/users/me/stats");

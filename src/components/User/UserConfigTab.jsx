@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 export default function UserConfigTab({
   formData,
@@ -8,7 +8,32 @@ export default function UserConfigTab({
   logout,
 }) {
 
+  const BIO_CHAR_LIMIT = 300;
+
+  const renderMarkdown = (input) => {
+    if (!input) return "";
+    // Parser simples para markdown basico: negrito, italico e links.
+    const escaped = input
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    const withLinks = escaped.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+
+    const withBold = withLinks.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    const withItalic = withBold.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+
+    return withItalic.replace(/\n/g, "<br />");
+  };
+
   const [saveStatus, setSaveStatus] = useState("idle");
+  const previewHtml = useMemo(
+    () => renderMarkdown(formData.biografia),
+    [formData.biografia]
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +63,7 @@ export default function UserConfigTab({
         <div className="row">
           <div className="col-md-6">
             <div className="mb-3">
-              <label className="form-label">Nome completo</label>
+              <label className="form-label fw-bold">Nome completo</label>
               <input
                 type="text"
                 className="form-control"
@@ -52,7 +77,7 @@ export default function UserConfigTab({
 
           <div className="col-md-6">
             <div className="mb-3">
-              <label className="form-label">Email</label>
+              <label className="form-label fw-bold">Email</label>
               <input
                 type="email"
                 className="form-control"
@@ -66,21 +91,44 @@ export default function UserConfigTab({
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Biografia</label>
-          <textarea
-            className="form-control"
-            rows="3"
-            name="biografia"
-            value={formData.biografia}
-            onChange={handleInputChange}
-            placeholder="Conte um pouco sobre você..."
-          />
+          <label className="form-label fw-bold">Biografia</label>
+          <div className="row g-3">
+            <div className="col-12 col-lg-6">
+              <textarea
+                className="form-control"
+                rows="6"
+                name="biografia"
+                value={formData.biografia}
+                onChange={handleInputChange}
+                placeholder="Conte um pouco sobre você..."
+                maxLength={BIO_CHAR_LIMIT}
+              />
+              <div className="d-flex justify-content-between mt-2 text-muted small">
+                <span>Markdown basico: **negrito**, *italico*, [link](https://...)</span>
+                <span>
+                  {formData.biografia.length}/{BIO_CHAR_LIMIT}
+                </span>
+              </div>
+            </div>
+            <div className="col-12 col-lg-6">
+              <div className="bio-preview">
+                {formData.biografia ? (
+                  <div
+                    className="bio-preview-content"
+                    dangerouslySetInnerHTML={{ __html: previewHtml }}
+                  />
+                ) : (
+                  <p className="text-muted mb-0">A pre-visualizacao aparece aqui.</p>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="row">
           <div className="col-md-6">
             <div className="mb-3">
-              <label className="form-label">
+              <label className="form-label fw-bold">
                 <i className="bi bi-github me-1"></i>
                 GitHub
               </label>
@@ -97,7 +145,7 @@ export default function UserConfigTab({
 
           <div className="col-md-6">
             <div className="mb-3">
-              <label className="form-label">
+              <label className="form-label fw-bold">
                 <i className="bi bi-linkedin me-1"></i>
                 LinkedIn
               </label>
@@ -194,7 +242,7 @@ export default function UserConfigTab({
         <hr className="my-4" />
 
         <div>
-          <h6 className="text-danger mb-3">Sessão</h6>
+          <h6 className="text-danger mb-3 fw-bold">Sessão</h6>
 
           <button
             type="button"
