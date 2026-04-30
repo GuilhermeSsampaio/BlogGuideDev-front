@@ -45,8 +45,8 @@ body {
 
 .hero-image-center {
   background-image:
-    linear-gradient(90deg, #fafafaad 0%, #fafafaad 100%),
-    url("./img/image-home.jpg");
+    linear-gradient(90deg, #ffffff73 0%, #ffffff30 100%),
+    url("./img/3314424.jpg");
   /* background-image:
     linear-gradient(180deg, #fafafaa1 0%, #fafafaa1 100%),
     url("./image-home.jpg"); */
@@ -109,8 +109,8 @@ footer {
 }
 
 .home-hero-subtitle {
-  font-size: 1.1rem;
-  color: #5b5f66;
+  font-size: 1.05rem;
+  color: #c0c2c4;
   font-style: italic;
   margin-top: 0.2rem;
   margin-bottom: 2rem;
@@ -398,7 +398,7 @@ td, th {
 
 @media (min-width: 768px) {
   .home-hero-title {
-    font-size: 6rem;
+    font-size: 5rem;
     font-weight: bold;
     color: #7C3AED;
     font-family: inherit;
@@ -424,7 +424,7 @@ td, th {
     flex-direction: column;
   }
   .home-hero-title {
-    font-size: 4.75rem;
+    font-size: 3.75rem;
     font-weight: bold;
     line-height: 1;
   }
