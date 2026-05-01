@@ -11,6 +11,7 @@ export default defineConfig({
       devOptions: { enabled: true },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
       },
       manifest: {
         name: "BlogGuide - o parceiro do dev",
