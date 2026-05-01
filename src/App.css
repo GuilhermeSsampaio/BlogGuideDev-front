@@ -23,9 +23,14 @@ body {
   height: 80px;
 }
 
+.logo-blog-principal {
+  height: 60px;
+  object-fit: contain;
+}
+
 .navbar-toggler {
   border: none !important;
-  font-size: 1.3rem !important;
+  font-size: 1.2rem !important;
   outline: none !important;
 }
 
@@ -54,6 +59,35 @@ footer {
   font-size: 1rem;
 }
 
+.bio-preview {
+  border: 1px solid #e5e5e5;
+  background: #fafafa;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  min-height: 156px;
+}
+
+.bio-preview-content a {
+  color: #6c2bd7;
+  text-decoration: underline;
+}
+
+.like-animate {
+  animation: likePulse 0.3s ease-out;
+}
+
+@keyframes likePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08) rotate(-3deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .ql-editor {
   min-height: 250px;
 }
@@ -65,6 +99,13 @@ footer {
 
 .home-hero-content {
   text-align: center;
+}
+
+.home-hero-logo {
+  width: 250px;
+  height: auto;
+  margin-bottom: 0.75rem;
+  object-fit: contain;
 }
 
 .home-hero-subtitle {
@@ -233,7 +274,6 @@ footer {
   font-weight: bold;
 }
 
-/* Responsividade para tabelas de admin */
 .tables-admin td, .tables-admin th {
   white-space: nowrap;
   vertical-align: middle;
@@ -257,7 +297,6 @@ td, th {
   overflow-wrap: break-word;
 }
 
-/* Card de post mobile (imagem em cima, texto embaixo) */
 .post-card-mobile {
   display: flex;
   flex-direction: column;
@@ -267,15 +306,57 @@ td, th {
   background: #fff;
 }
 
+.page-detail-container.container-fluid {
+  max-width: none;
+}
+
+.logo-blog-footer {
+  height: 45px;
+  margin-right: 10px;
+  object-fit: contain;
+}
+
+.logo-ufgd-footer {
+  height: 80px;
+  margin-top: 5px;
+  object-fit: contain;
+}
+
+.footer-brand {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.footer-brand-main {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-brand-text {
+  display: inline-flex;
+  gap: 0.1rem;
+  line-height: 1;
+}
+
+.footer-brand .logo-ufgd-footer {
+  align-self: center;
+}
+
 @media only screen and (min-width: 1200px) {
   .home-team-cards {
     gap: 6rem;
   }
-  .page-detail-container {
+  .page-detail-container:not(.container-fluid) {
     max-width: 1000px;
   }
 }
-@media (max-width: 992px) {
+
+@media (max-width: 991px) {
+  .logo-blog-principal {
+    height: 55px;
+  }
   .search-form {
     margin-bottom: 1rem;
   }
@@ -286,7 +367,35 @@ td, th {
   .home-team-cards {
     max-width: 800px;
   }
+  .navbar-project .nav-link {
+    position: relative;
+    display: inline-flex;
+    transition: color 0.2s ease;
+    padding-bottom: 2px;
+  }
+  .navbar-project .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: #6c2bd7;
+    transition: width 0.2s ease;
+  }
+  .navbar-project .nav-link:hover,
+  .navbar-project .nav-link:focus-visible {
+    color: #6c2bd7 !important;
+  }
+  .navbar-project .nav-link:hover::after,
+  .navbar-project .nav-link:focus-visible::after {
+    width: 100%;
+  }
+  .navbar-project .offcanvas-body .search-form {
+    margin-top: 0.5rem;
+  }
 }
+
 @media (min-width: 768px) {
   .home-hero-title {
     font-size: 6rem;
@@ -305,6 +414,7 @@ td, th {
     margin-bottom: 1.5rem;
   }
 }
+
 @media (max-width: 767px) {
   footer .row > div {
     text-align: center !important;
@@ -329,10 +439,11 @@ td, th {
     margin-bottom: 1.5rem;
   }
   .text-name-footer {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   .home-about-content {
     font-size: 0.92rem;
+    text-align: justify;
   }
   .table-dark {
     font-size: 0.9rem;
@@ -341,6 +452,7 @@ td, th {
     font-size: 0.8rem;
   }
 }
+
 @media only screen and (max-width: 480px) {
   .text-primary-conteudo {
     font-size: 1.8rem;
@@ -392,6 +504,7 @@ td, th {
     box-shadow: 0 2px 10px rgba(0,0,0,0.07);
   }
 }
+
 @media only screen and (max-width: 320px) {
   body {
     overflow-x: auto !important;

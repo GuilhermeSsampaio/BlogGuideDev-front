@@ -28,7 +28,7 @@ function renderTextSection(text) {
 
 function ContentArticle({ content, conteudoId }) {
   return (
-    <div className="container py-5 page-detail-container">
+    <div className="container-fluid py-5 page-detail-container">
       <div className="d-flex align-items-center gap-4 mb-4">
         <img
           src={content.icon}
@@ -419,7 +419,8 @@ function PostArticle({ post }) {
             fontWeight: "500",
           }}
         >
-          ← Voltar para Conteúdos
+          <i className="bi bi-arrow-left me-2"></i>
+          Voltar para Conteúdos
         </Link>
       </div>
     </div>
