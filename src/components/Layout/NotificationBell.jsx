@@ -89,8 +89,8 @@ export default function NotificationBell() {
 
       {open && (
         <div
-          className="position-absolute end-0 mt-2 bg-white border rounded shadow"
-          style={{ width: "330px", maxHeight: "420px", overflowY: "auto", zIndex: 1200 }}
+          className="position-absolute mt-2 bg-white border rounded shadow"
+          style={{ width: "330px", maxWidth: "calc(100vw - 2rem)", maxHeight: "420px", overflowY: "auto", zIndex: 1200, right: 0 }}
         >
           <div className="px-3 py-2 border-bottom d-flex justify-content-between align-items-center">
             <strong>Notificações</strong>

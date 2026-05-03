@@ -50,9 +50,29 @@ body.offcanvas-open {
   position: sticky;
   top: 0;
   z-index: 1030;
-  background: rgba(255, 255, 255, 0.96) !important;
-  backdrop-filter: blur(6px);
+  background: #fff !important;
   box-shadow: 0 3px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile: forçar offcanvas a escapar do stacking context do navbar */
+@media (max-width: 991.98px) {
+  .navbar-project .offcanvas.show,
+  .navbar-project .offcanvas.showing,
+  .navbar-project .offcanvas.offcanvas-end {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 85% !important;
+    max-width: 400px !important;
+    background: #fff !important;
+    z-index: 1080 !important;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .offcanvas-backdrop {
+    z-index: 1070 !important;
+  }
 }
 
 .logo-blog-principal {
