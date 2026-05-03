@@ -57,14 +57,30 @@ export default function Header() {
           </Link>
         </div>
 
+        {/* Mobile: sininho + hamburger ficam juntos */}
+        <div className="d-flex align-items-center d-lg-none gap-2">
+          <NotificationBell />
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar"
+            aria-label="Toggle navigation"
+            ref={togglerRef}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+        </div>
+
+        {/* Desktop: hamburger invisível (Bootstrap usa o toggler ref) */}
         <button
-          className="navbar-toggler"
+          className="navbar-toggler d-none"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasNavbar"
           aria-controls="offcanvasNavbar"
           aria-label="Toggle navigation"
-          ref={togglerRef}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -87,7 +103,6 @@ export default function Header() {
             ></button>
           </div>
           <div className="offcanvas-body d-flex flex-column flex-lg-row">
-            {/* <ul className="navbar-nav justify-content-end flex-grow-1 pe-lg-3 mb-2 mb-lg-0"> */}
              <ul className="navbar-nav justify-content-lg-end flex-lg-grow-1 pe-lg-3 mb-2 mb-lg-0">
               {/* Menu: Conteúdo */}
               <li className="nav-item">
@@ -189,7 +204,10 @@ export default function Header() {
             </form>
             {/* Botão Login/Perfil */}
             <div className="d-flex align-items-center gap-2 mt-2 mt-lg-0">
-              <NotificationBell />
+              {/* Desktop: sininho fica aqui */}
+              <div className="d-none d-lg-block">
+                <NotificationBell />
+              </div>
               {isAuthenticated ? (
                 <Link
                   to={ROUTES.USUARIO}

@@ -6,7 +6,7 @@ import { useToast } from "../hooks/useToast";
 
 function stripHtml(html) {
   const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent || "";
+  return (doc.body.innerText || doc.body.textContent || "").replace(/\s+/g, " ").trim();
 }
 
 export default function ForumPage() {
@@ -86,6 +86,7 @@ export default function ForumPage() {
               key={topic.id}
               to={`/forum/${topic.id}`}
               className="list-group-item list-group-item-action border-1 mb-2 rounded shadow-sm text-decoration-none text-reset"
+              style={{ overflow: "hidden" }}
             >
               <div className="d-flex justify-content-between align-items-start">
                 <div className="flex-grow-1">
@@ -104,7 +105,7 @@ export default function ForumPage() {
                     </span>
                   )}
 
-                  <p className="text-muted mb-3">
+                  <p className="text-muted mb-3" style={{ overflowWrap: "break-word", wordBreak: "break-word" }}>
                     {stripHtml(topic.descricao).length > 150
                       ? stripHtml(topic.descricao).substring(0, 150) + "..."
                       : stripHtml(topic.descricao)}
