@@ -72,7 +72,7 @@ export default function ForumDetailPage() {
               src={topic.imagem_url}
               alt={topic.titulo}
               className="img-fluid rounded shadow-sm"
-              style={{ maxHeight: "400px", width: "100%", objectFit: "cover" }}
+              style={{ maxHeight: "400px", maxWidth: "100%", objectFit: "cover" }}
             />
           </div>
         )}

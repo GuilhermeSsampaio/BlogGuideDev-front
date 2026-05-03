@@ -302,25 +302,30 @@ footer {
 }
 
 .page-detail-container .markdown-content {
-  font-size: 1.12rem;
-  line-height: 1.95;
-  letter-spacing: 0.1px;
+  font-size: 1.15rem;
+  line-height: 2;
+  letter-spacing: 0.3px;
   color: #20242b;
 }
 
 .page-detail-container .markdown-content p {
-  margin-bottom: 1.15rem;
+  margin-bottom: 1.4rem;
 }
 
 .page-detail-container .markdown-content ul,
 .page-detail-container .markdown-content ol {
-  margin-bottom: 1.2rem;
-  padding-left: 1.3rem;
+  margin-bottom: 1.4rem;
+  padding-left: 1.5rem;
+}
+
+.page-detail-container .markdown-content li {
+  margin-bottom: 0.35rem;
 }
 
 .page-detail-container .markdown-content h2,
 .page-detail-container .markdown-content h3 {
-  margin-top: 1.6rem;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
 }
 
 .user-profile-shell {
@@ -329,10 +334,70 @@ footer {
 
 .user-profile-card {
   border-radius: 16px;
+  overflow: hidden;
 }
 
 .user-profile-stats h5 {
   font-size: 1.35rem;
+}
+
+/* Profile Banner */
+.user-profile-banner {
+  height: 140px;
+  background: linear-gradient(135deg, #7C3AED 0%, #333ceb 50%, #6366f1 100%);
+  position: relative;
+}
+
+.user-profile-avatar-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C3AED, #333ceb);
+  padding: 3px;
+  position: relative;
+  margin-top: -48px;
+}
+
+.user-profile-avatar-ring img,
+.user-profile-avatar-ring .avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+}
+
+.avatar-placeholder {
+  background: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-profile-stat-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-profile-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.user-profile-stat-card h5 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+.user-profile-stat-card small {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .notification-unread {
@@ -382,6 +447,7 @@ td, th {
 
 .forum-detail-container {
   max-width: 1000px;
+  max-width: min(1000px, 100vw);
 }
 
 .forum-rich-content {
@@ -396,18 +462,21 @@ td, th {
 .forum-rich-content iframe {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 .forum-rich-content table {
   display: block;
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .forum-rich-content pre,
 .forum-rich-content code {
   white-space: pre-wrap;
   word-break: break-word;
+  max-width: 100%;
 }
 
 .forum-rich-content p,
@@ -418,6 +487,7 @@ td, th {
 .forum-rich-content h3,
 .forum-rich-content h4 {
   max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .logo-blog-footer {
@@ -584,8 +654,8 @@ td, th {
     font-size: 1rem;
   }
   .page-detail-container .markdown-content {
-    font-size: 1.04rem;
-    line-height: 1.85;
+    font-size: 1.06rem;
+    line-height: 1.9;
   }
   .navbar-project .container-fluid {
     --bs-gutter-x: 0rem !important;
@@ -617,10 +687,30 @@ td, th {
     border-radius: 1.1rem !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.07);
   }
+  /* Forum mobile - prevent horizontal scroll */
+  .forum-detail-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .forum-detail-container article {
+    overflow: hidden;
+  }
+  .user-profile-banner {
+    height: 100px;
+  }
+  .user-profile-avatar-ring {
+    width: 72px;
+    height: 72px;
+    margin-top: -36px;
+  }
 }
 
 @media only screen and (max-width: 320px) {
   body {
     overflow-x: hidden !important;
+  }
+  .forum-detail-container {
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }

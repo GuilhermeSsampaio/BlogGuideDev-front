@@ -189,9 +189,7 @@ export default function Header() {
             </form>
             {/* Botão Login/Perfil */}
             <div className="d-flex align-items-center gap-2 mt-2 mt-lg-0">
-              <div className="d-none d-lg-block">
-                <NotificationBell />
-              </div>
+              <NotificationBell />
               {isAuthenticated ? (
                 <Link
                   to={ROUTES.USUARIO}
