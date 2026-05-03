@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
 import { useAuth } from "../../hooks/useAuth";
 import logoBlog from "../../img/logoblogprincipal.png";
+import NotificationBell from "./NotificationBell";
 
 export default function Header() {
   const location = useLocation();
@@ -85,8 +86,9 @@ export default function Header() {
               aria-label="Close"
             ></button>
           </div>
-          <div className="offcanvas-body">
-            <ul className="navbar-nav justify-content-end flex-grow-1 pe-3 mb-2 mb-lg-0">
+          <div className="offcanvas-body d-flex flex-column flex-lg-row">
+            {/* <ul className="navbar-nav justify-content-end flex-grow-1 pe-lg-3 mb-2 mb-lg-0"> */}
+             <ul className="navbar-nav justify-content-lg-end flex-lg-grow-1 pe-lg-3 mb-2 mb-lg-0">
               {/* Menu: Conteúdo */}
               <li className="nav-item">
                 <Link
@@ -151,7 +153,7 @@ export default function Header() {
             </ul>
             {/* Search input com ícone de lupa */}
             <form
-              className="d-flex align-items-center search-form"
+              className="d-flex align-items-center search-form my-3 my-lg-0"
               role="search"
               style={{ marginRight: "1rem" }}
               onSubmit={handleSearch}
@@ -186,41 +188,46 @@ export default function Header() {
               </div>
             </form>
             {/* Botão Login/Perfil */}
-            {isAuthenticated ? (
-              <Link
-                to={ROUTES.USUARIO}
-                className="btn px-3"
-                style={{
-                  background: "#6c2bd7",
-                  color: "#fff",
-                  borderRadius: "1.5rem",
-                  fontWeight: "500",
-                  fontSize: "1rem",
-                  padding: "0.5rem 1.3rem",
-                }}
-                onClick={handleNavLinkClick}
-              >
-                <i className="bi bi-person-fill me-2"></i>
-                Perfil
-              </Link>
-            ) : (
-              <Link
-                to={ROUTES.LOGIN}
-                className="btn px-3"
-                style={{
-                  background: "#6c2bd7",
-                  color: "#fff",
-                  borderRadius: "1.5rem",
-                  fontWeight: "500",
-                  fontSize: "1rem",
-                  padding: "0.5rem 1.3rem",
-                }}
-                onClick={handleNavLinkClick}
-              >
-                <i className="bi bi-box-arrow-in-right me-2"></i>
-                Login
-              </Link>
-            )}
+            <div className="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+              <div className="d-none d-lg-block">
+                <NotificationBell />
+              </div>
+              {isAuthenticated ? (
+                <Link
+                  to={ROUTES.USUARIO}
+                  className="btn px-3"
+                  style={{
+                    background: "#6c2bd7",
+                    color: "#fff",
+                    borderRadius: "1.5rem",
+                    fontWeight: "500",
+                    fontSize: "1rem",
+                    padding: "0.5rem 1.3rem",
+                  }}
+                  onClick={handleNavLinkClick}
+                >
+                  <i className="bi bi-person-fill me-2"></i>
+                  Perfil
+                </Link>
+              ) : (
+                <Link
+                  to={ROUTES.LOGIN}
+                  className="btn px-3"
+                  style={{
+                    background: "#6c2bd7",
+                    color: "#fff",
+                    borderRadius: "1.5rem",
+                    fontWeight: "500",
+                    fontSize: "1rem",
+                    padding: "0.5rem 1.3rem",
+                  }}
+                  onClick={handleNavLinkClick}
+                >
+                  <i className="bi bi-box-arrow-in-right me-2"></i>
+                  Login
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

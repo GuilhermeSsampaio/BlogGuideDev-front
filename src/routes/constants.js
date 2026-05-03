@@ -4,6 +4,7 @@ export const ROUTES = {
   CONTEUDO: "/conteudo",
   POST_DETAIL: "/conteudo/:postId",
   LOGIN: "/login",
+  GOOGLE_CALLBACK: "/auth/google/callback",
   REGISTER: "/register",
   FORUM: "/forum",
   CRIAR_FORUM: "/criar-forum",
@@ -16,6 +17,7 @@ export const ROUTES = {
   VAGA_DETAIL: "/vagas/:vagaId",
   SEARCH: "/search",
   DIRETRIZES_FORUM: "/diretrizes-forum",
+  FEEDBACK: "/feedback",
 };
 
 // Rotas que não precisam de autenticação

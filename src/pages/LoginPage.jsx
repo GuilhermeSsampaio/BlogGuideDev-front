@@ -34,6 +34,11 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+    window.location.href = `${apiBase}/auth/google/`;
+  };
+
   return (
     <div className="container jersey-25-regular my-5">
       <div className="row justify-content-center">
@@ -79,6 +84,21 @@ export default function LoginPage() {
                   disabled={loading}
                 >
                   {loading ? "Entrando..." : "Entrar"}
+                </button>
+
+                <div className="d-flex align-items-center my-3">
+                  <hr className="flex-grow-1" />
+                  <span className="px-3 text-muted small">ou</span>
+                  <hr className="flex-grow-1" />
+                </div>
+
+                <button
+                  type="button"
+                  className="btn btn-outline-dark w-100"
+                  onClick={handleGoogleLogin}
+                >
+                  <i className="bi bi-google me-2"></i>
+                  Entrar com Google
                 </button>
               </form>
 

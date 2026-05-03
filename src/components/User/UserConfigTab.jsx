@@ -30,10 +30,34 @@ export default function UserConfigTab({
   };
 
   const [saveStatus, setSaveStatus] = useState("idle");
+  const [pushEnabled, setPushEnabled] = useState(
+    localStorage.getItem("pwa_push_opt_in") === "true"
+  );
   const previewHtml = useMemo(
     () => renderMarkdown(formData.biografia),
     [formData.biografia]
   );
+
+  const handleTogglePush = async () => {
+    if (!("Notification" in window)) {
+      showWarning("Seu navegador não suporta notificações push.");
+      return;
+    }
+
+    if (!pushEnabled) {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        showWarning("Permissão de notificação não concedida.");
+        return;
+      }
+      localStorage.setItem("pwa_push_opt_in", "true");
+      setPushEnabled(true);
+      return;
+    }
+
+    localStorage.setItem("pwa_push_opt_in", "false");
+    setPushEnabled(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,11 +195,12 @@ export default function UserConfigTab({
               <input
                 className="form-check-input"
                 type="checkbox"
-                id="notificacaoEmail"
-                defaultChecked
+                id="notificacaoPush"
+                checked={pushEnabled}
+                onChange={handleTogglePush}
               />
-              <label className="form-check-label" htmlFor="notificacaoEmail">
-                Receber notificações por email
+              <label className="form-check-label" htmlFor="notificacaoPush">
+                Habilitar notificações push (PWA)
               </label>
             </div>
           </div>

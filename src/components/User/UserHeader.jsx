@@ -70,7 +70,7 @@ export default function UserHeader({
           </div>
         </div>
 
-        <div className="row text-center">
+        <div className="row text-center user-profile-stats">
           <div className="col-4">
             <h5 className="azul mb-0">{userStats.curtidas}</h5>
             <small className="text-muted">Curtidas</small>

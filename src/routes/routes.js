@@ -6,6 +6,7 @@ import ForumPage from "../pages/ForumPage";
 import ForumDetailPage from "../pages/ForumDetailPage";
 import SobrePage from "../pages/SobrePage";
 import LoginPage from "../pages/LoginPage";
+import GoogleCallbackPage from "../pages/GoogleCallbackPage";
 import RegisterPage from "../pages/RegisterPage";
 import UserPage from "../pages/UserPage";
 import CriarPostPage from "../pages/CriarPostPage";
@@ -16,6 +17,7 @@ import VagaDetailPage from "../pages/VagaDetailPage";
 import SearchPage from "../pages/SearchPage";
 import DiretrizesForumPage from "../pages/DiretrizesForumPage";
 import CriarForumPage from "../pages/CriarForumPage";
+import FeedbackPage from "../pages/FeedbackPage";
 import { ROUTES } from "./constants";
 
 // Rotas públicas (não precisam de autenticação)
@@ -63,9 +65,21 @@ export const publicRoutes = [
     showInNav: false,
   },
   {
+    path: ROUTES.FEEDBACK,
+    component: FeedbackPage,
+    name: "Feedback",
+    showInNav: false,
+  },
+  {
     path: ROUTES.LOGIN,
     component: LoginPage,
     name: "Login",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.GOOGLE_CALLBACK,
+    component: GoogleCallbackPage,
+    name: "Google Callback",
     showInNav: false,
   },
   {

@@ -73,7 +73,7 @@ function ContentArticle({ content, conteudoId }) {
 
           {/* Renderização do texto com ReactMarkdown para interpretar as Tabelas e Negritos */}
           {section.text && (
-            <div className="markdown-content" style={{ fontSize: "1.05rem", lineHeight: 1.8, textAlign: "justify" }}>
+            <div className="markdown-content" style={{ fontSize: "1.15rem", lineHeight: 2, textAlign: "left" }}>
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]}
                 components={{
@@ -91,7 +91,7 @@ function ContentArticle({ content, conteudoId }) {
           {section.list && (
             <ul
               className="mb-3"
-              style={{ fontSize: "1.05rem", lineHeight: 1.8 }}
+              style={{ fontSize: "1.12rem", lineHeight: 1.95 }}
             >
               {section.list.map((item, i) => (
                 <li key={i}>{item}</li>
@@ -278,9 +278,9 @@ function PostArticle({ post }) {
               <div
                 className="markdown-content"
                 style={{
-                  fontSize: "1.05rem",
-                  lineHeight: 1.8,
-                  textAlign: "justify",
+                  fontSize: "1.15rem",
+                  lineHeight: 2,
+                  textAlign: "left",
                 }}
               >
                 <ReactMarkdown 
@@ -299,7 +299,7 @@ function PostArticle({ post }) {
             {section.list && (
               <ul
                 className="mb-3"
-                style={{ fontSize: "1.05rem", lineHeight: 1.8 }}
+                style={{ fontSize: "1.12rem", lineHeight: 1.95 }}
               >
                 {section.list.map((item, i) => (
                   <li key={i}>{item}</li>
@@ -393,9 +393,9 @@ function PostArticle({ post }) {
         <div
           className="markdown-content"
           style={{
-            fontSize: "1.05rem",
-            lineHeight: 1.8,
-            textAlign: "justify",
+            fontSize: "1.15rem",
+            lineHeight: 2,
+            textAlign: "left",
           }}
         >
           {post.content && renderTextSection(post.content)}

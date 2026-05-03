@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         console.error("Erro ao inicializar autenticação:", error);
-        authService.logout();
+        setUser(null);
       } finally {
         setLoading(false);
       }

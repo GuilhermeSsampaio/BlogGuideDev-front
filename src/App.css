@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -20,7 +24,35 @@ body {
 }
 
 .navbar {
-  height: 80px;
+  min-height: 80px;
+}
+
+.offcanvas {
+  height: 100vh !important;
+}
+
+.offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+.offcanvas-header {
+  min-height: 60px;
+}
+
+body.offcanvas-open {
+  overflow: hidden;
+}
+
+.navbar-project {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 3px 16px rgba(0, 0, 0, 0.06);
 }
 
 .logo-blog-principal {
@@ -269,6 +301,44 @@ footer {
   font-weight: 500;
 }
 
+.page-detail-container .markdown-content {
+  font-size: 1.12rem;
+  line-height: 1.95;
+  letter-spacing: 0.1px;
+  color: #20242b;
+}
+
+.page-detail-container .markdown-content p {
+  margin-bottom: 1.15rem;
+}
+
+.page-detail-container .markdown-content ul,
+.page-detail-container .markdown-content ol {
+  margin-bottom: 1.2rem;
+  padding-left: 1.3rem;
+}
+
+.page-detail-container .markdown-content h2,
+.page-detail-container .markdown-content h3 {
+  margin-top: 1.6rem;
+}
+
+.user-profile-shell {
+  max-width: 1080px;
+}
+
+.user-profile-card {
+  border-radius: 16px;
+}
+
+.user-profile-stats h5 {
+  font-size: 1.35rem;
+}
+
+.notification-unread {
+  background: #f4f8ff !important;
+}
+
 .card-title {
   font-size: 1.05rem;
   font-weight: bold;
@@ -308,6 +378,46 @@ td, th {
 
 .page-detail-container.container-fluid {
   max-width: none;
+}
+
+.forum-detail-container {
+  max-width: 1000px;
+}
+
+.forum-rich-content {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.forum-rich-content img,
+.forum-rich-content video,
+.forum-rich-content iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+.forum-rich-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.forum-rich-content pre,
+.forum-rich-content code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.forum-rich-content p,
+.forum-rich-content li,
+.forum-rich-content blockquote,
+.forum-rich-content h1,
+.forum-rich-content h2,
+.forum-rich-content h3,
+.forum-rich-content h4 {
+  max-width: 100%;
 }
 
 .logo-blog-footer {
@@ -473,6 +583,10 @@ td, th {
   .text-subtitle-detail {
     font-size: 1rem;
   }
+  .page-detail-container .markdown-content {
+    font-size: 1.04rem;
+    line-height: 1.85;
+  }
   .navbar-project .container-fluid {
     --bs-gutter-x: 0rem !important;
   }
@@ -507,6 +621,6 @@ td, th {
 
 @media only screen and (max-width: 320px) {
   body {
-    overflow-x: auto !important;
+    overflow-x: hidden !important;
   }
 }
