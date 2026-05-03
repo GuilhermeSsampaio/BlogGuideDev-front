@@ -68,12 +68,11 @@ export default function HomePage() {
               <h3 className="home-team-name">Guilherme Sampaio</h3>
             </div>
             <p className="home-team-desc">
-              Desenvolvedor Júnior com 4 anos de experiência em React, Python
-              e Back-end. Formado em Tecnico em Informática para Internet pelo IFMS, especialista em
-              arquitetura de sistemas e desenvolvimento de aplicações escaláveis.
+              Desenvolvedor Full Stack com 4 anos experiência. Atua com React, Python
+              e .NET. Formado em Técnico em Informática para Internet pelo IFMS, Bacharel em Sistemas de Informação pela UFGD (Em curso) e focado em cibersegurança.
             </p>
             <a
-              href="https://portfolio-guisamp.vercel.app/"
+              href="https://portifolio-guisamp.netlify.app"
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: "none" }}

@@ -146,7 +146,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="container-fluid my-5">
+    <div className="container-fluid my-5 user-profile-shell">
       <div className="row">
         <div className="col-md-10 mx-auto">
           <UserHeader
@@ -159,7 +159,7 @@ export default function UserProfile() {
             onAvatarFileSelected={handleAvatarFileSelected}
           />
 
-          <div className="card border-0 shadow-sm">
+          <div className="card border-0 shadow-sm user-profile-card">
             <UserTabNavigation
               activeTab={activeTab}
               setActiveTab={setActiveTab}

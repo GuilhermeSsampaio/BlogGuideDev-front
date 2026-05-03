@@ -48,7 +48,7 @@ export default function ForumDetailPage() {
   };
 
   return (
-    <div className="container py-5" style={{ maxWidth: "1000px" }}>
+    <div className="container py-4 py-md-5 forum-detail-container">
       <Link to="/forum" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
         <i className="bi bi-arrow-left me-1"></i>
         Voltar ao Fórum
@@ -72,14 +72,13 @@ export default function ForumDetailPage() {
               src={topic.imagem_url}
               alt={topic.titulo}
               className="img-fluid rounded shadow-sm"
-              style={{ maxHeight: "400px", width: "100%", objectFit: "cover" }}
+              style={{ maxHeight: "400px", maxWidth: "100%", objectFit: "cover" }}
             />
           </div>
         )}
 
         <div
-          className="post-content"
-          style={{ fontSize: "1.1rem", lineHeight: "1.8" }}
+          className="post-content forum-rich-content"
           dangerouslySetInnerHTML={{ __html: topic.descricao }}
         />
 

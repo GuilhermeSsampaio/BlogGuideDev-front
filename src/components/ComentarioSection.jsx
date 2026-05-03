@@ -6,8 +6,11 @@ import { useAuth } from "../hooks/useAuth";
 export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   const [comentarios, setComentarios] = useState([]);
   const [novoComentario, setNovoComentario] = useState("");
+  const [respostaAbertaId, setRespostaAbertaId] = useState(null);
+  const [textoResposta, setTextoResposta] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [replySubmitting, setReplySubmitting] = useState(false);
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
@@ -52,9 +55,39 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   const handleDelete = async (comentarioId) => {
     try {
       await apiService.deleteComentario(comentarioId);
-      setComentarios((prev) => prev.filter((c) => c.id !== comentarioId));
+      setComentarios((prev) =>
+        prev
+          .filter((c) => c.id !== comentarioId)
+          .map((c) => ({
+            ...c,
+            respostas: (c.respostas || []).filter((r) => r.id !== comentarioId),
+          }))
+      );
     } catch (err) {
       console.error("Erro ao deletar comentário:", err);
+    }
+  };
+
+  const handleSubmitResposta = async (e, comentarioId) => {
+    e.preventDefault();
+    if (!textoResposta.trim()) return;
+
+    setReplySubmitting(true);
+    try {
+      const resposta = await apiService.createResposta(comentarioId, textoResposta);
+      setComentarios((prev) =>
+        prev.map((c) =>
+          c.id === comentarioId
+            ? { ...c, respostas: [...(c.respostas || []), resposta] }
+            : c
+        )
+      );
+      setTextoResposta("");
+      setRespostaAbertaId(null);
+    } catch (err) {
+      console.error("Erro ao criar resposta:", err);
+    } finally {
+      setReplySubmitting(false);
     }
   };
 
@@ -134,6 +167,73 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                     <small className="text-muted">{formatDate(c.data)}</small>
                   </div>
                   <p className="mb-0">{c.conteudo}</p>
+                  <div className="mt-2 d-flex align-items-center gap-3">
+                    {isAuthenticated && (
+                      <button
+                        className="btn btn-sm btn-link p-0 text-decoration-none"
+                        onClick={() => {
+                          const isCurrent = respostaAbertaId === c.id;
+                          setRespostaAbertaId(isCurrent ? null : c.id);
+                          if (!isCurrent) setTextoResposta("");
+                        }}
+                      >
+                        Responder
+                      </button>
+                    )}
+                    {!!c.respostas?.length && (
+                      <small className="text-muted">{c.respostas.length} resposta(s)</small>
+                    )}
+                  </div>
+
+                  {respostaAbertaId === c.id && (
+                    <form className="mt-2" onSubmit={(e) => handleSubmitResposta(e, c.id)}>
+                      <div className="d-flex gap-2">
+                        <textarea
+                          className="form-control form-control-sm"
+                          rows="2"
+                          value={textoResposta}
+                          onChange={(e) => setTextoResposta(e.target.value)}
+                          placeholder="Escreva sua resposta..."
+                          required
+                        ></textarea>
+                        <button
+                          type="submit"
+                          className="btn btn-sm btn-primary align-self-end"
+                          disabled={replySubmitting || !textoResposta.trim()}
+                        >
+                          {replySubmitting ? "..." : "Enviar"}
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
+                  {!!c.respostas?.length && (
+                    <div className="mt-3 ps-3 border-start">
+                      {c.respostas.map((r) => (
+                        <div key={r.id} className="mb-3">
+                          <div className="d-flex justify-content-between align-items-start">
+                            <div className="flex-grow-1">
+                              <div className="d-flex align-items-center gap-2 mb-1">
+                                <i className="bi bi-reply-fill text-muted"></i>
+                                <strong className="small azul">{r.autor?.username || "Anônimo"}</strong>
+                                <small className="text-muted">{formatDate(r.data)}</small>
+                              </div>
+                              <p className="mb-0 small">{r.conteudo}</p>
+                            </div>
+                            {isAuthenticated && user?.username === r.autor?.username && (
+                              <button
+                                className="btn btn-sm btn-outline-danger ms-2"
+                                onClick={() => handleDelete(r.id)}
+                                title="Excluir resposta"
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {isAuthenticated && user?.username === c.autor?.username && (
                   <button

@@ -15,6 +15,22 @@ export default (api) => ({
     });
   },
 
+  async getRespostas(comentarioId) {
+    const url = `${api.baseURL}/comentarios/${comentarioId}/respostas`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  },
+
+  async createResposta(comentarioId, conteudo) {
+    return api.authRequest(`/comentarios/${comentarioId}/resposta`, {
+      method: "POST",
+      body: JSON.stringify({ conteudo }),
+    });
+  },
+
   async deleteComentario(comentarioId) {
     return api.authRequest(`/comentarios/${comentarioId}`, {
       method: "DELETE",

@@ -71,10 +71,10 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/contato"
+                    to={ROUTES.FEEDBACK}
                     className="text-muted text-decoration-none"
                   >
-                    Contato
+                    Sugestões e Bugs
                   </Link>
                 </li>
               </ul>

@@ -6,6 +6,9 @@ import adminService from "./adminService";
 import vagaService from "./vagaService";
 import searchService from "./searchService";
 import conteudoEducacionalService from "./conteudoEducacionalService";
+import notificacaoService from "./notificacaoService";
+import sugestaoService from "./sugestaoService";
+import authService from "../auth";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -23,41 +26,13 @@ class ApiService {
       vagaService(this),
       searchService(this),
       conteudoEducacionalService(this),
+      notificacaoService(this),
+      sugestaoService(this),
     );
   }
 
   async authRequest(endpoint, options = {}) {
-    const token = localStorage.getItem("auth_token");
-    const url = `${this.baseURL}${endpoint}`;
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
-        ...options.headers,
-      },
-      ...options,
-    };
-
-    const response = await fetch(url, config);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
-    }
-
-    if (response.status === 204) {
-      return null;
-    }
-
-    const contentType = response.headers.get("content-type") || "";
-
-    if (contentType.includes("application/json")) {
-      return response.json();
-    }
-
-    const text = await response.text();
-    return text || null;
+    return authService.authRequest(endpoint, options);
   }
 }
 
