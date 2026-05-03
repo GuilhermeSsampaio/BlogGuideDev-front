@@ -89,8 +89,17 @@ export default function NotificationBell() {
 
       {open && (
         <div
-          className="position-absolute mt-2 bg-white border rounded shadow"
-          style={{ width: "330px", maxWidth: "calc(100vw - 2rem)", maxHeight: "420px", overflowY: "auto", zIndex: 1200, right: 0 }}
+          className="notification-dropdown bg-white border rounded shadow"
+          style={{
+            position: window.innerWidth < 768 ? "fixed" : "absolute",
+            ...(window.innerWidth < 768
+              ? { top: "70px", left: "0.75rem", right: "0.75rem", width: "auto" }
+              : { right: 0, width: "330px" }),
+            maxHeight: "420px",
+            overflowY: "auto",
+            zIndex: 1200,
+            marginTop: window.innerWidth >= 768 ? "0.5rem" : 0,
+          }}
         >
           <div className="px-3 py-2 border-bottom d-flex justify-content-between align-items-center">
             <strong>Notificações</strong>
