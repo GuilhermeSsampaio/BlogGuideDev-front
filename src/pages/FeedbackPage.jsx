@@ -43,7 +43,7 @@ export default function FeedbackPage() {
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-lg-8">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-1 shadow-sm">
             <div className="card-body p-4 p-md-5">
               <h2 className="azul fw-bold mb-2">Sugestões e Bugs</h2>
               <p className="text-muted mb-4">
@@ -53,7 +53,7 @@ export default function FeedbackPage() {
               <form onSubmit={handleSubmit}>
                 <div className="row g-3">
                   <div className="col-md-6">
-                    <label className="form-label">Tipo</label>
+                    <label className="form-label fw-bold">Tipo</label>
                     <select
                       className="form-select"
                       name="tipo"
@@ -66,7 +66,7 @@ export default function FeedbackPage() {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label">Canal de contato</label>
+                    <label className="form-label fw-bold">Canal de contato</label>
                     <select
                       className="form-select"
                       name="canal_contato"
@@ -79,7 +79,7 @@ export default function FeedbackPage() {
                   </div>
 
                   <div className="col-12">
-                    <label className="form-label">Título</label>
+                    <label className="form-label fw-bold">Título</label>
                     <input
                       className="form-control"
                       name="titulo"
@@ -91,7 +91,7 @@ export default function FeedbackPage() {
                   </div>
 
                   <div className="col-12">
-                    <label className="form-label">Descrição</label>
+                    <label className="form-label fw-bold">Descrição</label>
                     <textarea
                       className="form-control"
                       rows="6"
@@ -104,7 +104,7 @@ export default function FeedbackPage() {
                   </div>
 
                   <div className="col-12">
-                    <label className="form-label">Email ou WhatsApp (opcional)</label>
+                    <label className="form-label fw-bold">Email ou WhatsApp (opcional)</label>
                     <input
                       className="form-control"
                       name="email_contato"

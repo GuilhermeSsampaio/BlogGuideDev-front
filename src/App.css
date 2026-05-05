@@ -13,14 +13,16 @@ body {
   color: #333;
   overflow-x: hidden;
   box-sizing: border-box;
-  min-width: 320px;
+  min-width: 0;
   width: 100%;
   max-width: 100vw;
 }
 
 .app-container {
-  overflow-x: hidden;
-  max-width: 100vw;
+  min-width: 320px;
+  overflow-x: auto;
+  overflow-y: visible;
+  max-width: 100%;
 }
 
 .jersey-25-regular {
@@ -108,7 +110,7 @@ body.offcanvas-open {
 .hero-image-center {
   background-image:
     linear-gradient(90deg, #ffffff73 0%, #ffffff30 100%),
-    url("./img/3314424.jpg");
+    url("./img/homeimagenew.jpg");
   /* background-image:
     linear-gradient(180deg, #fafafaa1 0%, #fafafaa1 100%),
     url("./image-home.jpg"); */
@@ -152,6 +154,46 @@ footer {
 
 .ql-editor {
   min-height: 250px;
+}
+
+.user-tabs .user-tabs-list {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.user-tabs .nav-item {
+  flex: 1 1 0;
+}
+
+.user-tabs .user-tab-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.35rem;
+  white-space: normal;
+  text-align: center;
+}
+
+.user-tabs .user-tab-icon {
+  font-size: 1rem;
+}
+
+.user-tabs .user-tab-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.user-tabs .user-tab-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.user-tabs .user-tab-count--placeholder {
+  visibility: hidden;
 }
 
 .home-hero-section {
@@ -257,7 +299,7 @@ footer {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 5px solid #e9d5ff;
+  border: 5px solid #7C3AED;
   margin-bottom: 1.2rem;
   object-fit: cover;
 }
@@ -332,9 +374,8 @@ footer {
 }
 
 .page-detail-container .markdown-content {
-  font-size: 1.15rem;
+  font-size: 1rem;
   line-height: 2;
-  letter-spacing: 0.3px;
   color: #20242b;
 }
 
@@ -407,6 +448,7 @@ footer {
 .user-profile-stat-card {
   background: #f8f9fa;
   border-radius: 12px;
+  border: 1px solid #0000002d;
   padding: 1rem;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -475,10 +517,10 @@ td, th {
   max-width: none;
 }
 
-.forum-detail-container {
+/* .forum-detail-container {
   max-width: 1000px;
   max-width: min(1000px, 100vw);
-}
+} */
 
 .forum-rich-content {
   font-size: 1.05rem;
@@ -654,12 +696,32 @@ td, th {
   .home-about-content {
     font-size: 0.92rem;
     text-align: justify;
+    font-weight: 500;
   }
   .table-dark {
     font-size: 0.9rem;
   }
   .table-conteudos tbody {
     font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .user-tabs .user-tab-btn {
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.45rem 0.2rem;
+  }
+  .user-tabs .user-tab-btn i {
+    font-size: 1rem;
+  }
+  .user-tabs .user-tab-label {
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
+  .user-tabs .user-tab-count {
+    font-size: 0.75rem;
+    line-height: 1;
   }
 }
 
@@ -735,9 +797,25 @@ td, th {
   }
 }
 
+@media only screen and (max-width: 360px) {
+  .logo-blog-principal {
+    height: 45px;
+  }
+}
+
 @media only screen and (max-width: 320px) {
+  html,
   body {
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
+    min-width: 320px;
+  }
+  #root {
+    min-width: 320px;
+  }
+  .app-container {
+    min-width: 320px;
+    width: 320px;
+    max-width: none;
   }
   .forum-detail-container {
     padding-left: 8px;

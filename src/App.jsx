@@ -14,7 +14,7 @@ function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
-        <div className="app-container d-flex flex-column min-vh-100">
+        <div className="app-container d-flex flex-column">
           <Header />
           <main className="main-content flex-grow-1">
             <AppRoutes />

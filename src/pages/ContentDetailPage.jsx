@@ -229,6 +229,20 @@ function PostArticle({ post }) {
   if (post.sections && Array.isArray(post.sections)) {
     return (
       <div className="container py-5 page-detail-container">
+        <div className="mb-5">
+        <Link
+          to="/conteudo"
+          className="btn"
+          style={{
+            backgroundColor: "#7C3AED",
+            color: "#ffffff",
+            fontWeight: "500",
+          }}
+        >
+          <i className="bi bi-arrow-left me-2"></i>
+          Voltar para Conteúdos
+        </Link>
+      </div>
         <div className="d-flex align-items-center gap-4 mb-4">
           {post.icon && (
             <img
@@ -263,7 +277,7 @@ function PostArticle({ post }) {
           <div key={idx} className="mb-4">
             {section.heading && (
               <h2
-                className="fw-bold mb-3"
+                className="fw-bold mb-1"
                 style={{
                   fontSize: "1.5rem",
                   paddingBottom: 8,
@@ -278,9 +292,9 @@ function PostArticle({ post }) {
               <div
                 className="markdown-content"
                 style={{
-                  fontSize: "1.15rem",
+                  fontSize: "1.05rem",
                   lineHeight: 2,
-                  textAlign: "left",
+                  textAlign: "justify",
                 }}
               >
                 <ReactMarkdown 
@@ -395,7 +409,7 @@ function PostArticle({ post }) {
           style={{
             fontSize: "1.15rem",
             lineHeight: 2,
-            textAlign: "left",
+            textAlign: "justify",
           }}
         >
           {post.content && renderTextSection(post.content)}
@@ -407,21 +421,6 @@ function PostArticle({ post }) {
           <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
         </div>
         <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
-      </div>
-
-      <div className="mt-5 pt-3">
-        <Link
-          to="/conteudo"
-          className="btn"
-          style={{
-            backgroundColor: "#7C3AED",
-            color: "#ffffff",
-            fontWeight: "500",
-          }}
-        >
-          <i className="bi bi-arrow-left me-2"></i>
-          Voltar para Conteúdos
-        </Link>
       </div>
     </div>
     );

@@ -16,8 +16,8 @@ export default function HomePage() {
             className="home-hero-logo"
           />
           <h1 className="home-hero-title">
-            <span style={{ color: "#222" }}>Blog</span>
-            <span style={{ color: "#6c2bd7" }}>Guide</span>
+            <span style={{ color: "#0d0d0d" }}>Blog</span>
+            <span style={{ color: "#7C3AED" }}>Guide</span>
             <p className="home-hero-subtitle">
               Uma plataforma para desenvolvedores compartilharem conhecimento
             </p>

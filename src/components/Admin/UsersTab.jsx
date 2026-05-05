@@ -34,7 +34,7 @@ export default function UsersTab({
             <tr>
               <th>Usuário</th>
               <th className="d-none d-md-table-cell">Email</th>
-              <th>Role</th>
+              <th className="d-none d-md-table-cell">Role</th>
               <th className="d-none d-md-table-cell">Verificado</th>
               <th className="text-end">Ações</th>
             </tr>
@@ -43,11 +43,16 @@ export default function UsersTab({
             {users.map((u) => (
               <tr key={u.id}>
                 <td>
-                  <i className="bi bi-person-circle me-2 azul"></i>
-                  {u.username}
+                  <div className="d-flex align-items-center gap-2">
+                    <i className="bi bi-person-circle azul"></i>
+                    <span style={{ fontSize: "0.95rem", fontWeight: "500" }}>{u.username}</span>
+                  </div>
+                  <span className={`badge mt-1 d-inline-block d-md-none ${roleBadge(u.tipo_perfil)}`}>
+                    {u.tipo_perfil}
+                  </span>
                 </td>
-                <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120}}>{u.email}</td>
-                <td>
+                <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120, fontSize: "0.875rem", whiteSpace: "normal"}}>{u.email}</td>
+                <td className="d-none d-md-table-cell">
                   <span className={`badge ${roleBadge(u.tipo_perfil)}`}>
                     {u.tipo_perfil}
                   </span>

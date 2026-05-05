@@ -50,7 +50,7 @@ export default function ForumPage() {
 
   return (
     <div className="container my-5">
-      <div className="text-center mb-4 jersey-25-regular">
+      <div className="text-center mb-3 jersey-25-regular">
         <h1 className="azul">💬 Fórum</h1>
         <p className="text-muted">
           Compartilhe ideias, tire dúvidas e discuta com a comunidade
@@ -59,7 +59,7 @@ export default function ForumPage() {
 
       {/* Botão de novo tópico */}
       {isAuthenticated && (
-        <div className="text-center mb-3">
+        <div className="text-center mb-4">
           <Link to="/criar-forum" className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
             <i className="bi bi-plus-circle me-1"></i>
             Novo Tópico
@@ -85,7 +85,7 @@ export default function ForumPage() {
             <Link
               key={topic.id}
               to={`/forum/${topic.id}`}
-              className="list-group-item list-group-item-action border-1 mb-2 rounded shadow-sm text-decoration-none text-reset"
+              className="list-group-item list-group-item-action border-1 mb-4 rounded shadow-sm text-decoration-none text-reset"
               style={{ overflow: "hidden" }}
             >
               <div className="d-flex justify-content-between align-items-start">
@@ -98,7 +98,6 @@ export default function ForumPage() {
                       style={{
                         color: "#222",
                         fontWeight: "700",
-                        letterSpacing: "0.5px",
                       }}
                     >
                       {topic.tipo}
@@ -111,12 +110,12 @@ export default function ForumPage() {
                       : stripHtml(topic.descricao)}
                   </p>
 
-                  <div className="d-flex align-items-center gap-3">
+                  <div className="d-flex align-items-center gap-2">
                     <small className="text-muted">
                       <i className="bi bi-person-circle me-1"></i>
                       {topic.autor?.username || "Anônimo"}
                     </small>
-
+                    <span>·</span>
                     <small className="text-muted">
                       <i className="bi bi-calendar me-1"></i>
                       {formatDate(topic.data_criacao)}

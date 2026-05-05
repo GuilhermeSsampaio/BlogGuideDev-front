@@ -88,12 +88,12 @@ export default function ContentGuidesPage() {
       <h1 className="fw-bold mb-2 text-primary-conteudo">
         Explore o Universo Dev
       </h1>
-      <p className="mb-5 text-secondary-conteudo">
+      <p className="mb-4 text-secondary-conteudo">
         As melhores ferramentas, linguagens e frameworks explicados de um jeito simples e direto ao ponto. Sem enrolação.
       </p>
 
       <section className="mb-5">
-        <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-3">
+        <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
           {/* <div>
             <h2 className="fw-bold mb-1" style={{ color: "#333" }}>
               Conteúdos Publicados

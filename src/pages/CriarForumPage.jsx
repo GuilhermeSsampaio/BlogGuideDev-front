@@ -71,7 +71,7 @@ export default function CriarForumPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const plainText = formData.descricao.replace(/<[^>]*>/g, "").trim();
-    if (!formData.titulo.trim() || !plainText) return;
+    if (!formData.titulo.trim() || !plainText || !formData.tipo.trim()) return;
 
     setSubmitting(true);
     try {
@@ -272,7 +272,12 @@ export default function CriarForumPage() {
                   <button
                     type="submit"
                     className="btn btn-primary"
-                    disabled={submitting}
+                    disabled={
+                      submitting ||
+                      !formData.titulo.trim() ||
+                      !formData.tipo.trim() ||
+                      !formData.descricao.replace(/<[^>]*>/g, "").trim()
+                    }
                   >
                     {submitting ? "Criando..." : "Criar Tópico"}
                   </button>

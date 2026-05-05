@@ -81,7 +81,7 @@ export default function UserConfigTab({
 
   return (
     <div>
-      <h5 className="azul mb-3">Configurações da Conta</h5>
+      <h5 className="azul mt-2 mb-3 fw-bold">Configurações da Conta</h5>
 
       <form onSubmit={handleSubmit}>
         <div className="row">

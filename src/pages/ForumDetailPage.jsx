@@ -55,14 +55,14 @@ export default function ForumDetailPage() {
       </Link>
 
       <article>
-        <div className="d-flex align-items-center gap-2 mb-2">
+        <div className="d-flex align-items-center gap-2 mb-1">
           <h1 className="azul fw-bold mb-1 text-title-detail">{topic.titulo}</h1>
         </div>
 
-        <div className="d-flex align-items-center gap-2 mb-4 text-muted">
+        <div className="d-flex align-items-center gap-2 mb-4 text-muted" style={{ fontSize: "0.9rem" }}>
           <i className="bi bi-person-circle" style={{ fontSize: "1rem" }}></i>
           <span>{topic.autor?.username || "Anônimo"}</span>
-          <span className="mx-2">·</span>
+          <span>·</span>
           <span>{formatDate(topic.data_criacao)}</span>
         </div>
 
@@ -72,7 +72,7 @@ export default function ForumDetailPage() {
               src={topic.imagem_url}
               alt={topic.titulo}
               className="img-fluid rounded shadow-sm"
-              style={{ maxHeight: "400px", maxWidth: "100%", objectFit: "cover" }}
+              style={{ maxHeight: "400px", width: "100%" }}
             />
           </div>
         )}

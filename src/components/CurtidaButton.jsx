@@ -11,7 +11,7 @@ export default function CurtidaButton({ tipoReferencia, referenciaId }) {
 
   useEffect(() => {
     fetchCurtidas();
-  }, [referenciaId]);
+  }, [referenciaId, tipoReferencia, isAuthenticated]);
 
   const fetchCurtidas = async () => {
     try {

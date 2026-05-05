@@ -85,19 +85,19 @@ export default function UserHeader({
 
         {/* Stats Cards */}
         <div className="row g-3 mt-1">
-          <div className="col-4">
-            <div className="user-profile-stat-card">
+          <div className="col-12 col-sm-4">
+            <div className="border-1 user-profile-stat-card">
               <h5 className="azul mb-0">{userStats.curtidas}</h5>
               <small className="text-muted">Curtidas</small>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-12 col-sm-4">
             <div className="user-profile-stat-card">
               <h5 className="azul mb-0">{userStats.comentarios}</h5>
               <small className="text-muted">Comentários</small>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-12 col-sm-4">
             <div className="user-profile-stat-card">
               <h5 className="azul mb-0">{userStats.foruns}</h5>
               <small className="text-muted">Fóruns</small>
