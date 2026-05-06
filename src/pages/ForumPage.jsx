@@ -80,17 +80,30 @@ export default function ForumPage() {
           <p className="text-muted">Seja o primeiro a criar um tópico!</p>
         </div>
       ) : (
-        <div className="list-group">
+        <div className="forum-topics-grid">
           {topics.map((topic) => (
             <Link
               key={topic.id}
               to={`/forum/${topic.id}`}
-              className="list-group-item list-group-item-action border-1 mb-4 rounded shadow-sm text-decoration-none text-reset"
-              style={{ overflow: "hidden" }}
+              className="forum-topic-card text-decoration-none text-reset"
             >
-              <div className="d-flex justify-content-between align-items-start">
-                <div className="flex-grow-1">
-                  <h5 className="azul fw-bold mb-1">{topic.titulo}</h5>
+              <div className="forum-topic-card-inner">
+                <div className="forum-topic-card-top">
+                  <div className="d-flex justify-content-between align-items-start">
+                    <h5 className="azul fw-bold mb-1">{topic.titulo}</h5>
+                    {isAuthenticated && user?.username === topic.autor?.username && (
+                      <button
+                        className="btn btn-sm btn-outline-danger ms-2 flex-shrink-0"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDelete(topic.id);
+                        }}
+                        title="Excluir tópico"
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    )}
+                  </div>
 
                   {topic.tipo && (
                     <span
@@ -104,37 +117,24 @@ export default function ForumPage() {
                     </span>
                   )}
 
-                  <p className="text-muted mb-3" style={{ overflowWrap: "break-word", wordBreak: "break-word" }}>
+                  <p className="text-muted mb-0" style={{ overflowWrap: "break-word", wordBreak: "break-word" }}>
                     {stripHtml(topic.descricao).length > 150
                       ? stripHtml(topic.descricao).substring(0, 150) + "..."
                       : stripHtml(topic.descricao)}
                   </p>
-
-                  <div className="d-flex align-items-center gap-2">
-                    <small className="text-muted">
-                      <i className="bi bi-person-circle me-1"></i>
-                      {topic.autor?.username || "Anônimo"}
-                    </small>
-                    <span>·</span>
-                    <small className="text-muted">
-                      <i className="bi bi-calendar me-1"></i>
-                      {formatDate(topic.data_criacao)}
-                    </small>
-                  </div>
                 </div>
 
-                {isAuthenticated && user?.username === topic.autor?.username && (
-                  <button
-                    className="btn btn-sm btn-outline-danger ms-2"
-                    onClick={(e) => {
-                      e.preventDefault(); // impede o Link de abrir
-                      handleDelete(topic.id);
-                    }}
-                    title="Excluir tópico"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                )}
+                <div className="d-flex align-items-center gap-2 mt-3">
+                  <small className="text-muted">
+                    <i className="bi bi-person-circle me-1"></i>
+                    {topic.autor?.username || "Anônimo"}
+                  </small>
+                  <span>·</span>
+                  <small className="text-muted">
+                    <i className="bi bi-calendar me-1"></i>
+                    {formatDate(topic.data_criacao)}
+                  </small>
+                </div>
               </div>
             </Link>
           ))}

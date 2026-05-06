@@ -22,31 +22,29 @@ function VagaCard({ vaga }) {
   };
 
   return (
-    <div className="card border-0 shadow-sm mb-3">
+    <div className="card border-1 shadow-sm mb-3">
       <div className="card-body">
-        <div className="d-flex justify-content-between align-items-start">
-          <div>
+        <div className="vaga-card-header">
+          <div className="vaga-card-header-info">
             <h5 className="card-title azul mb-1" style={{ fontSize: "1.25rem" }}>
               {vaga.titulo}
             </h5>
-            <div className="d-flex align-items-center gap-2 mb-3">
+            <div className="vaga-card-empresa-row mb-1">
               <i className="bi bi-building azul"></i>
               <span className="fw-semibold">{vaga.empresa}</span>
-              {vaga.localidade && (
-                <>
-                  <i className="bi bi-geo-alt text-muted ms-2"></i>
-                  <span className="text-muted">{vaga.localidade}</span>
-                </>
-              )}
             </div>
-          </div>
-          <div className="d-flex gap-2">
-            {vaga.tipo_contrato && (
-              <span className={`badge ${contratoBadge(vaga.tipo_contrato)}`}>
-                {vaga.tipo_contrato}
-              </span>
+            {vaga.localidade && (
+              <div className="vaga-card-local-row mb-2">
+                <i className="bi bi-geo-alt text-muted"></i>
+                <span className="text-muted">{vaga.localidade}</span>
+              </div>
             )}
           </div>
+          {vaga.tipo_contrato && (
+            <span className={`badge ${contratoBadge(vaga.tipo_contrato)} vaga-card-badge`}>
+              {vaga.tipo_contrato}
+            </span>
+          )}
         </div>
 
         <p
@@ -58,12 +56,12 @@ function VagaCard({ vaga }) {
             : vaga.descricao}
         </p>
 
-        <div className="d-flex justify-content-between align-items-center mt-3">
+        <div className="vaga-card-footer mt-3">
           <small className="text-muted">
             <i className="bi bi-person-circle me-1"></i>
             {vaga.recrutador?.username} · {formatDate(vaga.data_criacao)}
           </small>
-          <div className="d-flex gap-2">
+          <div className="vaga-card-actions">
             {vaga.link && (
               <a
                 href={vaga.link}

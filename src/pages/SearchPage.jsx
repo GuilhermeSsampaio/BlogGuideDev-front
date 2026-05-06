@@ -73,7 +73,7 @@ export default function SearchPage() {
                   <Link
                     key={p.id}
                     to={`/conteudo/${p.slug || p.id}`}
-                    className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded post-card-responsive"
+                    className="list-group-item list-group-item-action border-1 shadow-sm mb-2 rounded post-card-responsive"
                   >
                     {/* Mobile layout: imagem em cima, depois título, excerpt, infos */}
                     <div className="post-card-mobile d-flex d-md-none flex-column align-items-center text-center">
@@ -137,7 +137,7 @@ export default function SearchPage() {
                   <Link
                     key={t.id}
                     to={`/forum/${t.id}`}
-                    className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded"
+                    className="list-group-item list-group-item-action border-1 shadow-sm mb-2 rounded"
                   >
                     <div className="d-flex justify-content-between align-items-center">
                       <div>
@@ -171,7 +171,7 @@ export default function SearchPage() {
                   <Link
                     key={v.id}
                     to={`/vagas/${v.id}`}
-                    className="list-group-item list-group-item-action border-0 shadow-sm mb-2 rounded"
+                    className="list-group-item list-group-item-action border-1 shadow-sm mb-2 rounded"
                   >
                     <div className="d-flex justify-content-between align-items-center">
                       <div>

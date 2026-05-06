@@ -92,7 +92,12 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("pt-BR", {
+    // Backend stores in UTC; ensure JS parses it as UTC
+    let normalized = dateString;
+    if (!dateString.endsWith("Z") && !dateString.includes("+")) {
+      normalized = dateString + "Z";
+    }
+    return new Date(normalized).toLocaleString("pt-BR", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -134,9 +139,9 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
           </div>
         </form>
       ) : (
-        <p className="text-muted mb-3" style={{fontSize: "1rem", fontWeight: "bold"}}>
+        <p className="text-muted mb-3" style={{ fontSize: "1rem", fontWeight: "bold" }}>
           <i className="bi bi-lock me-1"></i>
-           <Link to="/login" className="text-decoration-none">
+          <Link to="/login" className="text-decoration-none">
             Faça login
           </Link>{" "}
           para comentar.
@@ -159,11 +164,14 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
             <div key={c.id} className="list-group-item px-0 py-3 border-bottom">
               <div className="d-flex justify-content-between align-items-start">
                 <div className="flex-grow-1">
-                  <div className="d-flex align-items-center gap-2 mb-1">
-                    <i className="bi bi-person-circle azul"></i>
-                    <strong className="azul small">
-                      {c.autor?.username || "Anônimo"}
-                    </strong>
+                  <div className="comment-header">
+                    <div className="comment-header-user">
+                      <i className="bi bi-person-circle azul"></i>
+                      <strong className="azul small">
+                        {c.autor?.username || "Anônimo"}
+                      </strong>
+                    </div>
+                    <span className="comment-header-sep">·</span>
                     <small className="text-muted">{formatDate(c.data)}</small>
                   </div>
                   <p className="mb-0">{c.conteudo}</p>
@@ -213,9 +221,12 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                         <div key={r.id} className="mb-3">
                           <div className="d-flex justify-content-between align-items-start">
                             <div className="flex-grow-1">
-                              <div className="d-flex align-items-center gap-2 mb-1">
-                                <i className="bi bi-reply-fill text-muted"></i>
-                                <strong className="small azul">{r.autor?.username || "Anônimo"}</strong>
+                              <div className="comment-header">
+                                <div className="comment-header-user">
+                                  <i className="bi bi-reply-fill text-muted"></i>
+                                  <strong className="small azul">{r.autor?.username || "Anônimo"}</strong>
+                                </div>
+                                <span className="comment-header-sep">-</span>
                                 <small className="text-muted">{formatDate(r.data)}</small>
                               </div>
                               <p className="mb-0 small">{r.conteudo}</p>

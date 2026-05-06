@@ -79,8 +79,11 @@ export default function VagaDetailPage() {
 
   const isOwner =
     isAuthenticated &&
-    (user?.username === vaga.recrutador?.username ||
-      user?.tipo_perfil === "admin");
+    user?.tipo_perfil === "recrutador" &&
+    user?.username === vaga.recrutador?.username;
+
+  const isAdmin =
+    isAuthenticated && user?.tipo_perfil === "admin";
 
   return (
     <div className="container py-5" style={{ maxWidth: "1000px" }}>
@@ -89,19 +92,19 @@ export default function VagaDetailPage() {
       </Link>
 
       <article>
-        <div className="d-flex justify-content-between align-items-start mb-3">
+        <div className="vaga-detail-header mb-3">
           <div>
             <h1 className="azul jersey-25-regular mb-2">{vaga.titulo}</h1>
-            <div className="d-flex align-items-center gap-3 flex-wrap">
-              <span>
-                <i className="bi bi-building me-1 azul"></i>
-                <strong>{vaga.empresa}</strong>
-              </span>
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <i className="bi bi-building azul"></i>
+              <strong>{vaga.empresa}</strong>
+            </div>
+            <div className="d-flex align-items-center gap-2 mb-1 flex-wrap">
               {vaga.localidade && (
-                <span className="text-muted">
-                  <i className="bi bi-geo-alt me-1"></i>
-                  {vaga.localidade}
-                </span>
+                <>
+                  <i className="bi bi-geo-alt text-muted"></i>
+                  <span className="text-muted">{vaga.localidade}</span>
+                </>
               )}
               {vaga.tipo_contrato && (
                 <span className={`badge ${contratoBadge(vaga.tipo_contrato)}`}>
@@ -110,9 +113,9 @@ export default function VagaDetailPage() {
               )}
             </div>
           </div>
-          {isOwner && (
+          {(isOwner || isAdmin) && (
             <button
-              className="btn btn-outline-danger btn-sm"
+              className="btn btn-outline-danger btn-sm vaga-detail-delete-btn"
               onClick={handleDelete}
             >
               <i className="bi bi-trash me-1"></i>Excluir
@@ -120,16 +123,16 @@ export default function VagaDetailPage() {
           )}
         </div>
 
-        <div className="d-flex align-items-center gap-2 mb-4 text-muted">
-          <i className="bi bi-person-circle" style={{ fontSize: "1rem" }}></i>
+        <div className="d-flex align-items-center gap-2 mb-4 text-muted" style={{ fontSize: "1rem" }}>
+          <i className="bi bi-person-circle"></i>
           <span>{vaga.recrutador?.username}</span>
           <span className="fw-bold">·</span>
           <span>{formatDate(vaga.data_criacao)}</span>
         </div>
 
         <div
-          className="post-content"
-          style={{ fontSize: "1.1rem", lineHeight: "1.5" }}
+          className="post-content text-vagas"
+          style={{ fontSize: "1.1rem", lineHeight: "1.5", overflowWrap: "anywhere", wordBreak: "break-word" }}
         >
           {vaga.descricao.split("\n").map((p, i) => (
             <p key={i}>{p}</p>

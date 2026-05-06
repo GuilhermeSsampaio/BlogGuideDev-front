@@ -67,12 +67,11 @@ export default function ForumDetailPage() {
         </div>
 
         {topic.imagem_url && (
-          <div className="mb-4">
+          <div className="forum-image-container mb-4">
             <img
               src={topic.imagem_url}
               alt={topic.titulo}
-              className="img-fluid rounded shadow-sm"
-              style={{ maxHeight: "400px", width: "100%" }}
+              className="forum-image"
             />
           </div>
         )}

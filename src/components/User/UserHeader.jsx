@@ -62,9 +62,9 @@ export default function UserHeader({
               aria-label="Selecionar foto de perfil"
             />
           </div>
-          <div className="flex-grow-1" style={{ paddingTop: "8px" }}>
-            <h3 className="mb-0 fw-bold" style={{ color: "#222" }}>{formData.nome}</h3>
-            <p className="text-muted mb-0" style={{ fontSize: "0.95rem" }}>
+          <div className="flex-grow-1" style={{ paddingTop: "8px", minWidth: 0 }}>
+            <h3 className="mb-0 fw-bold" style={{ color: "#222", overflowWrap: "anywhere", wordBreak: "break-word" }}>{formData.nome}</h3>
+            <p className="text-muted mb-0" style={{ fontSize: "0.95rem", overflowWrap: "anywhere", wordBreak: "break-word" }}>
               @{user?.username || "usuario"}
               <span className="mx-2">·</span>
               <span
