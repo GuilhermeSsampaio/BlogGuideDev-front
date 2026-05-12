@@ -37,6 +37,7 @@ export const normalizePost = (post) => {
       post.slug ||
       (post.title ? post.title.toLowerCase().replace(/\s+/g, "-") : ""),
     image_url: post.image_url || post.image || null,
+    image_reference: post.image_reference || post.image_reference || null,
     categoryLabel: post.categoryLabel || post.category || null,
     categoryColor: post.categoryColor || "#6c2bd7",
     icon: post.icon || null,

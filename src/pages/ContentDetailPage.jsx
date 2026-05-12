@@ -74,13 +74,13 @@ function ContentArticle({ content, conteudoId }) {
           {/* Renderização do texto com ReactMarkdown para interpretar as Tabelas e Negritos */}
           {section.text && (
             <div className="markdown-content" style={{ fontSize: "1.15rem", lineHeight: 2, textAlign: "left" }}>
-              <ReactMarkdown 
+              <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
                   // Estilizando a tabela automaticamente com as classes do Bootstrap
-                  table: ({node, ...props}) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
-                  thead: ({node, ...props}) => <thead className="table-dark" {...props} />,
-                  p: ({node, ...props}) => <p style={{ whiteSpace: "pre-line" }} {...props} />
+                  table: ({ node, ...props }) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
+                  thead: ({ node, ...props }) => <thead className="table-dark" {...props} />,
+                  p: ({ node, ...props }) => <p style={{ whiteSpace: "pre-line" }} {...props} />
                 }}
               >
                 {section.text}
@@ -141,7 +141,7 @@ function ContentArticle({ content, conteudoId }) {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="d-flex align-items-center gap-2 p-3 rounded text-decoration-none"
+                      className="d-flex align-items-center gap-2 p-3 rounded text-decoration-none h-100"
                       style={{
                         background: "#f8f9fa",
                         border: "1px solid #dee2e6",
@@ -225,24 +225,27 @@ function PostArticle({ post }) {
     [post.created_at],
   );
 
+  // ADICIONE ESTA LINHA:
+  console.log("DADOS QUE CHEGARAM NO COMPONENTE:", post);
+
   // Se o post tem sections, renderiza igual ao ContentArticle
   if (post.sections && Array.isArray(post.sections)) {
     return (
       <div className="container py-5 page-detail-container">
         <div className="mb-5">
-        <Link
-          to="/conteudo"
-          className="btn"
-          style={{
-            backgroundColor: "#7C3AED",
-            color: "#ffffff",
-            fontWeight: "500",
-          }}
-        >
-          <i className="bi bi-arrow-left me-2"></i>
-          Voltar para Conteúdos
-        </Link>
-      </div>
+          <Link
+            to="/conteudo"
+            className="btn"
+            style={{
+              backgroundColor: "#7C3AED",
+              color: "#ffffff",
+              fontWeight: "500",
+            }}
+          >
+            <i className="bi bi-arrow-left me-2"></i>
+            Voltar para Conteúdos
+          </Link>
+        </div>
         <div className="d-flex align-items-center gap-4 mb-4">
           {post.icon && (
             <img
@@ -261,168 +264,181 @@ function PostArticle({ post }) {
           </div>
         </div>
 
-      {(post.image_url || post.image) && (
-        <div className="mb-4">
-          <img
-            src={post.image_url || post.image}
-            alt={post.title}
-            className="img-fluid rounded shadow-sm"
-            style={{ maxHeight: 400, width: "100%" }}
-          />
-        </div>
-      )}
-
-      {post.sections && Array.isArray(post.sections) ? (
-        post.sections.map((section, idx) => (
-          <div key={idx} className="mb-4">
-            {section.heading && (
-              <h2
-                className="fw-bold mb-1"
-                style={{
-                  fontSize: "1.5rem",
-                  paddingBottom: 8,
-                  display: "inline-block",
-                }}
-              >
-                {section.heading}
-              </h2>
-            )}
-
-            {section.text && (
-              <div
-                className="markdown-content"
-                style={{
-                  fontSize: "1.05rem",
-                  lineHeight: 2,
-                  textAlign: "justify",
-                }}
-              >
-                <ReactMarkdown 
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    table: ({node, ...props}) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
-                    thead: ({node, ...props}) => <thead className="table-dark" {...props} />,
-                    p: ({node, ...props}) => <p style={{ whiteSpace: "pre-line" }} {...props} />
-                  }}
+        {(post.image_url || post.image) && (
+          <div className="mb-4">
+            <img
+              src={post.image_url || post.image}
+              alt={post.title}
+              className="img-fluid rounded shadow-sm"
+              style={{ maxHeight: 400, width: "100%" }}
+            />
+            {post.image_reference && (
+              <div className="text-end mt-1 pe-1">
+                <a
+                  href={post.image_reference}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted text-decoration-none"
+                  style={{ fontSize: "0.85rem" }}
                 >
-                  {section.text}
-                </ReactMarkdown>
-              </div>
-            )}
-
-            {section.list && (
-              <ul
-                className="mb-3"
-                style={{ fontSize: "1.12rem", lineHeight: 1.95 }}
-              >
-                {section.list.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            )}
-
-            {section.code && (
-              <div className="position-relative mt-3 mb-4">
-                <pre
-                  className="p-4 rounded"
-                  style={{
-                    background: "#1e1e1e",
-                    color: "#d4d4d4",
-                    fontSize: "0.95rem",
-                    overflowX: "auto",
-                    border: "1px solid #333",
-                  }}
-                >
-                  <code>{section.code}</code>
-                </pre>
-                {section.codeLabel && (
-                  <span
-                    className="position-absolute"
-                    style={{
-                      top: 8,
-                      right: 12,
-                      background: "#333",
-                      color: "#aaa",
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      fontSize: "0.75rem",
-                    }}
-                  >
-                    {section.codeLabel}
-                  </span>
-                )}
-              </div>
-            )}
-
-            {section.links && section.links.length > 0 && (
-              <div className="mt-3">
-                <div className="row g-3">
-                  {section.links.map((link, i) => (
-                    <div className="col-md-6" key={i}>
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="d-flex align-items-center gap-2 p-3 rounded text-decoration-none"
-                        style={{
-                          background: "#f8f9fa",
-                          border: "1px solid #dee2e6",
-                          color: "#333",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = "#e9ecef";
-                          e.currentTarget.style.borderColor = "#4fc3f7";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "#f8f9fa";
-                          e.currentTarget.style.borderColor = "#dee2e6";
-                        }}
-                      >
-                        <span style={{ fontSize: "1.2rem" }}>
-                          {link.icon || "🔗"}
-                        </span>
-                        <div>
-                          <strong style={{ fontSize: "0.95rem" }}>
-                            {link.label}
-                          </strong>
-                          {link.description && (
-                            <p
-                              className="mb-0 text-muted"
-                              style={{ fontSize: "0.85rem" }}
-                            >
-                              {link.description}
-                            </p>
-                          )}
-                        </div>
-                      </a>
-                    </div>
-                  ))}
-                </div>
+                  Fonte da imagem <i className="bi bi-box-arrow-up-right ms-1"></i>
+                </a>
               </div>
             )}
           </div>
-        ))
-      ) : (
-        <div
-          className="markdown-content"
-          style={{
-            fontSize: "1.15rem",
-            lineHeight: 2,
-            textAlign: "justify",
-          }}
-        >
-          {post.content && renderTextSection(post.content)}
-        </div>
-      )}
+        )}
 
-      <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
-        <div className="mb-4">
-          <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
+        {post.sections && Array.isArray(post.sections) ? (
+          post.sections.map((section, idx) => (
+            <div key={idx} className="mb-4">
+              {section.heading && (
+                <h2
+                  className="fw-bold mb-1"
+                  style={{
+                    fontSize: "1.5rem",
+                    paddingBottom: 8,
+                    display: "inline-block",
+                  }}
+                >
+                  {section.heading}
+                </h2>
+              )}
+
+              {section.text && (
+                <div
+                  className="markdown-content"
+                  style={{
+                    fontSize: "1.05rem",
+                    lineHeight: 2,
+                    textAlign: "justify",
+                  }}
+                >
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      table: ({ node, ...props }) => <table className="table table-bordered table-striped mt-3 mb-4 table-conteudos" {...props} />,
+                      thead: ({ node, ...props }) => <thead className="table-dark" {...props} />,
+                      p: ({ node, ...props }) => <p style={{ whiteSpace: "pre-line" }} {...props} />
+                    }}
+                  >
+                    {section.text}
+                  </ReactMarkdown>
+                </div>
+              )}
+
+              {section.list && (
+                <ul
+                  className="mb-3"
+                  style={{ fontSize: "1.12rem", lineHeight: 1.95 }}
+                >
+                  {section.list.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              )}
+
+              {section.code && (
+                <div className="position-relative mt-3 mb-4">
+                  <pre
+                    className="p-4 rounded"
+                    style={{
+                      background: "#1e1e1e",
+                      color: "#d4d4d4",
+                      fontSize: "0.95rem",
+                      overflowX: "auto",
+                      border: "1px solid #333",
+                    }}
+                  >
+                    <code>{section.code}</code>
+                  </pre>
+                  {section.codeLabel && (
+                    <span
+                      className="position-absolute"
+                      style={{
+                        top: 8,
+                        right: 12,
+                        background: "#333",
+                        color: "#aaa",
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      {section.codeLabel}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {section.links && section.links.length > 0 && (
+                <div className="mt-3">
+                  <div className="row g-3">
+                    {section.links.map((link, i) => (
+                      <div className="col-md-6" key={i}>
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="d-flex align-items-center gap-2 p-3 rounded text-decoration-none h-100"
+                          style={{
+                            background: "#f8f9fa",
+                            border: "1px solid #dee2e6",
+                            color: "#333",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#e9ecef";
+                            e.currentTarget.style.borderColor = "#4fc3f7";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "#f8f9fa";
+                            e.currentTarget.style.borderColor = "#dee2e6";
+                          }}
+                        >
+                          <span style={{ fontSize: "1.2rem" }}>
+                            {link.icon || "🔗"}
+                          </span>
+                          <div>
+                            <strong style={{ fontSize: "0.95rem" }}>
+                              {link.label}
+                            </strong>
+                            {link.description && (
+                              <p
+                                className="mb-0 text-muted"
+                                style={{ fontSize: "0.85rem" }}
+                              >
+                                {link.description}
+                              </p>
+                            )}
+                          </div>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <div
+            className="markdown-content"
+            style={{
+              fontSize: "1.15rem",
+              lineHeight: 2,
+              textAlign: "justify",
+            }}
+          >
+            {post.content && renderTextSection(post.content)}
+          </div>
+        )}
+
+        <div className="mt-5 pt-4" style={{ borderTop: "2px solid #eee" }}>
+          <div className="mb-4">
+            <CurtidaButton tipoReferencia="post" referenciaId={post.id} />
+          </div>
+          <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
         </div>
-        <ComentarioSection tipoReferencia="post" referenciaId={post.id} />
       </div>
-    </div>
     );
   }
 }

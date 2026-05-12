@@ -28,6 +28,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     excerpt: initialData?.excerpt || "",
     content: extractContentFromSections(initialData),
     image_url: initialData?.image_url || "",
+    image_reference: initialData?.image_reference || "",
     categoryLabel: initialData?.categoryLabel || "",
     categoryColor: initialData?.categoryColor || "#6c2bd7",
     icon: initialData?.icon || "",
@@ -171,6 +172,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
         content: formData.content.trim(),
         excerpt: formData.excerpt || null,
         image_url: formData.image_url || null,
+        image_reference: formData.image_reference || null,
         categoryLabel: formData.categoryLabel || null,
         categoryColor: formData.categoryColor || null,
         icon: formData.icon || null,
@@ -244,17 +246,16 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                         onClick={() =>
                           handleCategoryChange(cat.label, cat.color)
                         }
-                        className={`btn btn-sm border-2 ${
-                          formData.categoryLabel === cat.label
-                            ? "btn-primary"
-                            : "btn-outline-secondary"
-                        }`}
+                        className={`btn btn-sm border-2 ${formData.categoryLabel === cat.label
+                          ? "btn-primary"
+                          : "btn-outline-secondary"
+                          }`}
                         style={
                           formData.categoryLabel === cat.label
                             ? {
-                                backgroundColor: cat.color,
-                                borderColor: cat.color,
-                              }
+                              backgroundColor: cat.color,
+                              borderColor: cat.color,
+                            }
                             : {}
                         }
                       >
@@ -355,7 +356,20 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                     </div>
                   </div>
                 )}
-
+                <div className="mb-3">
+                  <label htmlFor="image_reference" className="form-label">
+                    Fonte da Imagem (URL de Referência)
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="image_reference"
+                    name="image_reference"
+                    value={formData.image_reference}
+                    onChange={(e) => setFormData({ ...formData, image_reference: e.target.value })}
+                    placeholder="Ex: https://unsplash.com/..."
+                  />
+                </div>
                 <div className="mb-3">
                   <label className="form-label">
                     Conteúdo <span className="text-danger">*</span>

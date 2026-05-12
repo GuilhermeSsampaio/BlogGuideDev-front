@@ -20,10 +20,13 @@ export default function ContentGuidesPage() {
     "Frontend e Interface",
     "Linguagens e Plataformas",
     "Banco de Dados e CMS",
-    "Inteligência Artificial",
+    "Ferramentas",
     "Mobile",
     "DevOps e Cloud",
-    "Sistemas Operacionais"
+    "Sistemas Operacionais",
+    "Segurança",
+    "Internet das Coisas",
+    "Game Dev"
   ];
 
   // Gera as categorias normalmente
@@ -55,8 +58,8 @@ export default function ContentGuidesPage() {
     selectedCategory === "all"
       ? publishedPosts
       : publishedPosts.filter(
-          (post) => getPostCategoryLabel(post) === selectedCategory,
-        )
+        (post) => getPostCategoryLabel(post) === selectedCategory,
+      )
   ).slice().sort((a, b) => {
     if (!a.created_at || !b.created_at) return 0;
     return new Date(a.created_at) - new Date(b.created_at);
