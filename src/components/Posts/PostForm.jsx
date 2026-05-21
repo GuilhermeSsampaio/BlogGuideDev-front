@@ -76,6 +76,13 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       categoryLabel: label,
       categoryColor: color,
     }));
+    
+    if (errors.categoryLabel) {
+      setErrors((prev) => ({
+        ...prev,
+        categoryLabel: "",
+      }));
+    }
   };
 
   // Funções para gerenciar links
@@ -109,8 +116,8 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       newErrors.title = "Título é obrigatório";
     }
 
-    if (!formData.excerpt) {
-      newErrors.excerpt = "Categoria é obrigatória";
+    if (!formData.categoryLabel) {
+      newErrors.categoryLabel = "Categoria é obrigatória";
     }
 
     if (!formData.content.trim()) {
@@ -122,6 +129,16 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     }
 
     setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setTimeout(() => {
+        const firstInvalid = document.querySelector(".is-invalid, .error-message");
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 100);
+    }
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -263,12 +280,12 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                       </button>
                     ))}
                   </div>
-                  {errors.excerpt && (
+                  {errors.categoryLabel && (
                     <div
-                      className="text-danger"
+                      className="text-danger mt-2 fw-bold error-message"
                       style={{ fontSize: "0.875rem" }}
                     >
-                      {errors.excerpt}
+                      {errors.categoryLabel}
                     </div>
                   )}
                 </div>
@@ -548,10 +565,11 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                         ></span>
                         {initialData ? "Salvando..." : "Publicando..."}
                       </>
-                    ) : initialData ? (
-                      "Salvar Alterações"
                     ) : (
-                      "Publicar Post"
+                      <>
+                        {!initialData && <i className="bi bi-send me-1"></i>}
+                        {initialData ? "Salvar Alterações" : "Publicar Post"}
+                      </>
                     )}
                   </button>
 

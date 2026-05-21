@@ -3,6 +3,7 @@ import { Navigate, useParams, useNavigate } from "react-router-dom";
 import PostForm from "../components/Posts/PostForm";
 import { useProtectedPage } from "../handlers/globalHandlers";
 import { useAuth } from "../hooks/useAuth";
+import { useToast } from "../hooks/useToast";
 import { ROUTES } from "../routes/constants";
 import apiService from "../services/api/bridge";
 
@@ -11,6 +12,7 @@ export default function EditarPostPage() {
   const { postId } = useParams();
   const navigate = useNavigate();
   const { checkAuthentication } = useProtectedPage();
+  const { showError } = useToast();
 
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,9 +63,12 @@ export default function EditarPostPage() {
     navigate(`${ROUTES.ADMIN}?tab=posts`, { replace: true });
   }, [navigate]);
 
-  if (!authLoading && user?.tipo_perfil !== "admin") {
-    return <Navigate to={ROUTES.ADMIN} replace />;
-  }
+  useEffect(() => {
+    if (!authLoading && user?.tipo_perfil !== "admin") {
+      showError("Você não tem permissão para esta ação");
+      navigate("/", { replace: true });
+    }
+  }, [authLoading, user, navigate, showError]);
 
   if (isLoading) {
     return (
