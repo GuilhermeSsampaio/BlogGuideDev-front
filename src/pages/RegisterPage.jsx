@@ -23,6 +23,7 @@ export default function RegisterPage() {
     companyName: "",
     isValid: false,
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const { handleRegister } = useHandlersRegister();
 
@@ -88,6 +89,17 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitted(true);
+
+    if (!formData.name || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    if (formData.tipoPerfil === "recrutador" && !cnpjData.value) {
+      setError("Por favor, preencha o CNPJ.");
+      return;
+    }
 
     if (formData.tipoPerfil === "recrutador" && !cnpjData.isValid) {
       setError("CNPJ inválido ou empresa não ativa.");
@@ -125,12 +137,12 @@ export default function RegisterPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
                   <label className="form-label">Nome completo</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${submitted && !formData.name ? 'is-invalid' : ''}`}
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
@@ -142,7 +154,7 @@ export default function RegisterPage() {
                   <label className="form-label">Username</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${submitted && !formData.username ? 'is-invalid' : ''}`}
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
@@ -154,7 +166,7 @@ export default function RegisterPage() {
                   <label className="form-label">Email</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${submitted && !formData.email ? 'is-invalid' : ''}`}
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
@@ -166,7 +178,7 @@ export default function RegisterPage() {
                   <label className="form-label">Senha</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className={`form-control ${submitted && !formData.password ? 'is-invalid' : ''}`}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
@@ -178,7 +190,7 @@ export default function RegisterPage() {
                   <label className="form-label">Confirmar senha</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className={`form-control ${submitted && !formData.confirmPassword ? 'is-invalid' : ''}`}
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
@@ -237,7 +249,7 @@ export default function RegisterPage() {
                     <input
                       type="text"
                       className={`form-control ${
-                        cnpjData.error ? "is-invalid" : cnpjData.isValid ? "is-valid" : ""
+                        (submitted && !cnpjData.value) || cnpjData.error ? "is-invalid" : cnpjData.isValid ? "is-valid" : ""
                       }`}
                       name="cnpj"
                       value={cnpjData.value}

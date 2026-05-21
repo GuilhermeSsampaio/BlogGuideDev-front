@@ -61,7 +61,13 @@ export default function ForumDetailPage() {
 
         <div className="d-flex align-items-center gap-2 mb-4 text-muted" style={{ fontSize: "0.9rem" }}>
           <i className="bi bi-person-circle" style={{ fontSize: "1rem" }}></i>
-          <span>{topic.autor?.username || "Anônimo"}</span>
+          {topic.autor?.username ? (
+            <Link to={`/perfil/${topic.autor.username}`} className="text-decoration-none text-muted">
+              <span>{topic.autor.username}</span>
+            </Link>
+          ) : (
+            <span>Anônimo</span>
+          )}
           <span>·</span>
           <span>{formatDate(topic.data_criacao)}</span>
         </div>

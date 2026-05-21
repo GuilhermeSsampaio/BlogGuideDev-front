@@ -6,6 +6,7 @@ export default function CreateUserForm({ onCreate }) {
     email: "",
     password: "",
     tipo_perfil: "user",
+    cnpj: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -15,8 +16,18 @@ export default function CreateUserForm({ onCreate }) {
     setError("");
     setSubmitting(true);
     try {
-      await onCreate(form);
-      setForm({ username: "", email: "", password: "", tipo_perfil: "user" });
+      // Monta o payload — inclui cnpj apenas para recrutador
+      const payload = {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+        tipo_perfil: form.tipo_perfil,
+      };
+      if (form.tipo_perfil === "recrutador") {
+        payload.cnpj = form.cnpj;
+      }
+      await onCreate(payload);
+      setForm({ username: "", email: "", password: "", tipo_perfil: "user", cnpj: "" });
     } catch (err) {
       setError(err.message || "Erro ao criar usuário");
     } finally {
@@ -93,6 +104,28 @@ export default function CreateUserForm({ onCreate }) {
               </button>
             </div>
           </div>
+
+          {/* Campo CNPJ — visível apenas para recrutador */}
+          {form.tipo_perfil === "recrutador" && (
+            <div className="row g-2 mt-2">
+              <div className="col-md-4">
+                <input
+                  type="text"
+                  className="form-control form-control-sm"
+                  placeholder="CNPJ (obrigatório para recrutador)"
+                  value={form.cnpj}
+                  onChange={(e) => setForm({ ...form, cnpj: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="col-md-8">
+                <small className="text-muted d-block mt-1">
+                  <i className="bi bi-info-circle me-1"></i>
+                  O CNPJ será validado. A empresa precisa estar com situação ATIVA.
+                </small>
+              </div>
+            </div>
+          )}
         </form>
       </div>
     </div>

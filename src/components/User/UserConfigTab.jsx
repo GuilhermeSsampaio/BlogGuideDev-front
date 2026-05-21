@@ -211,7 +211,9 @@ export default function UserConfigTab({
                 className="form-check-input"
                 type="checkbox"
                 id="perfilPublico"
-                defaultChecked
+                name="is_public"
+                checked={formData.is_public}
+                onChange={handleInputChange}
               />
               <label className="form-check-label" htmlFor="perfilPublico">
                 Perfil público

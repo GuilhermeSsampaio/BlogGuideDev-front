@@ -209,22 +209,49 @@ export default function Header() {
                 <NotificationBell />
               </div>
               {isAuthenticated ? (
-                <Link
-                  to={ROUTES.USUARIO}
-                  className="btn px-3"
-                  style={{
-                    background: "#6c2bd7",
-                    color: "#fff",
-                    borderRadius: "1.5rem",
-                    fontWeight: "500",
-                    fontSize: "1rem",
-                    padding: "0.5rem 1.3rem",
-                  }}
-                  onClick={handleNavLinkClick}
-                >
-                  <i className="bi bi-person-fill me-2"></i>
-                  Perfil
-                </Link>
+                <div className="dropdown">
+                  <button
+                    className="btn px-3 dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style={{
+                      background: "#6c2bd7",
+                      color: "#fff",
+                      borderRadius: "1.5rem",
+                      fontWeight: "500",
+                      fontSize: "1rem",
+                      padding: "0.5rem 1.3rem",
+                    }}
+                  >
+                    <i className="bi bi-person-fill me-2"></i>
+                    Perfil
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-end shadow-sm border-0" style={{ borderRadius: "1rem" }}>
+                    <li>
+                      <Link
+                        className="dropdown-item dropdown-item-custom py-2"
+                        to={ROUTES.USUARIO}
+                        onClick={handleNavLinkClick}
+                        style={{ color: "#333", fontWeight: "500" }}
+                      >
+                        <i className="bi bi-person me-2 text-primary"></i>
+                        Meu Perfil
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item dropdown-item-custom py-2"
+                        to={ROUTES.COMUNIDADE}
+                        onClick={handleNavLinkClick}
+                        style={{ color: "#333", fontWeight: "500" }}
+                      >
+                        <i className="bi bi-people me-2 text-primary"></i>
+                        Comunidade
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               ) : (
                 <Link
                   to={ROUTES.LOGIN}

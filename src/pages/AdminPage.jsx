@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Navigate, useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useToast } from "../hooks/useToast";
 import apiService from "../services/api/bridge";
 import DashboardTab from "../components/Admin/DashboardTab";
 import UsersTab from "../components/Admin/UsersTab";
@@ -10,6 +11,7 @@ import ForumTab from "../components/Admin/ForumTab";
 export default function AdminPage() {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { showSuccess, showError } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "dashboard";
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -99,8 +101,10 @@ export default function AdminPage() {
     try {
       await apiService.deleteUser(profileId);
       setUsers((prev) => prev.filter((u) => u.id !== profileId));
+      showSuccess(`Usuário "${username}" foi excluído com sucesso.`);
     } catch (err) {
       console.error("Erro ao deletar usuário:", err);
+      showError("Erro ao excluir o usuário. Tente novamente.");
     }
   };
 
@@ -130,8 +134,36 @@ export default function AdminPage() {
     }
   };
 
-  if (!isAuthenticated || user?.tipo_perfil !== "admin") {
-    return <Navigate to="/" replace />;
+  // Usuário autenticado mas NÃO é admin → tela de acesso negado
+  if (isAuthenticated && user?.tipo_perfil !== "admin") {
+    return (
+      <div className="admin-access-denied">
+        <div className="admin-access-denied-card">
+          <div className="admin-access-denied-icon">
+            <i className="bi bi-shield-exclamation"></i>
+          </div>
+          <h2>Acesso Negado</h2>
+          <p>
+            Você não tem permissão para acessar o painel de administração.
+            <br />
+            Esta área é restrita a administradores.
+          </p>
+          <button
+            className="btn admin-access-denied-btn"
+            onClick={() => navigate("/")}
+          >
+            <i className="bi bi-house-door me-2"></i>
+            Voltar para a Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Não autenticado → redireciona para login
+  if (!isAuthenticated) {
+    navigate("/login", { replace: true });
+    return null;
   }
 
   return (

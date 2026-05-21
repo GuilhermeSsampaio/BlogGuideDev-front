@@ -177,11 +177,10 @@ export default function CriarForumPage() {
                   <div className="btn-group w-100 mb-2" role="group">
                     <button
                       type="button"
-                      className={`btn btn-sm ${
-                        imagemMode === "url"
+                      className={`btn btn-sm ${imagemMode === "url"
                           ? "btn-primary"
                           : "btn-outline-primary"
-                      }`}
+                        }`}
                       onClick={() => {
                         setImagemMode("url");
                         setFormData((prev) => ({ ...prev, imagem_url: "" }));
@@ -192,11 +191,10 @@ export default function CriarForumPage() {
                     </button>
                     <button
                       type="button"
-                      className={`btn btn-sm ${
-                        imagemMode === "file"
+                      className={`btn btn-sm ${imagemMode === "file"
                           ? "btn-primary"
                           : "btn-outline-primary"
-                      }`}
+                        }`}
                       onClick={() => {
                         setImagemMode("file");
                         setFormData((prev) => ({ ...prev, imagem_url: "" }));
@@ -279,7 +277,15 @@ export default function CriarForumPage() {
                       !formData.descricao.replace(/<[^>]*>/g, "").trim()
                     }
                   >
-                    {submitting ? "Criando..." : "Criar Tópico"}
+                    {submitting ? (
+                      <>
+                        <i className="bi bi-send me-1"></i> Criando...
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-send me-1"></i> Criar Tópico
+                      </>
+                    )}
                   </button>
                   <Link to="/forum" className="btn btn-outline-danger">
                     Cancelar

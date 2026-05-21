@@ -144,7 +144,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
           <Link to="/login" className="text-decoration-none">
             Faça login
           </Link>{" "}
-          para comentar.
+          para curtir e comentar.
         </p>
       )}
 
@@ -167,9 +167,15 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                   <div className="comment-header">
                     <div className="comment-header-user">
                       <i className="bi bi-person-circle azul"></i>
-                      <strong className="azul small">
-                        {c.autor?.username || "Anônimo"}
-                      </strong>
+                      {c.autor?.username ? (
+                        <Link to={`/perfil/${c.autor.username}`} className="text-decoration-none azul">
+                          <strong className="azul small">
+                            {c.autor.username}
+                          </strong>
+                        </Link>
+                      ) : (
+                        <strong className="azul small">Anônimo</strong>
+                      )}
                     </div>
                     <span className="comment-header-sep">·</span>
                     <small className="text-muted">{formatDate(c.data)}</small>
@@ -224,12 +230,32 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                               <div className="comment-header">
                                 <div className="comment-header-user">
                                   <i className="bi bi-reply-fill text-muted"></i>
-                                  <strong className="small azul">{r.autor?.username || "Anônimo"}</strong>
+                                  {r.autor?.username ? (
+                                    <Link to={`/perfil/${r.autor.username}`} className="text-decoration-none azul">
+                                      <strong className="small azul">{r.autor.username}</strong>
+                                    </Link>
+                                  ) : (
+                                    <strong className="small azul">Anônimo</strong>
+                                  )}
                                 </div>
                                 <span className="comment-header-sep">-</span>
                                 <small className="text-muted">{formatDate(r.data)}</small>
                               </div>
                               <p className="mb-0 small">{r.conteudo}</p>
+                              <div className="mt-1">
+                                {isAuthenticated && (
+                                  <button
+                                    className="btn btn-sm btn-link p-0 text-decoration-none"
+                                    style={{ fontSize: "0.8rem" }}
+                                    onClick={() => {
+                                      setRespostaAbertaId(c.id);
+                                      setTextoResposta(`@${r.autor?.username || "Anônimo"} `);
+                                    }}
+                                  >
+                                    Responder
+                                  </button>
+                                )}
+                              </div>
                             </div>
                             {isAuthenticated && user?.username === r.autor?.username && (
                               <button

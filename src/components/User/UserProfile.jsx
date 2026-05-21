@@ -21,6 +21,7 @@ export default function UserProfile() {
     biografia: "",
     github: "",
     linkedin: "",
+    is_public: false,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState("");
@@ -56,6 +57,7 @@ export default function UserProfile() {
         biografia: user.bio || "",
         github: user.github || "",
         linkedin: user.linkedin || "",
+        is_public: user.is_public || false,
       }));
     }
   }, [user]);
@@ -70,10 +72,10 @@ export default function UserProfile() {
   }, [avatarPreview]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -87,6 +89,7 @@ export default function UserProfile() {
         payload.append("bio", formData.biografia || "");
         payload.append("github", formData.github || "");
         payload.append("linkedin", formData.linkedin || "");
+        payload.append("is_public", formData.is_public);
         payload.append("avatar", avatarFile);
         const updated = await authService.updateProfileWithAvatar(payload);
         if (updated?.profile_picture) {
@@ -99,6 +102,7 @@ export default function UserProfile() {
           bio: formData.biografia,
           github: formData.github,
           linkedin: formData.linkedin,
+          is_public: formData.is_public,
         });
       }
       await refreshUser();

@@ -58,14 +58,12 @@ export default function ForumPage() {
       </div>
 
       {/* Botão de novo tópico */}
-      {isAuthenticated && (
-        <div className="text-center mb-4">
-          <Link to="/criar-forum" className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
-            <i className="bi bi-plus-circle me-1"></i>
-            Novo Tópico
-          </Link>
-        </div>
-      )}
+      <div className="text-center mb-4">
+        <Link to={isAuthenticated ? "/criar-forum" : "/login"} className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
+          <i className="bi bi-plus-circle me-1"></i>
+          Novo Tópico
+        </Link>
+      </div>
 
       {/* Lista de tópicos */}
       {error && <div className="alert alert-danger text-center">{error}</div>}

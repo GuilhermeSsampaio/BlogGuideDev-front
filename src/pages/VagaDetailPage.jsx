@@ -114,12 +114,20 @@ export default function VagaDetailPage() {
             </div>
           </div>
           {(isOwner || isAdmin) && (
-            <button
-              className="btn btn-outline-danger btn-sm vaga-detail-delete-btn"
-              onClick={handleDelete}
-            >
-              <i className="bi bi-trash me-1"></i>Excluir
-            </button>
+            <div className="d-flex gap-2 vaga-detail-delete-btn">
+              <Link
+                to={`/editar-vaga/${vaga.id}`}
+                className="btn btn-outline-primary btn-sm"
+              >
+                <i className="bi bi-pencil me-1"></i>Editar
+              </Link>
+              <button
+                className="btn btn-outline-danger btn-sm"
+                onClick={handleDelete}
+              >
+                <i className="bi bi-trash me-1"></i>Excluir
+              </button>
+            </div>
           )}
         </div>
 

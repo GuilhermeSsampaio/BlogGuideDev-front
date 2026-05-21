@@ -18,6 +18,8 @@ export const ROUTES = {
   SEARCH: "/search",
   DIRETRIZES_FORUM: "/diretrizes-forum",
   FEEDBACK: "/feedback",
+  COMUNIDADE: "/comunidade",
+  PERFIL: "/perfil/:username",
 };
 
 // Rotas que não precisam de autenticação

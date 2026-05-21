@@ -8,11 +8,31 @@ export default (api) => ({
   },
 
   async adminCreateUser(userData) {
-    return api.authRequest("/admin/users", {
+    const token = (await import("../auth")).default.getToken();
+    const url = `${api.baseURL}/admin/users`;
+    const response = await fetch(url, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
       body: JSON.stringify(userData),
     });
+
+    if (!response.ok) {
+      let detail = `Erro ao criar usuário (status: ${response.status})`;
+      try {
+        const errorData = await response.json();
+        if (errorData.detail) detail = errorData.detail;
+      } catch (e) {
+        /* usa mensagem padrão */
+      }
+      throw new Error(detail);
+    }
+
+    return await response.json();
   },
+
 
   async updateUserRole(profileId, tipoPerfil) {
     return api.authRequest(`/admin/users/${profileId}/role`, {

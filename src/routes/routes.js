@@ -14,10 +14,14 @@ import EditarPostPage from "../pages/EditarPostPage";
 import AdminPage from "../pages/AdminPage";
 import VagasPage from "../pages/VagasPage";
 import VagaDetailPage from "../pages/VagaDetailPage";
+import CriarVagaPage from "../pages/CriarVagaPage";
+import EditarVagaPage from "../pages/EditarVagaPage";
 import SearchPage from "../pages/SearchPage";
 import DiretrizesForumPage from "../pages/DiretrizesForumPage";
 import CriarForumPage from "../pages/CriarForumPage";
 import FeedbackPage from "../pages/FeedbackPage";
+import PublicProfilePage from "../pages/PublicProfilePage";
+import ComunidadePage from "../pages/ComunidadePage";
 import { ROUTES } from "./constants";
 
 // Rotas públicas (não precisam de autenticação)
@@ -94,10 +98,6 @@ export const publicRoutes = [
     name: "Sobre",
     showInNav: true,
   },
-];
-
-// Rotas protegidas (precisam de autenticação)
-export const protectedRoutes = [
   {
     path: ROUTES.FORUM,
     component: ForumPage,
@@ -110,6 +110,22 @@ export const protectedRoutes = [
     name: "Detalhe do Tópico",
     showInNav: false,
   },
+  {
+    path: "/perfil/:username",
+    component: PublicProfilePage,
+    name: "Perfil Público",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.COMUNIDADE,
+    component: ComunidadePage,
+    name: "Comunidade",
+    showInNav: false,
+  },
+];
+
+// Rotas protegidas (precisam de autenticação)
+export const protectedRoutes = [
   {
     path: ROUTES.CRIAR_FORUM,
     component: CriarForumPage,
@@ -138,6 +154,18 @@ export const protectedRoutes = [
     path: ROUTES.ADMIN,
     component: AdminPage,
     name: "Admin",
+    showInNav: false,
+  },
+  {
+    path: "/criar-vaga",
+    component: CriarVagaPage,
+    name: "Criar Vaga",
+    showInNav: false,
+  },
+  {
+    path: "/editar-vaga/:vagaId",
+    component: EditarVagaPage,
+    name: "Editar Vaga",
     showInNav: false,
   },
   {

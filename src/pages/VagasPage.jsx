@@ -86,132 +86,10 @@ function VagaCard({ vaga }) {
   );
 }
 
-function VagaForm({ onSubmit, empresa, submitting }) {
-  const [form, setForm] = useState({
-    titulo: "",
-    descricao: "",
-    empresa: empresa || "",
-    localidade: "",
-    tipo_contrato: "",
-    link: "",
-  });
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(form);
-    setForm({
-      titulo: "",
-      descricao: "",
-      empresa: empresa || "",
-      localidade: "",
-      tipo_contrato: "",
-      link: "",
-    });
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="card border-0 shadow-sm mb-5">
-      <div className="card-body">
-        <h5 className="azul mb-3 fw-bold" style={{ fontSize: "1.1rem" }}>
-          <i className="bi bi-plus-circle me-2"></i>Publicar Vaga
-        </h5>
-        <div className="row g-3">
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control"
-              name="titulo"
-              placeholder="Título da vaga *"
-              value={form.titulo}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control"
-              name="empresa"
-              placeholder="Empresa *"
-              value={form.empresa}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-4">
-            <input
-              type="text"
-              className="form-control"
-              name="localidade"
-              placeholder="Localidade (ex: Remoto, SP)"
-              value={form.localidade}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-4">
-            <select
-              className="form-select"
-              name="tipo_contrato"
-              value={form.tipo_contrato}
-              onChange={handleChange}
-            >
-              <option value="">Tipo de contrato</option>
-              <option value="CLT">CLT</option>
-              <option value="PJ">PJ</option>
-              <option value="Estágio">Estágio</option>
-              <option value="Freelance">Freelance</option>
-            </select>
-          </div>
-          <div className="col-md-4">
-            <input
-              type="url"
-              className="form-control"
-              name="link"
-              placeholder="Link para candidatura"
-              value={form.link}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-12">
-            <textarea
-              className="form-control"
-              name="descricao"
-              rows="3"
-              placeholder="Descrição da vaga *"
-              value={form.descricao}
-              onChange={handleChange}
-              required
-            ></textarea>
-          </div>
-          <div className="col-12 d-flex justify-content-end">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={submitting}
-            >
-              {submitting ? (
-                <span className="spinner-border spinner-border-sm me-1"></span>
-              ) : (
-                <i className="bi bi-send me-1"></i>
-              )}
-              Publicar Vaga
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
-  );
-}
-
 export default function VagasPage() {
   const { user, isAuthenticated } = useAuth();
   const [vagas, setVagas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
 
   const isRecrutador = isAuthenticated && user?.tipo_perfil === "recrutador";
 
@@ -231,18 +109,6 @@ export default function VagasPage() {
     }
   };
 
-  const handleCreate = async (formData) => {
-    setSubmitting(true);
-    try {
-      const vaga = await apiService.createVaga(formData);
-      setVagas((prev) => [vaga, ...prev]);
-    } catch (err) {
-      console.error("Erro ao criar vaga:", err);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <div className="container my-5" style={{ maxWidth: "900px" }}>
       <div className="d-flex align-items-center justify-content-center gap-3 mb-4">
@@ -254,11 +120,12 @@ export default function VagasPage() {
       </div>
 
       {isRecrutador && (
-        <VagaForm
-          onSubmit={handleCreate}
-          empresa={user?.empresa || ""}
-          submitting={submitting}
-        />
+        <div className="text-center mb-4">
+          <Link to="/criar-vaga" className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
+            <i className="bi bi-plus-circle me-1"></i>
+            Publicar Vaga
+          </Link>
+        </div>
       )}
 
       {loading ? (
