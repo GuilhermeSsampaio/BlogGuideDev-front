@@ -100,6 +100,14 @@ export default function LoginPage() {
                   <i className="bi bi-google me-2"></i>
                   Entrar com Google
                 </button>
+
+                <div
+                  className="alert alert-secondary mt-3 mb-0 p-2 text-center"
+                  style={{ fontSize: '0.85rem', backgroundColor: '#f8f9fa', border: '1px solid #e9ecef' }}
+                >
+                  <i className="bi bi-info-circle me-1 text-primary"></i>
+                  <strong style={{ letterSpacing: "0.5px" }}>Atenção Recrutador:</strong> O acesso via Google cria automaticamente um perfil de <strong style={{ letterSpacing: "0.5px" }}>Estudante</strong>. Para cadastrar sua empresa e publicar vagas, utilize o <Link to={ROUTES.REGISTER} className="fw-bold azul text-decoration-none" style={{ letterSpacing: "0.5px" }}>formulário normal</Link> e selecione "Recrutador".
+                </div>
               </form>
 
               <div className="text-center mt-3">
