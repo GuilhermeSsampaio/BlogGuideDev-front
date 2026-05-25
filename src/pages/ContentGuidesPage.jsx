@@ -87,7 +87,7 @@ export default function ContentGuidesPage() {
   }, []);
 
   return (
-    <div className="container py-5 page-detail-container">
+    <div className="container py-5">
       <h1 className="fw-bold mb-2 text-primary-conteudo">
         Explore o Universo Dev
       </h1>
