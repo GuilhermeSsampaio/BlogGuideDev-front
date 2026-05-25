@@ -47,7 +47,7 @@ export default function UserForunsTab({
           {topics.map((topic) => (
             <div
               key={topic.id}
-              className="list-group-item card border-1 px-2 py-3 mb-2"
+              className="list-group-item card border-1 px-2 py-3 mb-2 user-forum-card"
             >
               <div className="d-flex justify-content-between align-items-start">
                 <div className="flex-grow-1">
@@ -73,6 +73,13 @@ export default function UserForunsTab({
                   </small>
                 </div>
                 <div className="d-flex gap-2 ms-3">
+                  <Link
+                    to={`/forum/editar/${topic.id}`}
+                    className="btn btn-sm btn-outline-primary"
+                    title="Editar tópico"
+                  >
+                    <i className="bi bi-pencil"></i>
+                  </Link>
                   <button
                     className="btn btn-sm btn-outline-danger"
                     onClick={() =>

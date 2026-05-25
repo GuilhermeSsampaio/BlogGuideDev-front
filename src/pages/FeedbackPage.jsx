@@ -43,13 +43,14 @@ export default function FeedbackPage() {
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-lg-8">
+          <div className="text-center mb-4 jersey-25-regular">
+            <h1 className="azul mb-0">Sugestões e Bugs</h1>
+            <p className="lead text-muted">
+              Encontrou um problema ou quer sugerir algo novo? Envie aqui.
+            </p>
+          </div>
           <div className="card border-1 shadow-sm">
-            <div className="card-body p-4 p-md-5">
-              <h2 className="azul fw-bold mb-2">Sugestões e Bugs</h2>
-              <p className="text-muted mb-4">
-                Encontrou um problema ou quer sugerir algo novo? Envie aqui.
-              </p>
-
+            <div className="card-body p-4 p-md-4">
               <form onSubmit={handleSubmit}>
                 <div className="row g-3">
                   <div className="col-md-6">
@@ -115,8 +116,9 @@ export default function FeedbackPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 d-flex justify-content-end">
+                <div className="mt-4 feedback-actions">
                   <button type="submit" className="btn btn-primary px-4" disabled={loading}>
+                    <i className="bi bi-send me-1"></i> {""}
                     {loading ? "Enviando..." : "Enviar feedback"}
                   </button>
                 </div>

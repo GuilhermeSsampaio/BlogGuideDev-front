@@ -19,6 +19,7 @@ import EditarVagaPage from "../pages/EditarVagaPage";
 import SearchPage from "../pages/SearchPage";
 import DiretrizesForumPage from "../pages/DiretrizesForumPage";
 import CriarForumPage from "../pages/CriarForumPage";
+import EditarForumPage from "../pages/EditarForumPage";
 import FeedbackPage from "../pages/FeedbackPage";
 import PublicProfilePage from "../pages/PublicProfilePage";
 import ComunidadePage from "../pages/ComunidadePage";
@@ -130,6 +131,12 @@ export const protectedRoutes = [
     path: ROUTES.CRIAR_FORUM,
     component: CriarForumPage,
     name: "Criar Tópico",
+    showInNav: false,
+  },
+  {
+    path: ROUTES.EDITAR_FORUM,
+    component: EditarForumPage,
+    name: "Editar Tópico",
     showInNav: false,
   },
   {

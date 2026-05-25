@@ -24,7 +24,7 @@ export default function HomePage() {
           </h1>
           <Link to={ROUTES.CONTEUDO} style={{ textDecoration: "none" }}>
             <button className="home-hero-btn">
-              Explorar Tópicos <span className="home-hero-btn-arrow">→</span>
+              Explorar Conteúdos <span className="home-hero-btn-arrow">→</span>
             </button>
           </Link>
         </div>

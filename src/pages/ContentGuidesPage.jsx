@@ -87,12 +87,12 @@ export default function ContentGuidesPage() {
   }, []);
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 page-detail-container">
       <h1 className="fw-bold mb-2 text-primary-conteudo">
         Explore o Universo Dev
       </h1>
       <p className="mb-4 text-secondary-conteudo">
-        As melhores ferramentas, linguagens e frameworks explicados de um jeito simples e direto ao ponto. Sem enrolação.
+        As melhores ferramentas, linguagens e frameworks explicados de um jeito simples e direto ao ponto.
       </p>
 
       <section className="mb-5">

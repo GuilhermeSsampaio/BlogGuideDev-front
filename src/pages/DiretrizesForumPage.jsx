@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 export default function DiretrizesForumPage() {
   return (
-    <div className="container-fluid my-5">
+    <div className="container-fluid py-5 page-detail-container">
       <div className="row">
-        <div className="col-md-10 mx-auto">
+        <div className="col-md-10 mx-auto button-return">
           <Link to="/criar-forum" className="btn mb-5" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
             <i className="bi bi-arrow-left me-2"></i>
             Voltar ao Fórum

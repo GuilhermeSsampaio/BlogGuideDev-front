@@ -224,7 +224,7 @@ export default function UserConfigTab({
 
         {/* BOTÕES */}
 
-        <div className="d-flex justify-content-end gap-2 mt-4">
+        <div className="user-config-actions mt-4">
 
           <button
             type="button"

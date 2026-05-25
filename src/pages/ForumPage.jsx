@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForum } from "../hooks/useForum";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
@@ -14,6 +14,7 @@ export default function ForumPage() {
     useForum();
   const { user, isAuthenticated } = useAuth();
   const { showSuccess, showError } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTopics();
@@ -49,7 +50,7 @@ export default function ForumPage() {
   }
 
   return (
-    <div className="container my-5">
+    <div className="container py-5 page-detail-container">
       <div className="text-center mb-3 jersey-25-regular">
         <h1 className="azul">💬 Fórum</h1>
         <p className="text-muted">
@@ -61,7 +62,7 @@ export default function ForumPage() {
       <div className="text-center mb-4">
         <Link to={isAuthenticated ? "/criar-forum" : "/login"} className="btn" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500", padding: "8px 50px", borderRadius: "5px" }}>
           <i className="bi bi-plus-circle me-1"></i>
-          Novo Tópico
+          Novo Fórum
         </Link>
       </div>
 
@@ -90,16 +91,31 @@ export default function ForumPage() {
                   <div className="d-flex justify-content-between align-items-start">
                     <h5 className="azul fw-bold mb-1">{topic.titulo}</h5>
                     {isAuthenticated && user?.username === topic.autor?.username && (
-                      <button
-                        className="btn btn-sm btn-outline-danger ms-2 flex-shrink-0"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleDelete(topic.id);
-                        }}
-                        title="Excluir tópico"
-                      >
-                        <i className="bi bi-trash"></i>
-                      </button>
+                      <div className="d-flex gap-2 ms-2 flex-shrink-0">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigate(`/forum/editar/${topic.id}`);
+                          }}
+                          title="Editar tópico"
+                        >
+                          <i className="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDelete(topic.id);
+                          }}
+                          title="Excluir tópico"
+                        >
+                          <i className="bi bi-trash"></i>
+                        </button>
+                      </div>
                     )}
                   </div>
 
@@ -132,6 +148,12 @@ export default function ForumPage() {
                     <i className="bi bi-calendar me-1"></i>
                     {formatDate(topic.data_criacao)}
                   </small>
+                  {topic.data_atualizacao && (
+                    <>
+                      <span>·</span>
+                      <small className="text-muted">(Editado)</small>
+                    </>
+                  )}
                 </div>
               </div>
             </Link>

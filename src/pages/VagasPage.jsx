@@ -110,7 +110,7 @@ export default function VagasPage() {
   };
 
   return (
-    <div className="container my-5" style={{ maxWidth: "900px" }}>
+    <div className="container py-5 page-detail-container" style={{ maxWidth: "900px" }}>
       <div className="d-flex align-items-center justify-content-center gap-3 mb-4">
         <i
           className="bi bi-briefcase-fill azul"

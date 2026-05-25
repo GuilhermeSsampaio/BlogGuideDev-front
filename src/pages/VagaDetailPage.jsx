@@ -86,13 +86,20 @@ export default function VagaDetailPage() {
     isAuthenticated && user?.tipo_perfil === "admin";
 
   return (
-    <div className="container py-5" style={{ maxWidth: "1000px" }}>
-      <Link to="/vagas" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
-        <i className="bi bi-arrow-left me-1"></i>Voltar para Vagas
-      </Link>
+    <div className="container py-5 page-detail-container" style={{ maxWidth: "1000px" }}>
+      <div className="mb-4 button-return">
+        <Link
+          to="/vagas"
+          className="btn"
+          style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}
+        >
+          <i className="bi bi-arrow-left me-2"></i>
+          Voltar para Vagas
+        </Link>
+      </div>
 
       <article>
-        <div className="vaga-detail-header mb-3">
+        <div className="vaga-detail-header mb-1">
           <div>
             <h1 className="azul jersey-25-regular mb-2">{vaga.titulo}</h1>
             <div className="d-flex align-items-center gap-2 mb-1">
@@ -131,7 +138,7 @@ export default function VagaDetailPage() {
           )}
         </div>
 
-        <div className="d-flex align-items-center gap-2 mb-4 text-muted" style={{ fontSize: "1rem" }}>
+        <div className="d-flex align-items-center gap-2 mb-4 text-muted" style={{ fontSize: "0.9rem" }}>
           <i className="bi bi-person-circle"></i>
           <span>{vaga.recrutador?.username}</span>
           <span className="fw-bold">·</span>

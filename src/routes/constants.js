@@ -8,6 +8,7 @@ export const ROUTES = {
   REGISTER: "/register",
   FORUM: "/forum",
   CRIAR_FORUM: "/criar-forum",
+  EDITAR_FORUM: "/forum/editar/:topicId",
   FORUM_DETAIL: "/forum/:topicId",
   SOBRE: "/sobre",
   USUARIO: "/usuario",

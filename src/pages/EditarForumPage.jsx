@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForum } from "../hooks/useForum";
 import { useToast } from "../hooks/useToast";
 import ReactQuill from "react-quill-new";
@@ -34,8 +34,9 @@ const tiposTopico = [
   "Outro",
 ];
 
-export default function CriarForumPage() {
-  const { createTopic } = useForum();
+export default function EditarForumPage() {
+  const { topicId } = useParams();
+  const { fetchTopic, updateTopic } = useForum();
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
 
@@ -47,6 +48,35 @@ export default function CriarForumPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [imagemMode, setImagemMode] = useState("url"); // "url" ou "file"
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTopic = async () => {
+      setInitialLoading(true);
+      try {
+        const data = await fetchTopic(topicId);
+        if (data) {
+          setFormData({
+            titulo: data.titulo || "",
+            descricao: data.descricao || "",
+            tipo: data.tipo || "",
+            imagem_url: data.imagem_url || "",
+          });
+          if (data.imagem_url && data.imagem_url.startsWith("data:")) {
+            setImagemMode("file");
+          } else if (data.imagem_url) {
+            setImagemMode("url");
+          }
+        }
+      } catch (error) {
+        showError("Não foi possível carregar o tópico para edição.");
+        navigate("/forum");
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+    loadTopic();
+  }, [topicId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +84,7 @@ export default function CriarForumPage() {
   };
 
   const handleDescricaoChange = (value) => {
-    setFormData((prev) => ({ ...prev, descricao: value || "", }));
+    setFormData((prev) => ({ ...prev, descricao: value || "" }));
   };
 
   const handleFileChange = (e) => {
@@ -79,15 +109,26 @@ export default function CriarForumPage() {
         ...formData,
         imagem_url: formData.imagem_url || null,
       };
-      await createTopic(dataToSend);
-      showSuccess("Tópico criado com sucesso!");
-      navigate("/forum");
+      await updateTopic(topicId, dataToSend);
+      showSuccess("Tópico atualizado com sucesso!");
+      navigate(`/forum/${topicId}`);
     } catch (err) {
-      showError("Erro ao criar tópico. Tente novamente.");
+      showError("Erro ao atualizar tópico. Tente novamente.");
     } finally {
       setSubmitting(false);
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="container text-center py-5">
+        <div className="spinner-border azul mt-5" role="status">
+          <span className="visually-hidden">Carregando...</span>
+        </div>
+        <p className="mt-3 text-muted">Carregando dados do tópico...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container-fluid py-5 page-detail-container">
@@ -96,41 +137,13 @@ export default function CriarForumPage() {
           {/* Header */}
           <div className="mb-4 button-return">
             <Link
-              to="/forum"
+              to={`/forum/${topicId}`}
               className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}
             >
               <i className="bi bi-arrow-left me-2"></i>
-              Voltar ao Fórum
+              Voltar ao Tópico
             </Link>
-            <h2 className="text-title-form fw-bold">Criar Novo Fórum</h2>
-          </div>
-
-          {/* Alerta de diretrizes */}
-          <div
-            className="alert d-flex align-items-start gap-3 mb-4"
-            style={{
-              backgroundColor: "#fff8e1",
-              border: "1px solid #ffe082",
-              borderRadius: "8px",
-            }}
-          >
-            <i
-              className="bi bi-exclamation-triangle-fill"
-              style={{ color: "#f9a825", fontSize: "1.4rem", marginTop: "2px" }}
-            ></i>
-            <div>
-              <strong>Antes de publicar, leia nossas diretrizes!</strong>
-              <p className="mb-0 mt-1" style={{ fontSize: "0.9rem" }}>
-                Para manter a qualidade do fórum, pedimos que leia nosso{" "}
-                <Link
-                  to="/diretrizes-forum"
-                  style={{ color: "#333ceb", fontWeight: "bold" }}
-                >
-                  guia de diretrizes
-                </Link>{" "}
-                antes de criar seu tópico.
-              </p>
-            </div>
+            <h2 className="text-title-form fw-bold">Editar Fórum</h2>
           </div>
 
           {/* Formulário */}
@@ -228,7 +241,7 @@ export default function CriarForumPage() {
                         onChange={handleFileChange}
                       />
                       <small className="text-muted">
-                        Selecione uma imagem do seu computador (JPG, PNG, GIF)
+                        Selecione uma nova imagem do seu computador (JPG, PNG, GIF)
                       </small>
                     </>
                   )}
@@ -266,8 +279,8 @@ export default function CriarForumPage() {
                 </div>
 
                 {/* Botões */}
-                <div className="forum-create-actions">
-                  <Link to="/forum" className="btn btn-outline-danger">
+                <div className="forum-create-actions mt-5">
+                  <Link to={`/forum/${topicId}`} className="btn btn-outline-danger">
                     Cancelar
                   </Link>
                   <button
@@ -282,11 +295,11 @@ export default function CriarForumPage() {
                   >
                     {submitting ? (
                       <>
-                        <i className="bi bi-send me-1"></i> Criando...
+                        <i className="bi bi-check-lg me-1"></i> Salvando...
                       </>
                     ) : (
                       <>
-                        <i className="bi bi-send me-1"></i> Criar Topico
+                        <i className="bi bi-check-lg me-1"></i> Salvar Alterações
                       </>
                     )}
                   </button>

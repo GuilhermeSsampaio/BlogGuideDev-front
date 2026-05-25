@@ -45,6 +45,17 @@ export function useForum() {
     setTopics((prev) => prev.filter((t) => t.id !== topicId));
   };
 
+  const updateTopic = async (topicId, topicData) => {
+    const updatedTopic = await apiService.updateForumTopic(topicId, topicData);
+    setTopics((prev) =>
+      prev.map((t) => (t.id === topicId ? updatedTopic : t))
+    );
+    if (topic && topic.id === topicId) {
+      setTopic(updatedTopic);
+    }
+    return updatedTopic;
+  };
+
   return {
     topics,
     topic,
@@ -53,6 +64,7 @@ export function useForum() {
     fetchTopics,
     fetchTopic,
     createTopic,
+    updateTopic,
     deleteTopic,
   };
 }

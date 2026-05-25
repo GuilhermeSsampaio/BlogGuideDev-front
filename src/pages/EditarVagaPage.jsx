@@ -94,11 +94,11 @@ export default function EditarVagaPage() {
   }
 
   return (
-    <div className="container-fluid my-5">
+    <div className="container-fluid py-5 page-detail-container">
       <div className="row">
         <div className="col-lg-8 mx-auto">
           {/* Header */}
-          <div className="mb-4">
+          <div className="mb-4 button-return">
             <Link
               to={`/vagas/${vagaId}`}
               className="btn mb-4"
@@ -107,7 +107,7 @@ export default function EditarVagaPage() {
               <i className="bi bi-arrow-left me-2"></i>
               Voltar para Vaga
             </Link>
-            <h2 className="fw-bold">Editar Vaga</h2>
+            <h2 className="text-title-form fw-bold">Editar Vaga</h2>
           </div>
 
           {/* Formulário */}
@@ -203,7 +203,10 @@ export default function EditarVagaPage() {
                   </div>
 
                   {/* Botões */}
-                  <div className="col-12 d-flex gap-2">
+                  <div className="col-12 vaga-form-actions">
+                    <Link to={`/vagas/${vagaId}`} className="btn btn-outline-danger">
+                      Cancelar
+                    </Link>
                     <button
                       type="submit"
                       className="btn btn-primary"
@@ -216,9 +219,6 @@ export default function EditarVagaPage() {
                       )}
                       Salvar Alterações
                     </button>
-                    <Link to={`/vagas/${vagaId}`} className="btn btn-outline-danger">
-                      Cancelar
-                    </Link>
                   </div>
                 </div>
               </form>

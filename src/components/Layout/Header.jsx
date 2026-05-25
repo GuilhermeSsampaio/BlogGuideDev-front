@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/constants";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,6 +11,8 @@ export default function Header() {
   const togglerRef = useRef(null);
   const { user, isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
 
   const isActive = (path) => location.pathname === path;
 
@@ -32,6 +34,21 @@ export default function Header() {
       togglerRef.current.click();
     }
   };
+
+
+
+  useEffect(() => {
+    if (!profileOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [profileOpen]);
 
   return (
     <nav
@@ -119,7 +136,7 @@ export default function Header() {
                   }}
                   onClick={handleNavLinkClick}
                 >
-                  Conteúdo
+                  Conteúdos
                 </Link>
               </li>
               {/* Menu: Fórum */}
@@ -209,12 +226,12 @@ export default function Header() {
                 <NotificationBell />
               </div>
               {isAuthenticated ? (
-                <div className="dropdown">
+                <div className={`dropdown ${profileOpen ? "show" : ""}`} ref={profileRef}>
                   <button
                     className="btn px-3 dropdown-toggle"
                     type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+                    aria-expanded={profileOpen}
+                    onClick={() => setProfileOpen((prev) => !prev)}
                     style={{
                       background: "#6c2bd7",
                       color: "#fff",
@@ -227,12 +244,17 @@ export default function Header() {
                     <i className="bi bi-person-fill me-2"></i>
                     Perfil
                   </button>
-                  <ul className="dropdown-menu dropdown-menu-end shadow-sm border-0" style={{ borderRadius: "1rem" }}>
+                  <ul
+                    className={`dropdown-menu shadow-sm border-0 ${profileOpen ? "show" : ""}`}
+                    style={{ borderRadius: "1rem" }}
+                  >
                     <li>
                       <Link
                         className="dropdown-item dropdown-item-custom py-2"
                         to={ROUTES.USUARIO}
-                        onClick={handleNavLinkClick}
+                        onClick={() => {
+                          handleNavLinkClick();
+                        }}
                         style={{ color: "#333", fontWeight: "500" }}
                       >
                         <i className="bi bi-person me-2 text-primary"></i>
@@ -243,7 +265,9 @@ export default function Header() {
                       <Link
                         className="dropdown-item dropdown-item-custom py-2"
                         to={ROUTES.COMUNIDADE}
-                        onClick={handleNavLinkClick}
+                        onClick={() => {
+                          handleNavLinkClick();
+                        }}
                         style={{ color: "#333", fontWeight: "500" }}
                       >
                         <i className="bi bi-people me-2 text-primary"></i>

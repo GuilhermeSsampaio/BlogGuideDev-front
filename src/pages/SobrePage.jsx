@@ -2,17 +2,17 @@ import React from "react";
 
 export default function SobrePage() {
   return (
-    <div className="container-fluid my-5">
+    <div className="container-fluid py-5">
       <div className="row">
         <div className="col-md-8 mx-auto">
-          <div className="text-center mb-5 jersey-25-regular">
+          <div className="text-center mb-4 jersey-25-regular">
             <h1 className="azul mb-0">Sobre o BlogGuide</h1>
             <p className="lead text-muted">
               Uma plataforma para desenvolvedores compartilharem conhecimento
             </p>
           </div>
 
-          <div className="card border-0 shadow-sm mb-4 jersey-25-regular">
+          <div className="card border-1 shadow-sm mb-4 jersey-25-regular">
             <div className="card-body p-4">
               <h3 className="azul mb-3">🚀 Nossa Missão</h3>
               <p>
@@ -23,7 +23,7 @@ export default function SobrePage() {
             </div>
           </div>
 
-          <div className="card border-0 shadow-sm mb-4">
+          <div className="card border-1 shadow-sm mb-4">
             <div className="card-body p-4">
               <h3 className="azul mb-3 jersey-25-regular">💻 Tecnologias Utilizadas</h3>
               <div className="d-flex flex-wrap gap-2">
@@ -36,24 +36,24 @@ export default function SobrePage() {
             </div>
           </div>
 
-          <div className="card border-0 shadow-sm">
+          <div className="card border-1 shadow-sm">
             <div className="card-body p-4">
               <h3 className="azul mb-3 jersey-25-regular">👤 Desenvolvedores</h3>
-              <p>
-                <span style={{ fontWeight: "600" }}>Guilherme Sampaio</span>
+              <div className="mb-3">
+                <span style={{ fontWeight: "700" }}>Guilherme Sampaio</span>
                 <br />
-                <p className="jersey-25-regular">
+                <span className="jersey-25-normal">
                   Desenvolvedor apaixonado por tecnologia e compartilhamento de
                   conhecimento.
-                </p>
-              </p>
-              <p>
-                <span style={{ fontWeight: "600" }}>Pedro Mota</span>
+                </span>
+              </div>
+              <div>
+                <span style={{ fontWeight: "700" }}>Pedro Mota</span>
                 <br />
-                <p className="jersey-25-regular">
+                <span className="jersey-25-normal">
                   Desenvolvedor Front-end.
-                </p>
-              </p>
+                </span>
+              </div>
             </div>
           </div>
         </div>

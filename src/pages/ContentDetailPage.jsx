@@ -232,7 +232,7 @@ function PostArticle({ post }) {
   if (post.sections && Array.isArray(post.sections)) {
     return (
       <div className="container py-5 page-detail-container">
-        <div className="mb-5">
+        <div className="mb-5 button-return">
           <Link
             to="/conteudo"
             className="btn"

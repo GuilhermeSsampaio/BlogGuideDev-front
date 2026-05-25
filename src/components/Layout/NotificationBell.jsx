@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiService from "../../services/api/bridge";
 import { useAuth } from "../../hooks/useAuth";
@@ -7,6 +7,7 @@ export default function NotificationBell() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -36,6 +37,19 @@ export default function NotificationBell() {
     return () => clearInterval(timer);
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
   if (!isAuthenticated) return null;
 
   const resolveTarget = (item) => {
@@ -64,7 +78,7 @@ export default function NotificationBell() {
   };
 
   return (
-    <div className="position-relative me-2">
+    <div className="position-relative me-2" ref={dropdownRef}>
       <button
         className="btn btn-light border rounded-circle"
         style={{ width: "42px", height: "42px" }}

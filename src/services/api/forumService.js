@@ -29,4 +29,11 @@ export default (api) => ({
       method: "DELETE",
     });
   },
+
+  async updateForumTopic(topicId, topicData) {
+    return api.authRequest(`/forum/${topicId}`, {
+      method: "PUT",
+      body: JSON.stringify(topicData),
+    });
+  },
 });

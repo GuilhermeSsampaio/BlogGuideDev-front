@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useForum } from "../hooks/useForum";
+import { useAuth } from "../hooks/useAuth";
 import ComentarioSection from "../components/ComentarioSection";
 import CurtidaButton from "../components/CurtidaButton";
 
 export default function ForumDetailPage() {
   const { topicId } = useParams();
   const { topic, loading, error, fetchTopic } = useForum();
+  const { user, isAuthenticated } = useAuth();
 
   useEffect(() => {
     fetchTopic(topicId);
@@ -48,7 +50,7 @@ export default function ForumDetailPage() {
   };
 
   return (
-    <div className="container py-4 py-md-5 forum-detail-container">
+    <div className="container py-4 py-md-5 forum-detail-container button-return">
       <Link to="/forum" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
         <i className="bi bi-arrow-left me-1"></i>
         Voltar ao Fórum
@@ -57,6 +59,15 @@ export default function ForumDetailPage() {
       <article>
         <div className="d-flex align-items-center gap-2 mb-1">
           <h1 className="azul fw-bold mb-1 text-title-detail">{topic.titulo}</h1>
+          {isAuthenticated && user?.username === topic.autor?.username && (
+            <Link
+              to={`/forum/editar/${topic.id}`}
+              className="btn btn-sm btn-outline-primary ms-auto"
+              title="Editar tópico"
+            >
+              <i className="bi bi-pencil"></i> Editar
+            </Link>
+          )}
         </div>
 
         <div className="d-flex align-items-center gap-2 mb-4 text-muted" style={{ fontSize: "0.9rem" }}>
@@ -70,6 +81,12 @@ export default function ForumDetailPage() {
           )}
           <span>·</span>
           <span>{formatDate(topic.data_criacao)}</span>
+          {topic.data_atualizacao && (
+            <>
+              <span>·</span>
+              <span>(Editado)</span>
+            </>
+          )}
         </div>
 
         {topic.imagem_url && (
