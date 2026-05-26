@@ -541,12 +541,13 @@ footer {
 @media (max-width: 576px) {
   .user-profile-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .user-profile-header-info {
     width: 100%;
     padding-top: 0;
+    text-align: center;
   }
 }
 
@@ -647,11 +648,27 @@ th {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.comment-header-user a,
+.comment-header-user strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  display: inline-block;
 }
 
 .comment-header-sep {
   color: #6c757d;
   font-size: 0.85rem;
+}
+
+.comment-mention {
+  color: #333ceb;
+  font-weight: 600;
 }
 
 .forum-image-container {
@@ -988,12 +1005,11 @@ th {
 @media (max-width: 991px) {
   .logo-blog-principal {
     height: 55px;
+    align-items: flex-start;
   }
-
   .search-form {
     margin-bottom: 1rem;
   }
-
   .search-input {
     width: 100%;
     max-width: 300px;
@@ -1181,6 +1197,12 @@ th {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.1rem;
+  }
+
+  .comment-header-user a,
+  .comment-header-user strong {
+    max-width: 55vw;
+    font-size: 0.82rem;
   }
 
   .vaga-card-footer {

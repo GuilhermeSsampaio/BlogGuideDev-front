@@ -106,6 +106,21 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
     });
   };
 
+  const renderCommentContent = (text) => {
+    if (!text) return null;
+    const match = text.match(/^(@[^\s]+)(\s*)(.*)$/);
+    if (!match) return text;
+
+    const [, mention, spacing, rest] = match;
+    return (
+      <>
+        <span className="comment-mention">{mention}</span>
+        {spacing}
+        {rest}
+      </>
+    );
+  };
+
   return (
     <div className="mt-4">
       <h5 className="azul mb-3">
@@ -162,8 +177,8 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
         <div className="list-group list-group-flush">
           {comentarios.map((c) => (
             <div key={c.id} className="list-group-item px-0 py-3 border-bottom">
-              <div className="d-flex justify-content-between align-items-start">
-                <div className="flex-grow-1">
+              <div className="d-flex justify-content-between align-items-start" style={{ minWidth: 0 }}>
+                <div className="flex-grow-1" style={{ minWidth: 0 }}>
                   <div className="comment-header">
                     <div className="comment-header-user">
                       <i className="bi bi-person-circle azul"></i>
@@ -180,7 +195,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                     <span className="comment-header-sep">·</span>
                     <small className="text-muted">{formatDate(c.data)}</small>
                   </div>
-                  <p className="mb-0">{c.conteudo}</p>
+                  <p className="mb-0">{renderCommentContent(c.conteudo)}</p>
                   <div className="mt-2 d-flex align-items-center gap-3">
                     {isAuthenticated && (
                       <button
@@ -225,8 +240,8 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                     <div className="mt-3 ps-3 border-start">
                       {c.respostas.map((r) => (
                         <div key={r.id} className="mb-3">
-                          <div className="d-flex justify-content-between align-items-start">
-                            <div className="flex-grow-1">
+                          <div className="d-flex justify-content-between align-items-start" style={{ minWidth: 0 }}>
+                            <div className="flex-grow-1" style={{ minWidth: 0 }}>
                               <div className="comment-header">
                                 <div className="comment-header-user">
                                   <i className="bi bi-reply-fill text-muted"></i>
@@ -241,7 +256,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                                 <span className="comment-header-sep">-</span>
                                 <small className="text-muted">{formatDate(r.data)}</small>
                               </div>
-                              <p className="mb-0 small">{r.conteudo}</p>
+                              <p className="mb-0 small">{renderCommentContent(r.conteudo)}</p>
                               <div className="mt-1">
                                 {isAuthenticated && (
                                   <button
@@ -259,9 +274,10 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                             </div>
                             {isAuthenticated && user?.username === r.autor?.username && (
                               <button
-                                className="btn btn-sm btn-outline-danger ms-2"
+                                className="btn btn-sm btn-outline-danger ms-2 flex-shrink-0"
                                 onClick={() => handleDelete(r.id)}
                                 title="Excluir resposta"
+                                style={{ flexShrink: 0 }}
                               >
                                 <i className="bi bi-trash"></i>
                               </button>
@@ -274,9 +290,10 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                 </div>
                 {isAuthenticated && user?.username === c.autor?.username && (
                   <button
-                    className="btn btn-sm btn-outline-danger ms-2"
+                    className="btn btn-sm btn-outline-danger ms-2 flex-shrink-0"
                     onClick={() => handleDelete(c.id)}
                     title="Excluir comentário"
+                    style={{ flexShrink: 0 }}
                   >
                     <i className="bi bi-trash"></i>
                   </button>

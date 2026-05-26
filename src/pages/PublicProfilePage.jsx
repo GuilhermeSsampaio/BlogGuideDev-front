@@ -56,9 +56,13 @@ export default function PublicProfilePage() {
   const avatarUrl = resolveProfilePicture(profile.profile_picture);
 
   return (
-    <div className="container my-5">
+    <div className="container my-5 button-return">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
+          <Link to="/comunidade" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
+            <i className="bi bi-arrow-left me-1"></i>
+            Voltar para Comunidade
+          </Link>
           <div className="card shadow-sm border-0 rounded-4 overflow-hidden">
             <div
               className="bg-primary bg-gradient"
