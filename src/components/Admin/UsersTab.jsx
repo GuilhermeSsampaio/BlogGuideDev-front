@@ -95,13 +95,25 @@ export default function UsersTab({
                   <td>
                     <div className="d-flex align-items-center gap-2">
                       <i className="bi bi-person-circle azul"></i>
-                      <span style={{ fontSize: "0.95rem", fontWeight: "500" }}>{u.username}</span>
+                      <span
+                        className="text-truncate d-inline-block"
+                        style={{ fontSize: "0.95rem", fontWeight: "500", maxWidth: 220 }}
+                        title={u.username}
+                      >
+                        {u.username}
+                      </span>
                     </div>
                     <span className={`badge mt-1 d-inline-block d-md-none ${roleBadge(u.tipo_perfil)}`}>
                       {u.tipo_perfil}
                     </span>
                   </td>
-                  <td className="d-none d-md-table-cell text-muted text-truncate" style={{maxWidth: 120, fontSize: "0.875rem", whiteSpace: "normal"}}>{u.email}</td>
+                  <td
+                    className="d-none d-md-table-cell text-muted text-truncate"
+                    style={{ maxWidth: 220, fontSize: "0.875rem", whiteSpace: "nowrap" }}
+                    title={u.email}
+                  >
+                    {u.email}
+                  </td>
                   <td className="d-none d-md-table-cell">
                     <span className={`badge ${roleBadge(u.tipo_perfil)}`}>
                       {u.tipo_perfil}

@@ -466,6 +466,24 @@ footer {
   margin-top: -48px;
 }
 
+.user-profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.user-profile-header-info {
+  min-width: 0;
+  padding-top: 8px;
+  margin-top: 0.5rem;
+}
+
+.user-profile-name,
+.user-profile-handle {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .user-profile-avatar-ring img,
 .user-profile-avatar-ring .avatar-placeholder {
   width: 100%;
@@ -480,6 +498,17 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.avatar-upload-overlay {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
 .user-profile-stat-card {
@@ -507,6 +536,18 @@ footer {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 576px) {
+  .user-profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-profile-header-info {
+    width: 100%;
+    padding-top: 0;
+  }
 }
 
 .notification-unread {
@@ -1033,6 +1074,10 @@ th {
   .forum-topic-card:only-child {
     grid-column: 1 / -1;
   }
+
+  .user-profile-name {
+    font-size: 1.4rem;
+  }
 }
 
 @media (max-width: 767px) {
@@ -1087,6 +1132,18 @@ th {
 
   .hero-guide-text {
     color: #c4b5fd;
+  }
+
+  .user-profile-header {
+    flex-wrap: wrap;
+  }
+
+  .user-profile-name {
+    font-size: 1.2rem;
+  }
+
+  .margin-logo-footer {
+    margin-top: 1.5rem;
   }
 }
 
@@ -1153,6 +1210,10 @@ th {
   .vaga-detail-delete-btn {
     align-self: flex-start;
     margin-top: 0.5rem;
+  }
+
+  .user-profile-header-info {
+    margin-top: 0rem !important;
   }
 }
 

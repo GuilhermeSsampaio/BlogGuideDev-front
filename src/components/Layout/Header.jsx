@@ -9,7 +9,7 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const togglerRef = useRef(null);
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
@@ -273,6 +273,21 @@ export default function Header() {
                         <i className="bi bi-people me-2 text-primary"></i>
                         Comunidade
                       </Link>
+                    </li>
+                    <li><hr className="dropdown-divider my-1" /></li>
+                    <li>
+                      <button
+                        className="dropdown-item dropdown-item-custom py-2"
+                        onClick={() => {
+                          setProfileOpen(false);
+                          handleNavLinkClick();
+                          logout();
+                        }}
+                        style={{ color: "#dc3545", fontWeight: "500" }}
+                      >
+                        <i className="bi bi-box-arrow-right me-2"></i>
+                        Sair
+                      </button>
                     </li>
                   </ul>
                 </div>

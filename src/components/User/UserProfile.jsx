@@ -16,6 +16,7 @@ export default function UserProfile() {
   const [userStats, setUserStats] = useState({ curtidas: 0, comentarios: 0, foruns: 0 });
   const [userTopics, setUserTopics] = useState([]);
   const [formData, setFormData] = useState({
+    username: "",
     nome: "",
     email: "",
     biografia: "",
@@ -52,6 +53,7 @@ export default function UserProfile() {
     if (user) {
       setFormData((prev) => ({
         ...prev,
+        username: user.username || "",
         nome: user.nome_completo || user.username || "",
         email: user.email || "",
         biografia: user.bio || "",
@@ -82,29 +84,14 @@ export default function UserProfile() {
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      if (avatarFile) {
-        // Envia multipart/form-data para atualizar o avatar junto do perfil.
-        const payload = new FormData();
-        payload.append("nome_completo", formData.nome);
-        payload.append("bio", formData.biografia || "");
-        payload.append("github", formData.github || "");
-        payload.append("linkedin", formData.linkedin || "");
-        payload.append("is_public", formData.is_public);
-        payload.append("avatar", avatarFile);
-        const updated = await authService.updateProfileWithAvatar(payload);
-        if (updated?.profile_picture) {
-          setAvatarPreview(resolveProfilePicture(updated.profile_picture));
-        }
-        setAvatarFile(null);
-      } else {
-        await authService.updateProfile({
-          nome_completo: formData.nome,
-          bio: formData.biografia,
-          github: formData.github,
-          linkedin: formData.linkedin,
-          is_public: formData.is_public,
-        });
-      }
+      await authService.updateProfile({
+        username: formData.username,
+        nome_completo: formData.nome,
+        bio: formData.biografia,
+        github: formData.github,
+        linkedin: formData.linkedin,
+        is_public: formData.is_public,
+      });
       await refreshUser();
       showSuccess("Perfil atualizado com sucesso!");
       setIsEditing(false);
@@ -113,23 +100,47 @@ export default function UserProfile() {
     }
   };
 
-  const handleAvatarFileSelected = (file) => {
-    if (!file) return;
-    // Preview local e arquivo pronto para envio no salvamento.
-    const nextUrl = URL.createObjectURL(file);
-    if (avatarPreview && avatarPreview.startsWith("blob:")) {
-      URL.revokeObjectURL(avatarPreview);
-    }
-    setAvatarPreview(nextUrl);
-    setAvatarFile(file);
-  };
-
   const resolveProfilePicture = (path) => {
     if (!path) return "";
     if (path.startsWith("http")) return path;
     const baseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
     return `${baseUrl}${path}`;
   };
+
+  const [avatarUploading, setAvatarUploading] = useState(false);
+
+  const handleAvatarFileSelected = async (file) => {
+    if (!file) return;
+
+    // Show local preview immediately
+    const nextUrl = URL.createObjectURL(file);
+    if (avatarPreview && avatarPreview.startsWith("blob:")) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+    setAvatarPreview(nextUrl);
+
+    // Auto-save avatar right away
+    setAvatarUploading(true);
+    try {
+      const payload = new FormData();
+      payload.append("avatar", file);
+      const updated = await authService.updateProfileWithAvatar(payload);
+      if (updated?.profile_picture) {
+        setAvatarPreview(resolveProfilePicture(updated.profile_picture));
+      }
+      await refreshUser();
+      showSuccess("Foto de perfil atualizada!");
+    } catch (error) {
+      showError("Erro ao salvar a foto de perfil. Tente novamente.");
+      // Revert preview on failure
+      setAvatarPreview(resolveProfilePicture(user?.profile_picture));
+    } finally {
+      setAvatarUploading(false);
+      setAvatarFile(null);
+    }
+  };
+
+
 
   const avatarUrl = avatarPreview || resolveProfilePicture(user?.profile_picture);
 
@@ -160,6 +171,7 @@ export default function UserProfile() {
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             avatarPreview={avatarUrl}
+            avatarUploading={avatarUploading}
             onAvatarFileSelected={handleAvatarFileSelected}
           />
 

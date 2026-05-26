@@ -5,11 +5,13 @@ export default function UserHeader({
   user,
   userStats,
   avatarPreview,
+  avatarUploading,
   onAvatarFileSelected,
 }) {
   const fileInputRef = useRef(null);
 
   const handleAvatarClick = () => {
+    if (avatarUploading) return;
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -29,26 +31,41 @@ export default function UserHeader({
 
       <div className="card-body px-4 pb-4 pt-0">
         {/* Avatar overlapping the banner */}
-        <div className="d-flex align-items-start gap-3 mb-3">
+        <div className="user-profile-header mb-3">
           <div className="user-profile-avatar-ring position-relative flex-shrink-0">
             {avatarPreview ? (
               <img
                 src={avatarPreview}
                 alt="Avatar do usuario"
+                style={avatarUploading ? { opacity: 0.45, filter: "blur(1px)" } : {}}
               />
             ) : (
-              <div className="avatar-placeholder">
+              <div
+                className="avatar-placeholder"
+                style={avatarUploading ? { opacity: 0.45 } : {}}
+              >
                 <i
                   className="bi bi-person-fill text-muted"
                   style={{ fontSize: "2.2rem" }}
                 ></i>
               </div>
             )}
+
+            {/* Spinner overlay during upload */}
+            {avatarUploading && (
+              <div className="avatar-upload-overlay">
+                <div className="spinner-border text-white" role="status" style={{ width: "1.5rem", height: "1.5rem", borderWidth: "2px" }}>
+                  <span className="visually-hidden">Salvando...</span>
+                </div>
+              </div>
+            )}
+
             <button
               className="btn btn-sm btn-light position-absolute rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm"
               style={{ width: "28px", height: "28px", bottom: "2px", right: "2px", border: "2px solid #fff" }}
               title="Alterar foto"
               onClick={handleAvatarClick}
+              disabled={avatarUploading}
             >
               <i className="bi bi-camera" style={{ fontSize: "0.75rem" }}></i>
             </button>
@@ -62,9 +79,9 @@ export default function UserHeader({
               aria-label="Selecionar foto de perfil"
             />
           </div>
-          <div className="flex-grow-1" style={{ paddingTop: "8px", minWidth: 0 }}>
-            <h3 className="mb-0 fw-bold" style={{ color: "#222", overflowWrap: "anywhere", wordBreak: "break-word" }}>{formData.nome}</h3>
-            <p className="text-muted mb-0" style={{ fontSize: "0.95rem", overflowWrap: "anywhere", wordBreak: "break-word" }}>
+          <div className="user-profile-header-info">
+            <h3 className="user-profile-name mb-0 fw-bold" style={{ color: "#222" }}>{formData.nome}</h3>
+            <p className="text-muted mb-0 user-profile-handle" style={{ fontSize: "0.95rem" }}>
               @{user?.username || "usuario"}
               <span className="mx-2">·</span>
               <span

@@ -92,10 +92,9 @@ export default function ComunidadePage() {
                       )}
                     </div>
 
-                    <h6 className="card-title fw-bold mb-1" style={{ color: "#333" }}>
+                    <h6 className="card-title fw-bold mb-3" style={{ color: "#333" }}>
                       {p.nome_completo || p.username}
                     </h6>
-                    <p className="text-muted small mb-3">@{p.username}</p>
                     
                     {p.bio && (
                       <p className="card-text small text-muted text-truncate mx-auto" style={{ maxHeight: "40px", maxWidth: "90%" }}>

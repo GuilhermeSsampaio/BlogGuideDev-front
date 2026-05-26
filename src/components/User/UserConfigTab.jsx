@@ -87,6 +87,20 @@ export default function UserConfigTab({
         <div className="row">
           <div className="col-md-6">
             <div className="mb-3">
+              <label className="form-label fw-bold">Username</label>
+              <input
+                type="text"
+                className="form-control"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="mb-3">
               <label className="form-label fw-bold">Nome completo</label>
               <input
                 type="text"
@@ -98,7 +112,9 @@ export default function UserConfigTab({
               />
             </div>
           </div>
+        </div>
 
+        <div className="row">
           <div className="col-md-6">
             <div className="mb-3">
               <label className="form-label fw-bold">Email</label>

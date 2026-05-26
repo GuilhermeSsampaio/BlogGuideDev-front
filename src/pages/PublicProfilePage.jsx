@@ -77,8 +77,7 @@ export default function PublicProfilePage() {
                   <i className="bi bi-person-circle text-secondary bg-white rounded-circle" style={{ fontSize: "7rem", lineHeight: "1", display: "block" }}></i>
                 )}
               </div>
-              <h4 className="fw-bold mb-1 azul">{profile.nome_completo || profile.username}</h4>
-              <p className="text-muted mb-3">@{profile.username}</p>
+              <h4 className="fw-bold mb-3 azul">{profile.nome_completo || profile.username}</h4>
 
               {profile.bio && (
                 <p className="card-text mb-4 px-3" style={{ fontSize: "1.1rem" }}>

@@ -19,10 +19,10 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="footer bg-body-tertiary pt-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
+      <footer className="footer bg-body-tertiary pt-3 pt-md-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
         <div className="container-fluid px-4 px-lg-5">
-          <div className="row text-center text-md-start align-items-start gx-5 gy-4 justify-content-between">
-            <div className="col-12 col-md-3 mb-3 mb-md-0">
+          <div className="row text-center text-md-start align-items-start gx-5 gy-2 gy-md-4 justify-content-between">
+            <div className="col-12 col-md-3 mb-3 mb-md-0 margin-logo-footer">
               <h4 className="jersey-25-regular text-name-footer mb-2 fw-bold footer-brand">
                 <span className="footer-brand-main">
                   <img
@@ -42,7 +42,7 @@ export default function Footer() {
                 />
               </h4>
             </div>
-            <div className="col-12 col-md-3 mb-3 mb-md-0">
+            <div className="col-12 col-md-3 mb-2 mb-md-0">
               <h5 className="fw-bold mb-2">Links Importantes</h5>
               <ul className="list-unstyled">
                 <li>
@@ -79,7 +79,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div className="col-12 col-md-3 mb-4 mb-md-0">
+            <div className="col-12 col-md-3 mb-2 mb-md-0">
               <h5 className="fw-bold mb-2">Contato</h5>
               <ul className="list-unstyled text-muted" style={{ cursor: "pointer" }}>
                 <li>contatoblogguide@gmail.com</li>
@@ -124,7 +124,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <hr className="my-4 mx-4" />
+        <hr className="my-2 my-md-4 mx-4" />
         <div
             className="text-center text-muted pb-3"
             style={{ fontSize: "1.1rem" }}
