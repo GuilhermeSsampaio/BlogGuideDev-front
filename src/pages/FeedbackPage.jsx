@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import apiService from "../services/api/bridge";
 import { showToast } from "../utils/toastConfig";
+import { ROUTES } from "../routes/constants";
 
 export default function FeedbackPage() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     tipo: "sugestao",
@@ -32,6 +35,9 @@ export default function FeedbackPage() {
         email_contato: "",
         canal_contato: "email",
       });
+      setTimeout(() => {
+        navigate(ROUTES.HOME);
+      }, 1500);
     } catch (error) {
       console.error(error);
       showToast.error("Não foi possível enviar seu feedback agora.");
