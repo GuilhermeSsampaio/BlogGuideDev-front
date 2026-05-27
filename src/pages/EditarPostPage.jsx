@@ -6,13 +6,14 @@ import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { ROUTES } from "../routes/constants";
 import apiService from "../services/api/bridge";
+import { normalizePost } from "../utils/postUtils";
 
 export default function EditarPostPage() {
   const { user, loading: authLoading } = useAuth();
   const { postId } = useParams();
   const navigate = useNavigate();
   const { checkAuthentication } = useProtectedPage();
-  const { showError } = useToast();
+  const { showSuccess, showError } = useToast();
 
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,9 +32,9 @@ export default function EditarPostPage() {
       }
 
       try {
-        const response = await apiService.getPostById(postId);
-        const postData = response.data || response;
-        setPost(postData);
+        // Usa endpoint autenticado para carregar o post (funciona para publicados E rascunhos)
+        const postData = await apiService.getMyPostById(postId);
+        setPost(normalizePost(postData));
         setError(null);
       } catch (err) {
         console.error("Erro ao carregar post:", err);
@@ -43,20 +44,24 @@ export default function EditarPostPage() {
       }
     };
 
-    loadPost();
-  }, [postId]);
+    if (!authLoading && user) {
+      loadPost();
+    }
+  }, [postId, authLoading, user]);
 
   const handleUpdatePost = useCallback(
     async (postData) => {
       try {
         await apiService.updatePost(postId, postData);
+        showSuccess("Post atualizado com sucesso!");
         navigate(`${ROUTES.ADMIN}?tab=posts`, { replace: true });
       } catch (error) {
         console.error("Erro ao atualizar post:", error);
+        showError("Erro ao atualizar post. Tente novamente.");
         throw error;
       }
     },
-    [postId, navigate],
+    [postId, navigate, showSuccess, showError],
   );
 
   const handleCancel = useCallback(() => {
@@ -70,7 +75,7 @@ export default function EditarPostPage() {
     }
   }, [authLoading, user, navigate, showError]);
 
-  if (isLoading) {
+  if (isLoading || authLoading) {
     return (
       <div className="container py-5 text-center">
         <div className="spinner-border azul" role="status" />
@@ -85,10 +90,7 @@ export default function EditarPostPage() {
         <div className="alert alert-danger">
           <h4 className="alert-heading">Erro!</h4>
           <p>{error || "Post não encontrado"}</p>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            onClick={handleCancel}
-          >
+          <button className="btn btn-outline-danger btn-sm" onClick={handleCancel}>
             Voltar para Posts
           </button>
         </div>

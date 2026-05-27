@@ -10,4 +10,10 @@ export default (api) => ({
       method: "PUT",
     });
   },
+
+  async markAllNotificacoesRead() {
+    return api.authRequest("/users/notificacoes/read-all", {
+      method: "PUT",
+    });
+  },
 });

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import apiService from "../services/api/bridge";
 import { useAuth } from "../hooks/useAuth";
+import { useToast } from "../hooks/useToast";
 
 export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   const [comentarios, setComentarios] = useState([]);
@@ -12,6 +13,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   const [submitting, setSubmitting] = useState(false);
   const [replySubmitting, setReplySubmitting] = useState(false);
   const { isAuthenticated, user } = useAuth();
+  const { showSuccess, showError } = useToast();
 
   useEffect(() => {
     fetchComentarios();
@@ -53,6 +55,8 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   };
 
   const handleDelete = async (comentarioId) => {
+    if (!window.confirm("Tem certeza que deseja excluir este comentário?")) return;
+    
     try {
       await apiService.deleteComentario(comentarioId);
       setComentarios((prev) =>
@@ -63,8 +67,10 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
             respostas: (c.respostas || []).filter((r) => r.id !== comentarioId),
           }))
       );
+      showSuccess("Comentário excluído com sucesso!");
     } catch (err) {
       console.error("Erro ao deletar comentário:", err);
+      showError("Erro ao excluir comentário. Tente novamente.");
     }
   };
 
@@ -91,6 +97,20 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
     }
   };
 
+  const handleKeyDownNewComment = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
+  const handleKeyDownReply = (e, comentarioId) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmitResposta(e, comentarioId);
+    }
+  };
+
   const formatDate = (dateString) => {
     // Backend stores in UTC; ensure JS parses it as UTC
     let normalized = dateString;
@@ -104,6 +124,13 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const resolveProfilePicture = (path) => {
+    if (!path) return "";
+    if (path.startsWith("http")) return path;
+    const baseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+    return `${baseUrl}${path}`;
   };
 
   const renderCommentContent = (text) => {
@@ -137,6 +164,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
               rows="2"
               value={novoComentario}
               onChange={(e) => setNovoComentario(e.target.value)}
+              onKeyDown={handleKeyDownNewComment}
               placeholder="Escreva um comentário..."
               required
             ></textarea>
@@ -180,8 +208,29 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
               <div className="d-flex justify-content-between align-items-start" style={{ minWidth: 0 }}>
                 <div className="flex-grow-1" style={{ minWidth: 0 }}>
                   <div className="comment-header">
-                    <div className="comment-header-user">
-                      <i className="bi bi-person-circle azul"></i>
+                    <div className="comment-header-user d-flex align-items-center gap-2">
+                      {c.autor?.profile_picture ? (
+                        <img
+                          src={resolveProfilePicture(c.autor.profile_picture)}
+                          alt="Avatar"
+                          className="rounded-circle object-fit-cover"
+                          style={{ width: "32px", height: "32px" }}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.style.display = "none";
+                            if (e.target.nextElementSibling) {
+                              e.target.nextElementSibling.style.display = "inline-block";
+                            }
+                          }}
+                        />
+                      ) : null}
+                      <i 
+                        className="bi bi-person-circle azul" 
+                        style={{ 
+                          fontSize: "24px",
+                          display: c.autor?.profile_picture ? "none" : "inline-block" 
+                        }}
+                      ></i>
                       {c.autor?.username ? (
                         <Link to={`/perfil/${c.autor.username}`} className="text-decoration-none azul">
                           <strong className="azul small">
@@ -192,7 +241,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                         <strong className="azul small">Anônimo</strong>
                       )}
                     </div>
-                    <span className="comment-header-sep">·</span>
+                    <span className="comment-header-sep">-</span>
                     <small className="text-muted">{formatDate(c.data)}</small>
                   </div>
                   <p className="mb-0">{renderCommentContent(c.conteudo)}</p>
@@ -222,8 +271,10 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                           rows="2"
                           value={textoResposta}
                           onChange={(e) => setTextoResposta(e.target.value)}
+                          onKeyDown={(e) => handleKeyDownReply(e, c.id)}
                           placeholder="Escreva sua resposta..."
                           required
+                          autoFocus
                         ></textarea>
                         <button
                           type="submit"
@@ -243,8 +294,29 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                           <div className="d-flex justify-content-between align-items-start" style={{ minWidth: 0 }}>
                             <div className="flex-grow-1" style={{ minWidth: 0 }}>
                               <div className="comment-header">
-                                <div className="comment-header-user">
-                                  <i className="bi bi-reply-fill text-muted"></i>
+                                <div className="comment-header-user d-flex align-items-center gap-2">
+                                  {r.autor?.profile_picture ? (
+                                    <img
+                                      src={resolveProfilePicture(r.autor.profile_picture)}
+                                      alt="Avatar"
+                                      className="rounded-circle object-fit-cover"
+                                      style={{ width: "32px", height: "32px" }}
+                                      onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.style.display = "none";
+                                        if (e.target.nextElementSibling) {
+                                          e.target.nextElementSibling.style.display = "inline-block";
+                                        }
+                                      }}
+                                    />
+                                  ) : null}
+                                  <i 
+                                    className="bi bi-person-circle azul"
+                                    style={{ 
+                                      fontSize: "24px",
+                                      display: r.autor?.profile_picture ? "none" : "inline-block" 
+                                    }}
+                                  ></i>
                                   {r.autor?.username ? (
                                     <Link to={`/perfil/${r.autor.username}`} className="text-decoration-none azul">
                                       <strong className="small azul">{r.autor.username}</strong>
