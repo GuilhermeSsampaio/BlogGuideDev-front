@@ -12,6 +12,7 @@ export default function FeedbackPage() {
     canal_contato: "email",
   });
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -53,7 +54,7 @@ export default function FeedbackPage() {
             <div className="card-body p-4 p-md-4">
               <form onSubmit={handleSubmit}>
                 <div className="row g-3">
-                  <div className="col-md-6">
+                  <div className="col-12">
                     <label className="form-label fw-bold">Tipo</label>
                     <select
                       className="form-select"
@@ -63,19 +64,6 @@ export default function FeedbackPage() {
                     >
                       <option value="sugestao">Sugestão</option>
                       <option value="bug">Bug</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6">
-                    <label className="form-label fw-bold">Canal de contato</label>
-                    <select
-                      className="form-select"
-                      name="canal_contato"
-                      value={formData.canal_contato}
-                      onChange={handleChange}
-                    >
-                      <option value="email">Email</option>
-                      <option value="whatsapp">WhatsApp</option>
                     </select>
                   </div>
 
@@ -105,13 +93,14 @@ export default function FeedbackPage() {
                   </div>
 
                   <div className="col-12">
-                    <label className="form-label fw-bold">Email ou WhatsApp (opcional)</label>
+                    <label className="form-label fw-bold">Email para retorno (opcional)</label>
                     <input
                       className="form-control"
+                      type="email"
                       name="email_contato"
                       value={formData.email_contato}
                       onChange={handleChange}
-                      placeholder="Seu contato para retorno"
+                      placeholder="Seu email para retorno"
                     />
                   </div>
                 </div>
