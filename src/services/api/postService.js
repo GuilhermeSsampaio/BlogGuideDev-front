@@ -19,6 +19,10 @@ export default (api) => ({
     });
   },
 
+  async getMyPostById(postId) {
+    return api.authRequest(`/users/my_post/${postId}`, { method: "GET" });
+  },
+
   async deletePost(postId) {
     return api.authRequest(`/users/delete_post/${postId}`, {
       method: "DELETE",

@@ -253,6 +253,7 @@ export default function Header() {
                         className="dropdown-item dropdown-item-custom py-2"
                         to={ROUTES.USUARIO}
                         onClick={() => {
+                          setProfileOpen(false);
                           handleNavLinkClick();
                         }}
                         style={{ color: "#333", fontWeight: "500" }}
@@ -266,6 +267,7 @@ export default function Header() {
                         className="dropdown-item dropdown-item-custom py-2"
                         to={ROUTES.COMUNIDADE}
                         onClick={() => {
+                          setProfileOpen(false);
                           handleNavLinkClick();
                         }}
                         style={{ color: "#333", fontWeight: "500" }}

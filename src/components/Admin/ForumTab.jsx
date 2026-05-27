@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ForumTab({ topics, loading, onDelete }) {
   if (loading) {
@@ -42,12 +43,22 @@ export default function ForumTab({ topics, loading, onDelete }) {
               <td>{t.autor}</td>
               <td className="d-none d-md-table-cell text-muted small">{formatDate(t.data_criacao)}</td>
               <td className="text-end">
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => onDelete(t.id, t.titulo)}
-                >
-                  <i className="bi bi-trash"></i>
-                </button>
+                <div className="btn-group btn-group-sm" role="group">
+                  <Link
+                    to={`/forum/editar/${t.id}`}
+                    className="btn btn-outline-primary"
+                    title="Editar tópico"
+                  >
+                    <i className="bi bi-pencil"></i>
+                  </Link>
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={() => onDelete(t.id, t.titulo)}
+                    title="Deletar tópico"
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

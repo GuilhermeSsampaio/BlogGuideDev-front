@@ -549,10 +549,28 @@ footer {
     padding-top: 0;
     text-align: center;
   }
+
+  .user-profile-avatar-ring {
+    width: 110px;
+    height: 110px;
+    margin-top: -50px;
+  }
 }
 
 .notification-unread {
-  background: #f4f8ff !important;
+  background: #f4f8ff;
+}
+
+.notification-item {
+  background: transparent;
+}
+
+.notification-item:hover {
+  background: #f8f9fa !important;
+}
+
+.notification-item.notification-unread:hover {
+  background: #eaf1ff !important;
 }
 
 .card-title {
@@ -1320,11 +1338,7 @@ th {
     height: 100px;
   }
 
-  .user-profile-avatar-ring {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px;
-  }
+
 
   .button-return {
     margin-bottom: 2.5rem !important;

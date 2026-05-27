@@ -49,10 +49,14 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
     { label: "Frontend e Interface", color: "#4fc3f7" },
     { label: "Linguagens e Plataformas", color: "#b2f2bb" },
     { label: "Banco de Dados e CMS", color: "#ffd54f" },
-    { label: "Inteligência Artificial", color: "#ffb3c6" },
+    { label: "Ferramentas e IA", color: "#ffb3c6" },
+    { label: "Inteligência Artificial", color: "#f8bbd0" }, // mantido por compatibilidade
     { label: "Mobile", color: "#e1bee7" },
     { label: "DevOps e Cloud", color: "#ffe082" },
     { label: "Sistemas Operacionais", color: "#b3c6ff" },
+    { label: "Internet das Coisas", color: "#ffab91" },
+    { label: "Game Dev", color: "#ce93d8" },
+    { label: "Segurança da Informação", color: "#80cbc4" },
   ];
 
   const handleChange = (e) => {
@@ -148,6 +152,7 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
       excerpt: "",
       content: "",
       image_url: "",
+      image_reference: "",
       categoryLabel: "",
       categoryColor: "#6c2bd7",
       icon: "",
@@ -328,12 +333,12 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                       URL da Imagem (opcional)
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       className="form-control"
                       name="image_url"
                       value={formData.image_url}
                       onChange={handleChange}
-                      placeholder="https://exemplo.com/imagem.jpg"
+                      placeholder="https://exemplo.com/imagem.jpg ou /assets/banners/imagem.jpg"
                     />
                   </div>
 
@@ -342,12 +347,12 @@ export default function PostForm({ onSubmit, initialData = null, onCancel }) {
                       URL do Ícone (opcional)
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       className="form-control"
                       name="icon"
                       value={formData.icon}
                       onChange={handleChange}
-                      placeholder="https://exemplo.com/icon.svg"
+                      placeholder="https://exemplo.com/icon.svg ou /assets/icons/icon.svg"
                     />
                   </div>
                 </div>

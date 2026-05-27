@@ -2,6 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiService from "../../services/api/bridge";
 import { useAuth } from "../../hooks/useAuth";
+import { useToast } from "../../hooks/useToast";
+
+let globalLastUnreadCount = -1;
+let lastToastTime = 0;
 
 export default function NotificationBell() {
   const navigate = useNavigate();
@@ -11,6 +15,7 @@ export default function NotificationBell() {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const { showInfo } = useToast();
 
   const visibleItems = useMemo(() => items.slice(0, 8), [items]);
 
@@ -20,8 +25,30 @@ export default function NotificationBell() {
     try {
       setLoading(true);
       const data = await apiService.getNotificacoes();
-      setItems(Array.isArray(data?.items) ? data.items : []);
-      setUnreadCount(data?.unread_count || 0);
+      const newItems = Array.isArray(data?.items) ? data.items : [];
+      const newUnread = data?.unread_count || 0;
+      
+      setItems(newItems);
+      setUnreadCount(newUnread);
+
+      const now = Date.now();
+      if (
+        globalLastUnreadCount !== -1 && 
+        newUnread > globalLastUnreadCount && 
+        newItems.length > 0 &&
+        (now - lastToastTime > 1000) // Prevent double toast from the other instance
+      ) {
+        const newest = newItems[0];
+        if (!newest.lida) {
+          showInfo(`Nova notificação: ${newest.mensagem}`);
+          lastToastTime = now;
+        }
+      }
+      
+      // Update global tracker only if it went up, or if we reset it to 0
+      if (newUnread > globalLastUnreadCount || newUnread === 0) {
+        globalLastUnreadCount = newUnread;
+      }
     } catch (error) {
       console.error("Erro ao carregar notificações:", error);
     } finally {
@@ -82,10 +109,22 @@ export default function NotificationBell() {
       <button
         className="btn btn-light border rounded-circle"
         style={{ width: "42px", height: "42px" }}
-        onClick={() => {
+        onClick={async () => {
           const next = !open;
           setOpen(next);
-          if (next) loadNotificacoes();
+          if (next) {
+            await loadNotificacoes();
+            if (unreadCount > 0) {
+              try {
+                await apiService.markAllNotificacoesRead();
+                setUnreadCount(0);
+                setItems((prev) => prev.map((n) => ({ ...n, lida: true })));
+                globalLastUnreadCount = 0;
+              } catch (error) {
+                console.error("Erro ao marcar todas como lidas", error);
+              }
+            }
+          }
         }}
         aria-label="Notificações"
       >
@@ -128,10 +167,11 @@ export default function NotificationBell() {
             visibleItems.map((item) => (
               <button
                 key={item.id}
-                className={`w-100 text-start border-0 bg-transparent px-3 py-2 ${item.lida ? "" : "notification-unread"}`}
+                className={`w-100 text-start px-3 py-3 border-0 border-bottom notification-item ${item.lida ? "" : "notification-unread"}`}
+                style={{ borderColor: "#f0f0f0", transition: "background-color 0.2s ease" }}
                 onClick={() => handleClickItem(item)}
               >
-                <div className="small" style={{ color: "#222" }}>{item.mensagem}</div>
+                <div className="small" style={{ color: "#222", marginBottom: "0.2rem" }}>{item.mensagem}</div>
                 <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                   {new Date(item.data_criacao).toLocaleString("pt-BR")}
                 </div>
