@@ -19,7 +19,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="footer bg-body-tertiary pt-3 pt-md-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
+      <footer className="footer pt-3 pt-md-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
         <div className="container-fluid px-4 px-lg-5">
           <div className="row text-center text-md-start align-items-start gx-5 gy-2 gy-md-4 justify-content-between">
             <div className="col-12 col-md-3 mb-3 mb-md-0 margin-logo-footer">
@@ -82,7 +82,15 @@ export default function Footer() {
             <div className="col-12 col-md-3 mb-2 mb-md-0">
               <h5 className="fw-bold mb-2">Contato</h5>
               <ul className="list-unstyled text-muted" style={{ cursor: "pointer" }}>
-                <li>contatoblogguide@gmail.com</li>
+                <li>
+                  <a
+                    href="mailto:guilhermesampaio.dev.contato@gmail.com"
+                    className="text-muted text-decoration-none"
+                    aria-label="Email"
+                  >
+                    contatoblogguide@gmail.com
+                  </a>
+                </li>
                 <li>+55 (67) 9999-9999</li>
                 <li>Dourados, MS</li>
               </ul>
@@ -100,9 +108,11 @@ export default function Footer() {
                   <i className="bi bi-github"></i>
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/guilhermessampaio/"
                   className="text-muted fs-4"
                   aria-label="LinkedIn"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <i className="bi bi-linkedin"></i>
                 </a>

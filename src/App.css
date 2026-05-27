@@ -147,6 +147,7 @@ body.offcanvas-open {
 
 footer {
   font-size: 1rem;
+  background-color: #fff !important;
 }
 
 .bio-preview {
