@@ -160,6 +160,88 @@ export default function UserProfile() {
     }
   };
 
+  const hasUnsavedChanges = React.useMemo(() => {
+    if (!user) return false;
+    return (
+      (formData.username || "").trim().toLowerCase() !== (user.username || "").trim().toLowerCase() ||
+      (formData.nome || "").trim() !== (user.nome_completo || user.username || "").trim() ||
+      (formData.email || "").trim() !== (user.email || "").trim() ||
+      (formData.biografia || "").trim() !== (user.bio || "").trim() ||
+      (formData.github || "").trim() !== (user.github || "").trim() ||
+      (formData.linkedin || "").trim() !== (user.linkedin || "").trim() ||
+      formData.is_public !== (user.is_public || false)
+    );
+  }, [formData, user]);
+
+  const handleDiscardChanges = () => {
+    if (user) {
+      setFormData({
+        username: user.username || "",
+        nome: user.nome_completo || user.username || "",
+        email: user.email || "",
+        biografia: user.bio || "",
+        github: user.github || "",
+        linkedin: user.linkedin || "",
+        is_public: user.is_public || false,
+      });
+    }
+  };
+
+  const handleTabChange = (newTab) => {
+    if (activeTab === "configuracoes" && hasUnsavedChanges && newTab !== "configuracoes") {
+      const confirmDiscard = window.confirm(
+        "Você possui alterações não salvas nas configurações. Tem certeza que deseja sair e descartá-las?"
+      );
+      if (confirmDiscard) {
+        handleDiscardChanges();
+        setActiveTab(newTab);
+      }
+    } else {
+      setActiveTab(newTab);
+    }
+  };
+
+  useEffect(() => {
+    if (!hasUnsavedChanges) return;
+
+    // Intercepta fechamento de aba/recarregamento
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Intercepta cliques em links do header/footer que levam para fora da página
+    const handleClick = (e) => {
+      const link = e.target.closest("a");
+      if (link && link.href) {
+        // Se o link for interno e diferente da URL atual
+        const currentUrl = new URL(window.location.href);
+        const linkUrl = new URL(link.href, window.location.origin);
+        
+        if (linkUrl.pathname !== currentUrl.pathname) {
+          const confirm = window.confirm(
+            "Você possui alterações não salvas nas configurações. Tem certeza que deseja sair desta página e descartá-las?"
+          );
+          if (!confirm) {
+            e.preventDefault();
+            e.stopPropagation();
+          } else {
+            handleDiscardChanges();
+          }
+        }
+      }
+    };
+
+    // Usar capture phase para pegar o evento antes do React Router
+    document.addEventListener("click", handleClick, { capture: true });
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("click", handleClick, { capture: true });
+    };
+  }, [hasUnsavedChanges]);
+
   return (
     <div className="container-fluid my-5 user-profile-shell">
       <div className="row">
@@ -178,7 +260,7 @@ export default function UserProfile() {
           <div className="card border-0 shadow-sm user-profile-card">
             <UserTabNavigation
               activeTab={activeTab}
-              setActiveTab={setActiveTab}
+              setActiveTab={handleTabChange}
               forunsCount={userTopics.length}
             />
 
@@ -205,8 +287,11 @@ export default function UserProfile() {
               {activeTab === "configuracoes" && (
                 <UserConfigTab
                   formData={formData}
+                  originalUsername={user?.username || ""}
                   handleInputChange={handleInputChange}
                   handleSaveProfile={handleSaveProfile}
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  handleDiscardChanges={handleDiscardChanges}
                   showWarning={showWarning}
                   logout={logout}
                 />
