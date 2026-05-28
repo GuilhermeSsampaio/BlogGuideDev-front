@@ -271,6 +271,94 @@ footer {
   transition: background 0.2s;
 }
 
+.home-hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.home-install-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #5b21b6;
+  border: 1.5px solid #c4b5fd;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 0.7rem 1.8rem;
+  border-radius: 0.9rem;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 4px 12px rgba(91, 33, 182, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+  animation: installBtnPulse 2.8s ease-in-out infinite;
+}
+
+.home-install-btn::before {
+  content: "⬇";
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.home-install-btn:hover {
+  background: linear-gradient(135deg, #7C3AED 0%, #6366f1 100%);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.28);
+  animation: none;
+}
+
+.home-install-btn:hover::before {
+  transform: translateY(2px);
+}
+
+.home-install-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.18);
+}
+
+.home-install-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, 0.28),
+    0 4px 12px rgba(91, 33, 182, 0.10);
+}
+
+@keyframes installBtnPulse {
+  0%, 100% {
+    box-shadow:
+      0 4px 12px rgba(91, 33, 182, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    box-shadow:
+      0 6px 18px rgba(124, 58, 237, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-install-btn {
+    animation: none;
+  }
+}
+
 .home-hero-btn-arrow {
   margin-left: 0.5rem;
   font-size: 1.5rem;
