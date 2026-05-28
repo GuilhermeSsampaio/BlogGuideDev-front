@@ -1,9 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import apiService from "../../services/api/bridge";
+import authService from "../../services/auth";
 import {
   normalizePushSubscription,
   urlBase64ToUint8Array,
 } from "../../utils/pushSubscription";
+
+const USERNAME_MIN_LENGTH = 3;
+const USERNAME_MAX_LENGTH = 30;
+const USERNAME_REGEX = /^[a-z0-9._-]+$/;
 
 export default function UserConfigTab({
   formData,
@@ -11,6 +16,9 @@ export default function UserConfigTab({
   handleSaveProfile,
   showWarning,
   logout,
+  originalUsername,
+  hasUnsavedChanges,
+  handleDiscardChanges,
 }) {
 
   const BIO_CHAR_LIMIT = 300;
@@ -43,6 +51,117 @@ export default function UserConfigTab({
     () => renderMarkdown(formData.biografia),
     [formData.biografia]
   );
+
+  // ── Estado de validação do username ──
+  const [usernameStatus, setUsernameStatus] = useState({
+    checking: false,
+    available: null,
+    message: "",
+  });
+  const usernameTimerRef = useRef(null);
+
+  // ── Debounced username check ──
+  useEffect(() => {
+    const username = (formData.username || "").trim().toLowerCase();
+    const currentUsername = (originalUsername || "").trim().toLowerCase();
+
+    // Limpa timer anterior
+    if (usernameTimerRef.current) {
+      clearTimeout(usernameTimerRef.current);
+      usernameTimerRef.current = null;
+    }
+
+    // Se vazio, reseta estado
+    if (!username) {
+      setUsernameStatus({ checking: false, available: null, message: "" });
+      return;
+    }
+
+    // Se é o mesmo username atual do usuário, não precisa verificar e não exibe validação visual
+    if (username === currentUsername) {
+      setUsernameStatus({ checking: false, available: null, message: "" });
+      return;
+    }
+
+    // Validação local (tamanho mínimo)
+    if (username.length < USERNAME_MIN_LENGTH) {
+      setUsernameStatus({
+        checking: false,
+        available: false,
+        message: `Mínimo ${USERNAME_MIN_LENGTH} caracteres`,
+      });
+      return;
+    }
+
+    // Validação local (tamanho máximo)
+    if (username.length > USERNAME_MAX_LENGTH) {
+      setUsernameStatus({
+        checking: false,
+        available: false,
+        message: `Máximo ${USERNAME_MAX_LENGTH} caracteres`,
+      });
+      return;
+    }
+
+    // Validação local (caracteres permitidos)
+    if (!USERNAME_REGEX.test(username)) {
+      setUsernameStatus({
+        checking: false,
+        available: false,
+        message: "Apenas letras, números, '.', '_' ou '-'",
+      });
+      return;
+    }
+
+    // Passou validação local → agendar verificação na API
+    setUsernameStatus({ checking: true, available: null, message: "Verificando..." });
+
+    usernameTimerRef.current = setTimeout(async () => {
+      const result = await authService.checkUsername(username);
+      setUsernameStatus({
+        checking: false,
+        available: result.available,
+        message: result.message,
+      });
+    }, 500);
+
+    // Cleanup ao desmontar ou ao mudar username
+    return () => {
+      if (usernameTimerRef.current) {
+        clearTimeout(usernameTimerRef.current);
+        usernameTimerRef.current = null;
+      }
+    };
+  }, [formData.username, originalUsername]);
+
+  // Wrapper para forçar lowercase no input de username
+  const handleUsernameChange = (e) => {
+    const sanitized = e.target.value.toLowerCase().replace(/\s/g, "");
+    handleInputChange({
+      target: { name: "username", value: sanitized, type: "text" },
+    });
+  };
+
+  // Classe CSS para o input de username
+  const getUsernameInputClass = () => {
+    const username = (formData.username || "").trim();
+    if (!username) return "form-control";
+    if (usernameStatus.checking) return "form-control";
+    if (usernameStatus.available === true) return "form-control is-valid";
+    if (usernameStatus.available === false) return "form-control is-invalid";
+    return "form-control";
+  };
+
+  // Username é válido para salvar
+  const isUsernameValid =
+    !usernameStatus.checking &&
+    (usernameStatus.available === true ||
+      (formData.username || "").trim().toLowerCase() === (originalUsername || "").trim().toLowerCase());
+
+  const isSaveDisabled =
+    saveStatus === "saving" ||
+    usernameStatus.checking ||
+    (formData.username && !isUsernameValid);
 
   const supportsPush = () =>
     typeof window !== "undefined" &&
@@ -143,6 +262,11 @@ export default function UserConfigTab({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.username && !isUsernameValid) {
+      showWarning("Verifique o username antes de salvar.");
+      return;
+    }
+
     setSaveStatus("saving");
 
     try {
@@ -171,12 +295,33 @@ export default function UserConfigTab({
               <label className="form-label fw-bold">Username</label>
               <input
                 type="text"
-                className="form-control"
+                className={getUsernameInputClass()}
                 name="username"
                 value={formData.username}
-                onChange={handleInputChange}
+                onChange={handleUsernameChange}
+                maxLength={USERNAME_MAX_LENGTH}
                 required
               />
+              <div className="form-text">
+                {usernameStatus.checking && (
+                  <span className="text-info">
+                    <span className="spinner-border spinner-border-sm me-1" role="status"></span>
+                    Verificando...
+                  </span>
+                )}
+                {!usernameStatus.checking && usernameStatus.available === true && (
+                  <span className="text-success">
+                    <i className="bi bi-check-circle me-1"></i>
+                    {usernameStatus.message}
+                  </span>
+                )}
+                {!usernameStatus.checking && usernameStatus.available === false && (
+                  <span className="text-danger">
+                    <i className="bi bi-x-circle me-1"></i>
+                    {usernameStatus.message}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -255,7 +400,7 @@ export default function UserConfigTab({
               </label>
               <input
                 type="url"
-                className="form-control text-muted"
+                className="form-control"
                 name="github"
                 value={formData.github}
                 onChange={handleInputChange}
@@ -272,7 +417,7 @@ export default function UserConfigTab({
               </label>
               <input
                 type="url"
-                className="form-control text-muted"
+                className="form-control"
                 name="linkedin"
                 value={formData.linkedin}
                 onChange={handleInputChange}
@@ -324,59 +469,81 @@ export default function UserConfigTab({
 
         <div className="user-config-actions mt-4">
 
-          <button
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={() =>
-              showWarning("Funcionalidade de exclusão em desenvolvimento")
-            }
-          >
-            <i className="bi bi-trash me-1"></i>
-            Excluir Conta
-          </button>
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={saveStatus === "saving"}
-          >
-            {saveStatus === "saving" && (
-              <>
-                <span className="spinner-border spinner-border-sm me-2"></span>
-                Salvando...
-              </>
+          <div className="w-100">
+            {hasUnsavedChanges && (
+              <div className="alert alert-warning mb-3 d-flex align-items-center justify-content-between">
+                <div>
+                  <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                  <strong>Atenção:</strong> Você possui modificações que ainda não foram salvas.
+                </div>
+                <div>
+                  <button 
+                    type="button" 
+                    className="btn btn-sm btn-dark me-2" 
+                    onClick={handleDiscardChanges}
+                  >
+                    Descartar Alterações
+                  </button>
+                </div>
+              </div>
             )}
 
-            {saveStatus === "success" && (
-              <>
-                <i className="bi bi-check-circle me-2"></i>
-                Salvo com sucesso
-              </>
-            )}
+            <div className="d-flex justify-content-end gap-2">
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={() =>
+                  showWarning("Funcionalidade de exclusão em desenvolvimento")
+                }
+              >
+                <i className="bi bi-trash me-1"></i>
+                Excluir Conta
+              </button>
 
-            {saveStatus === "idle" && (
-              <>
-                <i className="bi bi-check me-1"></i>
-                Salvar Alterações
-              </>
-            )}
-          </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSaveDisabled || !hasUnsavedChanges}
+              >
+                {saveStatus === "saving" && (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2"></span>
+                    Salvando...
+                  </>
+                )}
+
+                {saveStatus === "success" && (
+                  <>
+                    <i className="bi bi-check-circle me-2"></i>
+                    Salvo com sucesso
+                  </>
+                )}
+
+                {saveStatus === "idle" && (
+                  <>
+                    <i className="bi bi-check me-1"></i>
+                    Salvar Alterações
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
 
         </div>
 
         <hr className="my-4" />
 
         <div>
-          <h6 className="text-danger mb-3 fw-bold">Sessão</h6>
-
-          <button
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={logout}
-          >
-            <i className="bi bi-box-arrow-right me-1"></i>
-            Sair da conta
-          </button>
+          <div className="d-flex justify-content-end">
+            <button
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={logout}
+            >
+              <i className="bi bi-box-arrow-right me-1"></i>
+              Sair da conta
+            </button>
+          </div>
         </div>
 
       </form>

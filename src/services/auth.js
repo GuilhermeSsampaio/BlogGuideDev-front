@@ -203,6 +203,21 @@ class AuthService {
     return await response.json();
   }
 
+  // Verificar disponibilidade de username (rota pública, sem token)
+  async checkUsername(username) {
+    try {
+      const url = `${this.baseURL}/users/check-username/${encodeURIComponent(username)}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        return { available: false, message: "Erro ao verificar username" };
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Erro ao verificar username:", error);
+      return { available: false, message: "Erro de conexão ao verificar username" };
+    }
+  }
+
   // Obter usuário atual
   async getCurrentUser() {
     return this.authRequest("/users/me");

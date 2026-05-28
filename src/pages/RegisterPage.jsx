@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useHandlersRegister } from "../handlers/registerHandler";
 import { ROUTES } from "../routes/constants";
 import { cnpj } from "cpf-cnpj-validator";
+import authService from "../services/auth";
+
+const USERNAME_MIN_LENGTH = 3;
+const USERNAME_MAX_LENGTH = 30;
+const USERNAME_REGEX = /^[a-z0-9._-]+$/;
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -25,14 +30,95 @@ export default function RegisterPage() {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  // ── Estado de validação do username ──
+  const [usernameStatus, setUsernameStatus] = useState({
+    checking: false,
+    available: null, // null = não verificado, true = disponível, false = indisponível
+    message: "",
+  });
+  const usernameTimerRef = useRef(null);
+
   const { handleRegister } = useHandlersRegister();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if (name === "username") {
+      // Força lowercase e remove espaços ao digitar
+      const sanitized = value.toLowerCase().replace(/\s/g, "");
+      setFormData((prev) => ({ ...prev, username: sanitized }));
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  // ── Debounced username check ──
+  useEffect(() => {
+    const username = formData.username.trim();
+
+    // Limpa timer anterior
+    if (usernameTimerRef.current) {
+      clearTimeout(usernameTimerRef.current);
+      usernameTimerRef.current = null;
+    }
+
+    // Se vazio, reseta estado
+    if (!username) {
+      setUsernameStatus({ checking: false, available: null, message: "" });
+      return;
+    }
+
+    // Validação local (tamanho mínimo)
+    if (username.length < USERNAME_MIN_LENGTH) {
+      setUsernameStatus({
+        checking: false,
+        available: false,
+        message: `Mínimo ${USERNAME_MIN_LENGTH} caracteres`,
+      });
+      return;
+    }
+
+    // Validação local (tamanho máximo)
+    if (username.length > USERNAME_MAX_LENGTH) {
+      setUsernameStatus({
+        checking: false,
+        available: false,
+        message: `Máximo ${USERNAME_MAX_LENGTH} caracteres`,
+      });
+      return;
+    }
+
+    // Validação local (caracteres permitidos)
+    if (!USERNAME_REGEX.test(username)) {
+      setUsernameStatus({
+        checking: false,
+        available: false,
+        message: "Apenas letras, números, '.', '_' ou '-'",
+      });
+      return;
+    }
+
+    // Passou validação local → agendar verificação na API
+    setUsernameStatus({ checking: true, available: null, message: "Verificando..." });
+
+    usernameTimerRef.current = setTimeout(async () => {
+      const result = await authService.checkUsername(username);
+      setUsernameStatus({
+        checking: false,
+        available: result.available,
+        message: result.message,
+      });
+    }, 500);
+
+    // Cleanup ao desmontar ou ao mudar username
+    return () => {
+      if (usernameTimerRef.current) {
+        clearTimeout(usernameTimerRef.current);
+        usernameTimerRef.current = null;
+      }
+    };
+  }, [formData.username]);
 
   const handleCnpjChange = async (e) => {
     const rawValue = e.target.value.replace(/\D/g, "").slice(0, 14);
@@ -87,12 +173,32 @@ export default function RegisterPage() {
     }
   };
 
+  // Username é válido quando: disponível = true e não está verificando
+  const isUsernameValid =
+    usernameStatus.available === true && !usernameStatus.checking;
+
+  // Classe CSS para o input de username
+  const getUsernameInputClass = () => {
+    const username = formData.username.trim();
+    if (!username && !submitted) return "form-control";
+    if (!username && submitted) return "form-control is-invalid";
+    if (usernameStatus.checking) return "form-control";
+    if (usernameStatus.available === true) return "form-control is-valid";
+    if (usernameStatus.available === false) return "form-control is-invalid";
+    return "form-control";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
 
     if (!formData.name || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
       setError("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    if (!isUsernameValid) {
+      setError("Verifique o username antes de continuar.");
       return;
     }
 
@@ -154,12 +260,39 @@ export default function RegisterPage() {
                   <label className="form-label">Username</label>
                   <input
                     type="text"
-                    className={`form-control ${submitted && !formData.username ? 'is-invalid' : ''}`}
+                    className={getUsernameInputClass()}
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
+                    placeholder="ex: meu.usuario_01"
+                    maxLength={USERNAME_MAX_LENGTH}
                     required
                   />
+                  <div className="form-text">
+                    {usernameStatus.checking && (
+                      <span className="text-info">
+                        <span className="spinner-border spinner-border-sm me-1" role="status"></span>
+                        Verificando...
+                      </span>
+                    )}
+                    {!usernameStatus.checking && usernameStatus.available === true && (
+                      <span className="text-success">
+                        <i className="bi bi-check-circle me-1"></i>
+                        {usernameStatus.message}
+                      </span>
+                    )}
+                    {!usernameStatus.checking && usernameStatus.available === false && (
+                      <span className="text-danger">
+                        <i className="bi bi-x-circle me-1"></i>
+                        {usernameStatus.message}
+                      </span>
+                    )}
+                    {!formData.username && !submitted && (
+                      <span className="text-muted">
+                        Apenas letras, números, '.', '_' ou '-'. Mínimo {USERNAME_MIN_LENGTH} caracteres.
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mb-3">
@@ -272,7 +405,7 @@ export default function RegisterPage() {
                 <button
                   type="submit"
                   className="btn btn-primary w-100"
-                  disabled={loading}
+                  disabled={loading || usernameStatus.checking}
                 >
                   {loading ? "Criando conta..." : "Criar conta"}
                 </button>
@@ -293,3 +426,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+
