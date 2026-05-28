@@ -8,8 +8,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "prompt",
-      devOptions: { enabled: true },
-      workbox: {
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.js",
+      devOptions: { enabled: true, type: "module" },
+      injectManifest: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
       },

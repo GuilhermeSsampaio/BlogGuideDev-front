@@ -1,4 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import apiService from "../../services/api/bridge";
+import {
+  normalizePushSubscription,
+  urlBase64ToUint8Array,
+} from "../../utils/pushSubscription";
 
 export default function UserConfigTab({
   formData,
@@ -33,30 +38,106 @@ export default function UserConfigTab({
   const [pushEnabled, setPushEnabled] = useState(
     localStorage.getItem("pwa_push_opt_in") === "true"
   );
+  const [pushLoading, setPushLoading] = useState(false);
   const previewHtml = useMemo(
     () => renderMarkdown(formData.biografia),
     [formData.biografia]
   );
 
+  const supportsPush = () =>
+    typeof window !== "undefined" &&
+    "Notification" in window &&
+    "serviceWorker" in navigator &&
+    "PushManager" in window;
+
+  const isSameKey = (existingKey, expectedKey) => {
+    if (!existingKey || !expectedKey) return false;
+    const existingBytes = new Uint8Array(existingKey);
+    if (existingBytes.length !== expectedKey.length) return false;
+    for (let i = 0; i < existingBytes.length; i += 1) {
+      if (existingBytes[i] !== expectedKey[i]) return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    let active = true;
+
+    const syncPushState = async () => {
+      if (!supportsPush()) return;
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        if (!active) return;
+        const enabled = Boolean(subscription);
+        localStorage.setItem("pwa_push_opt_in", enabled ? "true" : "false");
+        setPushEnabled(enabled);
+      } catch (error) {
+        console.warn("Falha ao sincronizar push:", error);
+      }
+    };
+
+    syncPushState();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const handleTogglePush = async () => {
-    if (!("Notification" in window)) {
+    if (!supportsPush()) {
       showWarning("Seu navegador não suporta notificações push.");
       return;
     }
 
-    if (!pushEnabled) {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") {
-        showWarning("Permissão de notificação não concedida.");
+    setPushLoading(true);
+
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const existing = await registration.pushManager.getSubscription();
+
+      if (!pushEnabled) {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          showWarning("Permissão de notificação não concedida.");
+          return;
+        }
+
+        const { public_key } = await apiService.getPushPublicKey();
+        const applicationServerKey = urlBase64ToUint8Array(public_key);
+        let subscription = existing;
+
+        if (subscription && !isSameKey(subscription.options.applicationServerKey, applicationServerKey)) {
+          await subscription.unsubscribe();
+          subscription = null;
+        }
+
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey,
+          });
+        }
+
+        await apiService.subscribePush(normalizePushSubscription(subscription));
+        localStorage.setItem("pwa_push_opt_in", "true");
+        setPushEnabled(true);
         return;
       }
-      localStorage.setItem("pwa_push_opt_in", "true");
-      setPushEnabled(true);
-      return;
-    }
 
-    localStorage.setItem("pwa_push_opt_in", "false");
-    setPushEnabled(false);
+      if (existing) {
+        const endpoint = existing.endpoint;
+        await existing.unsubscribe();
+        await apiService.unsubscribePush(endpoint);
+      }
+
+      localStorage.setItem("pwa_push_opt_in", "false");
+      setPushEnabled(false);
+    } catch (error) {
+      console.error("Erro ao atualizar push:", error);
+      showWarning("Nao foi possivel atualizar notificacoes push.");
+    } finally {
+      setPushLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -214,6 +295,7 @@ export default function UserConfigTab({
                 id="notificacaoPush"
                 checked={pushEnabled}
                 onChange={handleTogglePush}
+                disabled={pushLoading}
               />
               <label className="form-check-label" htmlFor="notificacaoPush">
                 Habilitar notificações push (PWA)
