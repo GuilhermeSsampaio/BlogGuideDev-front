@@ -5,6 +5,7 @@ import {
   normalizePushSubscription,
   urlBase64ToUint8Array,
 } from "../../utils/pushSubscription";
+import { renderMarkdown } from "../../utils/markdown";
 
 const USERNAME_MIN_LENGTH = 3;
 const USERNAME_MAX_LENGTH = 30;
@@ -23,29 +24,9 @@ export default function UserConfigTab({
 
   const BIO_CHAR_LIMIT = 300;
 
-  const renderMarkdown = (input) => {
-    if (!input) return "";
-    // Parser simples para markdown basico: negrito, italico e links.
-    const escaped = input
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
 
-    const withLinks = escaped.replace(
-      /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-    );
-
-    const withBold = withLinks.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-    const withItalic = withBold.replace(/\*([^*]+)\*/g, "<em>$1</em>");
-
-    return withItalic.replace(/\n/g, "<br />");
-  };
 
   const [saveStatus, setSaveStatus] = useState("idle");
-  const [pushEnabled, setPushEnabled] = useState(
-    localStorage.getItem("pwa_push_opt_in") === "true"
-  );
   const [pushLoading, setPushLoading] = useState(false);
   const previewHtml = useMemo(
     () => renderMarkdown(formData.biografia),
@@ -189,8 +170,11 @@ export default function UserConfigTab({
         const subscription = await registration.pushManager.getSubscription();
         if (!active) return;
         const enabled = Boolean(subscription);
-        localStorage.setItem("pwa_push_opt_in", enabled ? "true" : "false");
-        setPushEnabled(enabled);
+        const currentLocal = localStorage.getItem("pwa_push_opt_in") === "true";
+        if (enabled !== currentLocal) {
+          localStorage.setItem("pwa_push_opt_in", enabled ? "true" : "false");
+          handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: enabled } });
+        }
       } catch (error) {
         console.warn("Falha ao sincronizar push:", error);
       }
@@ -208,55 +192,13 @@ export default function UserConfigTab({
       return;
     }
 
-    setPushLoading(true);
-
-    try {
-      const registration = await navigator.serviceWorker.ready;
-      const existing = await registration.pushManager.getSubscription();
-
-      if (!pushEnabled) {
-        const permission = await Notification.requestPermission();
-        if (permission !== "granted") {
-          showWarning("Permissão de notificação não concedida.");
-          return;
-        }
-
-        const { public_key } = await apiService.getPushPublicKey();
-        const applicationServerKey = urlBase64ToUint8Array(public_key);
-        let subscription = existing;
-
-        if (subscription && !isSameKey(subscription.options.applicationServerKey, applicationServerKey)) {
-          await subscription.unsubscribe();
-          subscription = null;
-        }
-
-        if (!subscription) {
-          subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey,
-          });
-        }
-
-        await apiService.subscribePush(normalizePushSubscription(subscription));
-        localStorage.setItem("pwa_push_opt_in", "true");
-        setPushEnabled(true);
-        return;
-      }
-
-      if (existing) {
-        const endpoint = existing.endpoint;
-        await existing.unsubscribe();
-        await apiService.unsubscribePush(endpoint);
-      }
-
-      localStorage.setItem("pwa_push_opt_in", "false");
-      setPushEnabled(false);
-    } catch (error) {
-      console.error("Erro ao atualizar push:", error);
-      showWarning("Nao foi possivel atualizar notificacoes push.");
-    } finally {
-      setPushLoading(false);
-    }
+    handleInputChange({
+      target: {
+        name: "pushEnabled",
+        type: "checkbox",
+        checked: !formData.pushEnabled,
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -270,7 +212,63 @@ export default function UserConfigTab({
     setSaveStatus("saving");
 
     try {
-      await handleSaveProfile(e);
+      const profileSaved = await handleSaveProfile(e);
+      if (profileSaved === false) {
+        setSaveStatus("idle");
+        return;
+      }
+
+      const initialPush = localStorage.getItem("pwa_push_opt_in") === "true";
+      if (formData.pushEnabled !== initialPush) {
+        setPushLoading(true);
+        try {
+          const registration = await navigator.serviceWorker.ready;
+          const existing = await registration.pushManager.getSubscription();
+
+          if (formData.pushEnabled) {
+            const permission = await Notification.requestPermission();
+            if (permission !== "granted") {
+              showWarning("Permissão de notificação não concedida.");
+              handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: false } });
+              setPushLoading(false);
+              setSaveStatus("idle");
+              return;
+            }
+
+            const { public_key } = await apiService.getPushPublicKey();
+            const applicationServerKey = urlBase64ToUint8Array(public_key);
+            let subscription = existing;
+
+            if (subscription && !isSameKey(subscription.options.applicationServerKey, applicationServerKey)) {
+              await subscription.unsubscribe();
+              subscription = null;
+            }
+
+            if (!subscription) {
+              subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey,
+              });
+            }
+
+            await apiService.subscribePush(normalizePushSubscription(subscription));
+            localStorage.setItem("pwa_push_opt_in", "true");
+          } else {
+            if (existing) {
+              const endpoint = existing.endpoint;
+              await existing.unsubscribe();
+              await apiService.unsubscribePush(endpoint);
+            }
+            localStorage.setItem("pwa_push_opt_in", "false");
+          }
+        } catch (error) {
+          console.error("Erro ao atualizar push:", error);
+          showWarning("Não foi possível atualizar notificações push.");
+          handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: initialPush } });
+        } finally {
+          setPushLoading(false);
+        }
+      }
 
       setSaveStatus("success");
 
@@ -438,9 +436,9 @@ export default function UserConfigTab({
                 className="form-check-input"
                 type="checkbox"
                 id="notificacaoPush"
-                checked={pushEnabled}
+                checked={formData.pushEnabled || false}
                 onChange={handleTogglePush}
-                disabled={pushLoading}
+                disabled={pushLoading || saveStatus === "saving"}
               />
               <label className="form-check-label" htmlFor="notificacaoPush">
                 Habilitar notificações push (PWA)

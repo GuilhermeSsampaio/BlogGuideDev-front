@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import apiService from "../services/api/bridge";
+import { renderMarkdown } from "../utils/markdown";
 
 export default function PublicProfilePage() {
   const { username } = useParams();
@@ -58,7 +59,7 @@ export default function PublicProfilePage() {
   return (
     <div className="container my-5 button-return">
       <div className="row justify-content-center">
-        <div className="col-md-8 col-lg-6">
+        <div className="col-md-10 col-lg-8">
           <Link to="/comunidade" className="btn mb-4" style={{ backgroundColor: "#7C3AED", color: "#ffffff", fontWeight: "500" }}>
             <i className="bi bi-arrow-left me-1"></i>
             Voltar para Comunidade
@@ -81,12 +82,13 @@ export default function PublicProfilePage() {
                   <i className="bi bi-person-circle text-secondary bg-white rounded-circle" style={{ fontSize: "7rem", lineHeight: "1", display: "block" }}></i>
                 )}
               </div>
-              <h4 className="fw-bold mb-3 azul">{profile.nome_completo || profile.username}</h4>
+              <h4 className="fw-bold mb-3 azul fs-5 fs-md-4 text-break px-2">{profile.nome_completo || profile.username}</h4>
 
               {profile.bio && (
-                <p className="card-text mb-4 px-3" style={{ fontSize: "1.1rem" }}>
-                  "{profile.bio}"
-                </p>
+                <p 
+                  className="card-text mb-4 px-3 public-bio-text" 
+                  dangerouslySetInnerHTML={{ __html: renderMarkdown(profile.bio) }}
+                />
               )}
 
               <div className="d-flex justify-content-center gap-3 mt-4">

@@ -4,6 +4,7 @@ import { ROUTES } from "../routes";
 import Pedro from "../img/pedro.jpg";
 import Guilherme from "../img/guilherme.png";
 import LogoBlog from "../img/logoblog.png";
+import FeedbackSection from "../components/FeedbackSection";
 
 export default function HomePage() {
   const [installPrompt, setInstallPrompt] = useState(null);
@@ -180,6 +181,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      
+      {/* Seção de Feedback / Sugestões */}
+      <FeedbackSection />
     </>
   );
 }

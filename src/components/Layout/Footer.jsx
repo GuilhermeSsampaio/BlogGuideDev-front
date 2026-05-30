@@ -19,7 +19,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="footer pt-3 pt-md-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7" }}>
+      <footer className="footer pt-3 pt-md-5 pb-2 border-top jersey-25-regular" style={{ borderTop: "2px solid #6c2bd7", boxShadow: "0 3px 16px rgba(0, 0, 0, 0.06)" }}>
         <div className="container-fluid px-4 px-lg-5">
           <div className="row text-center text-md-start align-items-start gx-5 gy-2 gy-md-4 justify-content-between">
             <div className="col-12 col-md-3 mb-3 mb-md-0 margin-logo-footer">
@@ -70,12 +70,12 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to={ROUTES.FEEDBACK}
+                  <a
+                    href="/#feedback"
                     className="text-muted text-decoration-none"
                   >
                     Sugestões e Bugs
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </div>

@@ -13,7 +13,7 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
   const [submitting, setSubmitting] = useState(false);
   const [replySubmitting, setReplySubmitting] = useState(false);
   const { isAuthenticated, user } = useAuth();
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError, showWarning } = useToast();
 
   useEffect(() => {
     fetchComentarios();
@@ -207,8 +207,8 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
             <div key={c.id} className="list-group-item px-0 py-3 border-bottom">
               <div className="d-flex justify-content-between align-items-start" style={{ minWidth: 0 }}>
                 <div className="flex-grow-1" style={{ minWidth: 0 }}>
-                  <div className="comment-header">
-                    <div className="comment-header-user d-flex align-items-center gap-2">
+                  <div className="comment-header d-flex gap-2 mb-2">
+                    <div className="comment-header-user d-flex gap-2">
                       {c.autor?.profile_picture ? (
                         <img
                           src={resolveProfilePicture(c.autor.profile_picture)}
@@ -232,11 +232,23 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                         }}
                       ></i>
                       {c.autor?.username ? (
-                        <Link to={`/perfil/${c.autor.username}`} className="text-decoration-none azul">
-                          <strong className="azul small">
-                            {c.autor.username}
-                          </strong>
-                        </Link>
+                        c.autor.is_public || (isAuthenticated && user?.username === c.autor.username) ? (
+                          <Link to={`/perfil/${c.autor.username}`} className="text-decoration-none azul">
+                            <strong className="azul small">
+                              {c.autor.username}
+                            </strong>
+                          </Link>
+                        ) : (
+                          <span 
+                            className="text-decoration-none azul" 
+                            style={{ cursor: "pointer" }}
+                            onClick={() => showWarning("Este perfil é privado.")}
+                          >
+                            <strong className="azul small">
+                              {c.autor.username}
+                            </strong>
+                          </span>
+                        )
                       ) : (
                         <strong className="azul small">Anônimo</strong>
                       )}
@@ -293,8 +305,8 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                         <div key={r.id} className="mb-3">
                           <div className="d-flex justify-content-between align-items-start" style={{ minWidth: 0 }}>
                             <div className="flex-grow-1" style={{ minWidth: 0 }}>
-                              <div className="comment-header">
-                                <div className="comment-header-user d-flex align-items-center gap-2">
+                              <div className="comment-header d-flex gap-2 mb-2">
+                                <div className="comment-header-user d-flex gap-2">
                                   {r.autor?.profile_picture ? (
                                     <img
                                       src={resolveProfilePicture(r.autor.profile_picture)}
@@ -318,9 +330,19 @@ export default function ComentarioSection({ tipoReferencia, referenciaId }) {
                                     }}
                                   ></i>
                                   {r.autor?.username ? (
-                                    <Link to={`/perfil/${r.autor.username}`} className="text-decoration-none azul">
-                                      <strong className="small azul">{r.autor.username}</strong>
-                                    </Link>
+                                    r.autor.is_public || (isAuthenticated && user?.username === r.autor.username) ? (
+                                      <Link to={`/perfil/${r.autor.username}`} className="text-decoration-none azul">
+                                        <strong className="small azul">{r.autor.username}</strong>
+                                      </Link>
+                                    ) : (
+                                      <span 
+                                        className="text-decoration-none azul" 
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => showWarning("Este perfil é privado.")}
+                                      >
+                                        <strong className="small azul">{r.autor.username}</strong>
+                                      </span>
+                                    )
                                   ) : (
                                     <strong className="small azul">Anônimo</strong>
                                   )}

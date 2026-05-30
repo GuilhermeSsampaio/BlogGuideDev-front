@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import apiService from "../services/api/bridge";
+import { renderMarkdown } from "../utils/markdown";
 
 export default function ComunidadePage() {
+  const navigate = useNavigate();
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,6 +67,7 @@ export default function ComunidadePage() {
                     borderRadius: "1rem",
                     overflow: "hidden"
                   }}
+                  onClick={() => navigate(`/perfil/${p.username}`)}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-5px)";
                     e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.1)";
@@ -97,9 +100,11 @@ export default function ComunidadePage() {
                     </h6>
                     
                     {p.bio && (
-                      <p className="card-text small text-muted text-truncate mx-auto" style={{ maxHeight: "40px", maxWidth: "90%" }}>
-                        {p.bio}
-                      </p>
+                      <p 
+                        className="card-text small text-muted text-truncate mx-auto" 
+                        style={{ maxHeight: "40px", maxWidth: "90%" }}
+                        dangerouslySetInnerHTML={{ __html: renderMarkdown(p.bio) }}
+                      />
                     )}
 
                     <Link
@@ -110,6 +115,7 @@ export default function ComunidadePage() {
                         color: "#6c2bd7",
                         borderRadius: "0.5rem"
                       }}
+                      onClick={(e) => e.stopPropagation()}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background = "#6c2bd7";
                         e.currentTarget.style.color = "#fff";

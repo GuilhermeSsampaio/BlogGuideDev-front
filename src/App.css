@@ -761,7 +761,6 @@ th {
 
 .comment-header-user a,
 .comment-header-user strong {
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
@@ -1439,8 +1438,6 @@ th {
     height: 100px;
   }
 
-
-
   .button-return {
     margin-bottom: 2.5rem !important;
   }
@@ -1504,5 +1501,20 @@ th {
   .forum-detail-container {
     padding-left: 8px;
     padding-right: 8px;
+  }
+
+  .comment-header .text-muted {
+    font-size: 0.75rem;
+  }
+}
+
+.public-bio-text {
+  font-size: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .public-bio-text {
+    text-align: justify;
   }
 }

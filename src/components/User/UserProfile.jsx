@@ -23,6 +23,7 @@ export default function UserProfile() {
     github: "",
     linkedin: "",
     is_public: false,
+    pushEnabled: localStorage.getItem("pwa_push_opt_in") === "true",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState("");
@@ -60,6 +61,7 @@ export default function UserProfile() {
         github: user.github || "",
         linkedin: user.linkedin || "",
         is_public: user.is_public || false,
+        pushEnabled: localStorage.getItem("pwa_push_opt_in") === "true",
       }));
     }
   }, [user]);
@@ -82,7 +84,7 @@ export default function UserProfile() {
   };
 
   const handleSaveProfile = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     try {
       await authService.updateProfile({
         username: formData.username,
@@ -95,8 +97,10 @@ export default function UserProfile() {
       await refreshUser();
       showSuccess("Perfil atualizado com sucesso!");
       setIsEditing(false);
+      return true;
     } catch (error) {
       showError("Erro ao salvar o perfil. Tente novamente.");
+      return false;
     }
   };
 
@@ -169,7 +173,8 @@ export default function UserProfile() {
       (formData.biografia || "").trim() !== (user.bio || "").trim() ||
       (formData.github || "").trim() !== (user.github || "").trim() ||
       (formData.linkedin || "").trim() !== (user.linkedin || "").trim() ||
-      formData.is_public !== (user.is_public || false)
+      formData.is_public !== (user.is_public || false) ||
+      formData.pushEnabled !== (localStorage.getItem("pwa_push_opt_in") === "true")
     );
   }, [formData, user]);
 
@@ -183,6 +188,7 @@ export default function UserProfile() {
         github: user.github || "",
         linkedin: user.linkedin || "",
         is_public: user.is_public || false,
+        pushEnabled: localStorage.getItem("pwa_push_opt_in") === "true",
       });
     }
   };
