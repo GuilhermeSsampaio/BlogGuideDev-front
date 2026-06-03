@@ -1052,6 +1052,104 @@ th {
   justify-content: flex-end;
 }
 
+/* ===== Feedback Auth Restriction Styles ===== */
+.feedback-login-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #f0e6ff 0%, #e8f0fe 100%);
+  border: 1px solid #d4b8ff;
+  border-radius: 0.85rem;
+  box-shadow: 0 2px 12px rgba(108, 43, 215, 0.08);
+}
+
+.feedback-login-banner-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  background: #6c2bd7;
+  color: #fff;
+  border-radius: 0.65rem;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.feedback-login-banner-content h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4c1d95;
+  margin-bottom: 0.25rem;
+}
+
+.feedback-login-banner-content p {
+  font-size: 0.88rem;
+  color: #5b21b6;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.feedback-form-disabled {
+  position: relative;
+  opacity: 0.55;
+  pointer-events: none;
+  user-select: none;
+}
+
+.feedback-login-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.65rem 1rem;
+  background: #fef3cd;
+  border: 1px solid #ffc107;
+  border-radius: 0.6rem;
+  font-size: 0.88rem;
+  color: #856404;
+}
+
+.feedback-login-inline i {
+  font-size: 1.1rem;
+  color: #d97706;
+}
+
+.feedback-login-inline a {
+  color: #6c2bd7;
+  text-decoration: none;
+}
+
+.feedback-login-inline a:hover {
+  text-decoration: underline;
+}
+
+.feedback-btn-disabled-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.feedback-btn-tooltip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.4rem;
+  animation: feedbackTooltipPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes feedbackTooltipPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
 @media only screen and (min-width: 1200px) {
   .home-team-cards {
     gap: 6rem;
