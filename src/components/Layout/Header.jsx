@@ -125,15 +125,10 @@ export default function Header() {
               <li className="nav-item">
                 <Link
                   to={ROUTES.CONTEUDO}
-                  className={`nav-link ${
+                  className={`nav-link header-custom-link ${
                     isActive(ROUTES.CONTEUDO) ? "fw-bold" : ""
                   }`}
-                  style={{
-                    color: "#222",
-                    fontSize: "1.15rem",
-                    fontWeight: "normal",
-                    letterSpacing: "0.5px",
-                  }}
+                  style={{ color: "#222", fontWeight: "normal" }}
                   onClick={handleNavLinkClick}
                 >
                   Conteúdos
@@ -143,10 +138,10 @@ export default function Header() {
               <li className="nav-item">
                 <Link
                   to={ROUTES.FORUM}
-                  className={`nav-link ${
+                  className={`nav-link header-custom-link ${
                     isActive(ROUTES.FORUM) ? "fw-bold" : ""
                   }`}
-                  style={{ color: "#222", fontSize: "1.15rem", letterSpacing: "0.5px" }}
+                  style={{ color: "#222" }}
                   onClick={handleNavLinkClick}
                 >
                   Fórum
@@ -156,10 +151,10 @@ export default function Header() {
               <li className="nav-item">
                 <Link
                   to={ROUTES.VAGAS}
-                  className={`nav-link ${
+                  className={`nav-link header-custom-link ${
                     isActive(ROUTES.VAGAS) ? "fw-bold" : ""
                   }`}
-                  style={{ color: "#222", fontSize: "1.15rem", letterSpacing: "0.5px" }}
+                  style={{ color: "#222" }}
                   onClick={handleNavLinkClick}
                 >
                   Vagas
@@ -170,10 +165,10 @@ export default function Header() {
                 <li className="nav-item">
                   <Link
                     to={ROUTES.ADMIN}
-                    className={`nav-link ${
+                    className={`nav-link header-custom-link ${
                       isActive(ROUTES.ADMIN) ? "fw-bold" : ""
                     }`}
-                    style={{ color: "#dc3545", fontSize: "1.15rem", letterSpacing: "0.5px" }}
+                    style={{ color: "#dc3545" }}
                     onClick={handleNavLinkClick}
                   >
                     <i className="bi bi-shield-lock me-1"></i>

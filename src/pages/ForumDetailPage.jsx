@@ -104,6 +104,20 @@ export default function ForumDetailPage() {
           dangerouslySetInnerHTML={{ __html: topic.descricao }}
         />
 
+        {topic.tags && topic.tags.length > 0 && (
+          <div className="d-flex flex-wrap gap-2 mt-4 mb-2">
+            {topic.tags.map((tag) => (
+              <span
+                key={tag}
+                className="badge d-flex align-items-center"
+                style={{ backgroundColor: "#7C3AED", fontSize: "0.85rem", padding: "0.4em 0.8em", borderRadius: "16px" }}
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+
         <div className="mt-4 d-flex gap-3">
           <CurtidaButton tipoReferencia="forum" referenciaId={topic.id} />
         </div>

@@ -1611,8 +1611,20 @@ th {
   text-align: center;
 }
 
-@media (max-width: 767px) {
-  .public-bio-text {
-    text-align: justify;
+  @media (max-width: 767px) {
+    .public-bio-text {
+      text-align: justify;
+    }
   }
-}
+
+  .header-custom-link {
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+  }
+  
+  @media (min-width: 992px) and (max-width: 1006px) {
+    .header-custom-link {
+      font-size: 1.05rem;
+      letter-spacing: normal;
+    }
+  }

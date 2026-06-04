@@ -44,9 +44,29 @@ export default function CriarForumPage() {
     descricao: "",
     tipo: "",
     imagem_url: "",
+    tags: [],
   });
   const [submitting, setSubmitting] = useState(false);
   const [imagemMode, setImagemMode] = useState("url"); // "url" ou "file"
+  const [tagInput, setTagInput] = useState("");
+
+  const handleTagKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === "," || e.key === " ") {
+      e.preventDefault();
+      let newTag = tagInput.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (newTag && formData.tags.length < 5 && !formData.tags.includes(newTag)) {
+        setFormData((prev) => ({ ...prev, tags: [...prev.tags, newTag] }));
+      }
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tagToRemove),
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -263,6 +283,38 @@ export default function CriarForumPage() {
                     placeholder="Escreva o conteúdo do seu tópico aqui..."
                     style={{ background: "#fff", minHeight: "300px" }}
                   />
+                </div>
+
+                {/* Tags */}
+                <div className="mb-4">
+                  <label className="form-label fw-bold">Hashtags (máximo 5)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Digite e aperte Enter, Espaço ou Vírgula"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={handleTagKeyDown}
+                    disabled={formData.tags.length >= 5}
+                  />
+                  {formData.tags.length > 0 && (
+                    <div className="d-flex flex-wrap gap-2 mt-2">
+                      {formData.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="badge d-flex align-items-center"
+                          style={{ backgroundColor: "#7C3AED", fontSize: "0.9rem", padding: "0.4em 0.6em" }}
+                        >
+                          #{tag}
+                          <i
+                            className="bi bi-x ms-2"
+                            style={{ cursor: "pointer", fontSize: "1.2rem" }}
+                            onClick={() => removeTag(tag)}
+                          ></i>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Botões */}

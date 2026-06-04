@@ -99,7 +99,22 @@ export default function UserProfile() {
       setIsEditing(false);
       return true;
     } catch (error) {
-      showError("Erro ao salvar o perfil. Tente novamente.");
+      const msg = error?.message || "";
+      // Verifica se o erro é relacionado ao username (limite de caracteres, formato, etc.)
+      if (msg.toLowerCase().includes("username")) {
+        if (formData.username.length > 30) {
+          showError(
+            `Seu username "${formData.username}" possui ${formData.username.length} caracteres e excede o limite de 30. ` +
+            `Altere seu username na aba de Configurações antes de salvar.`
+          );
+        } else {
+          showError(msg);
+        }
+      } else if (msg.includes("409")) {
+        showError("Username já está em uso. Escolha outro.");
+      } else {
+        showError(msg || "Erro ao salvar o perfil. Tente novamente.");
+      }
       return false;
     }
   };
@@ -173,14 +188,14 @@ export default function UserProfile() {
       (formData.biografia || "").trim() !== (user.bio || "").trim() ||
       (formData.github || "").trim() !== (user.github || "").trim() ||
       (formData.linkedin || "").trim() !== (user.linkedin || "").trim() ||
-      formData.is_public !== (user.is_public || false) ||
-      formData.pushEnabled !== (localStorage.getItem("pwa_push_opt_in") === "true")
+      formData.is_public !== (user.is_public || false)
     );
   }, [formData, user]);
 
   const handleDiscardChanges = () => {
     if (user) {
-      setFormData({
+      setFormData((prev) => ({
+        ...prev,
         username: user.username || "",
         nome: user.nome_completo || user.username || "",
         email: user.email || "",
@@ -188,8 +203,7 @@ export default function UserProfile() {
         github: user.github || "",
         linkedin: user.linkedin || "",
         is_public: user.is_public || false,
-        pushEnabled: localStorage.getItem("pwa_push_opt_in") === "true",
-      });
+      }));
     }
   };
 
