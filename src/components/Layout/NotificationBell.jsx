@@ -77,8 +77,6 @@ export default function NotificationBell() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
-  if (!isAuthenticated) return null;
-
   const resolveTarget = (item) => {
     if (item.tipo_referencia === "forum") {
       return `/forum/${item.referencia_id}`;
@@ -112,7 +110,7 @@ export default function NotificationBell() {
         onClick={async () => {
           const next = !open;
           setOpen(next);
-          if (next) {
+          if (next && isAuthenticated) {
             await loadNotificacoes();
             if (unreadCount > 0) {
               try {
@@ -154,29 +152,60 @@ export default function NotificationBell() {
             marginTop: window.innerWidth >= 768 ? "0.5rem" : 0,
           }}
         >
-          <div className="px-3 py-2 border-bottom d-flex justify-content-between align-items-center">
-            <small style={{ fontWeight: "500" }}>Notificações</small>
-            <small className="text-muted">{unreadCount} novas</small>
-          </div>
-
-          {loading ? (
-            <div className="p-3 text-center text-muted small">Carregando...</div>
-          ) : visibleItems.length === 0 ? (
-            <div className="p-3 text-muted small">Sem notificações por enquanto.</div>
-          ) : (
-            visibleItems.map((item) => (
-              <button
-                key={item.id}
-                className={`w-100 text-start px-3 py-3 border-0 border-bottom notification-item ${item.lida ? "" : "notification-unread"}`}
-                style={{ borderColor: "#f0f0f0", transition: "background-color 0.2s ease" }}
-                onClick={() => handleClickItem(item)}
-              >
-                <div className="small" style={{ color: "#222", marginBottom: "0.2rem" }}>{item.mensagem}</div>
-                <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                  {new Date(item.data_criacao).toLocaleString("pt-BR")}
+          {!isAuthenticated ? (
+            <>
+              <div className="px-3 py-2 border-bottom d-flex justify-content-between align-items-center">
+                <small style={{ fontWeight: "500" }}>Notificações</small>
+              </div>
+              <div className="p-4 text-center">
+                <p className="text-muted small mb-3">
+                  Faça login ou cadastre-se para ver suas notificações e interagir com a comunidade.
+                </p>
+                <div className="d-flex flex-column gap-2">
+                  <button 
+                    className="btn btn-primary btn-sm w-100" 
+                    style={{ backgroundColor: "#7C3AED", borderColor: "#7C3AED" }}
+                    onClick={() => { setOpen(false); navigate("/login"); }}
+                  >
+                    Fazer Login
+                  </button>
+                  <button 
+                    className="btn btn-outline-primary btn-sm w-100" 
+                    style={{ color: "#7C3AED", borderColor: "#7C3AED" }}
+                    onClick={() => { setOpen(false); navigate("/register"); }}
+                  >
+                    Cadastrar
+                  </button>
                 </div>
-              </button>
-            ))
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="px-3 py-2 border-bottom d-flex justify-content-between align-items-center">
+                <small style={{ fontWeight: "500" }}>Notificações</small>
+                <small className="text-muted">{unreadCount} novas</small>
+              </div>
+
+              {loading ? (
+                <div className="p-3 text-center text-muted small">Carregando...</div>
+              ) : visibleItems.length === 0 ? (
+                <div className="p-3 text-muted small">Sem notificações por enquanto.</div>
+              ) : (
+                visibleItems.map((item) => (
+                  <button
+                    key={item.id}
+                    className={`w-100 text-start px-3 py-3 border-0 border-bottom notification-item ${item.lida ? "" : "notification-unread"}`}
+                    style={{ borderColor: "#f0f0f0", transition: "background-color 0.2s ease" }}
+                    onClick={() => handleClickItem(item)}
+                  >
+                    <div className="small" style={{ color: "#222", marginBottom: "0.2rem" }}>{item.mensagem}</div>
+                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                      {new Date(item.data_criacao).toLocaleString("pt-BR")}
+                    </div>
+                  </button>
+                ))
+              )}
+            </>
           )}
         </div>
       )}

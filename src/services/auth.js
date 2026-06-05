@@ -142,7 +142,21 @@ class AuthService {
             window.location.href = "/login";
           }
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Tenta extrair mensagem de erro detalhada do backend (422, 409, etc.)
+        let detail = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.detail) {
+            if (typeof errorData.detail === "string") {
+              detail = errorData.detail;
+            } else if (Array.isArray(errorData.detail)) {
+              detail = errorData.detail.map((d) => d.msg || d.message || JSON.stringify(d)).join("; ");
+            }
+          }
+        } catch (e) {
+          /* usa mensagem padrão */
+        }
+        throw new Error(detail);
       }
 
       return await response.json();
@@ -259,6 +273,37 @@ class AuthService {
   // Obter estatísticas do usuário
   async getUserStats() {
     return this.authRequest("/users/me/stats");
+  }
+
+  // Alterar senha
+  async changePassword(currentPassword, newPassword) {
+    const url = `${this.baseURL}/users/change-password`;
+    const token = this.getToken();
+
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({
+        current_password: currentPassword,
+        new_password: newPassword,
+      }),
+    });
+
+    if (!response.ok) {
+      let detail = "Erro ao alterar senha.";
+      try {
+        const errorData = await response.json();
+        if (errorData.detail) detail = errorData.detail;
+      } catch (e) {
+        /* usa mensagem padrão */
+      }
+      throw new Error(detail);
+    }
+
+    return await response.json();
   }
 
   // Logout

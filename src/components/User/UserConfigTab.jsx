@@ -6,6 +6,7 @@ import {
   urlBase64ToUint8Array,
 } from "../../utils/pushSubscription";
 import { renderMarkdown } from "../../utils/markdown";
+import PasswordSection from "./PasswordSection";
 
 const USERNAME_MIN_LENGTH = 3;
 const USERNAME_MAX_LENGTH = 30;
@@ -192,13 +193,57 @@ export default function UserConfigTab({
       return;
     }
 
-    handleInputChange({
-      target: {
-        name: "pushEnabled",
-        type: "checkbox",
-        checked: !formData.pushEnabled,
-      },
-    });
+    const wantEnabled = !formData.pushEnabled;
+    setPushLoading(true);
+
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const existing = await registration.pushManager.getSubscription();
+
+      if (wantEnabled) {
+        // Ativando push
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          showWarning("Permissão de notificação não concedida.");
+          setPushLoading(false);
+          return;
+        }
+
+        const { public_key } = await apiService.getPushPublicKey();
+        const applicationServerKey = urlBase64ToUint8Array(public_key);
+        let subscription = existing;
+
+        if (subscription && !isSameKey(subscription.options.applicationServerKey, applicationServerKey)) {
+          await subscription.unsubscribe();
+          subscription = null;
+        }
+
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey,
+          });
+        }
+
+        await apiService.subscribePush(normalizePushSubscription(subscription));
+        localStorage.setItem("pwa_push_opt_in", "true");
+        handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: true } });
+      } else {
+        // Desativando push
+        if (existing) {
+          const endpoint = existing.endpoint;
+          await existing.unsubscribe();
+          await apiService.unsubscribePush(endpoint);
+        }
+        localStorage.setItem("pwa_push_opt_in", "false");
+        handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: false } });
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar push:", error);
+      showWarning("Não foi possível atualizar notificações push.");
+    } finally {
+      setPushLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -218,58 +263,6 @@ export default function UserConfigTab({
         return;
       }
 
-      const initialPush = localStorage.getItem("pwa_push_opt_in") === "true";
-      if (formData.pushEnabled !== initialPush) {
-        setPushLoading(true);
-        try {
-          const registration = await navigator.serviceWorker.ready;
-          const existing = await registration.pushManager.getSubscription();
-
-          if (formData.pushEnabled) {
-            const permission = await Notification.requestPermission();
-            if (permission !== "granted") {
-              showWarning("Permissão de notificação não concedida.");
-              handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: false } });
-              setPushLoading(false);
-              setSaveStatus("idle");
-              return;
-            }
-
-            const { public_key } = await apiService.getPushPublicKey();
-            const applicationServerKey = urlBase64ToUint8Array(public_key);
-            let subscription = existing;
-
-            if (subscription && !isSameKey(subscription.options.applicationServerKey, applicationServerKey)) {
-              await subscription.unsubscribe();
-              subscription = null;
-            }
-
-            if (!subscription) {
-              subscription = await registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey,
-              });
-            }
-
-            await apiService.subscribePush(normalizePushSubscription(subscription));
-            localStorage.setItem("pwa_push_opt_in", "true");
-          } else {
-            if (existing) {
-              const endpoint = existing.endpoint;
-              await existing.unsubscribe();
-              await apiService.unsubscribePush(endpoint);
-            }
-            localStorage.setItem("pwa_push_opt_in", "false");
-          }
-        } catch (error) {
-          console.error("Erro ao atualizar push:", error);
-          showWarning("Não foi possível atualizar notificações push.");
-          handleInputChange({ target: { name: "pushEnabled", type: "checkbox", checked: initialPush } });
-        } finally {
-          setPushLoading(false);
-        }
-      }
-
       setSaveStatus("success");
 
       setTimeout(() => {
@@ -287,6 +280,33 @@ export default function UserConfigTab({
       <h5 className="azul mt-2 mb-3 fw-bold">Configurações da Conta</h5>
 
       <form onSubmit={handleSubmit}>
+        {/* Alerta de username longo (OAuth/Google) */}
+        {formData.username && formData.username.length > 30 && (
+          <div
+            className="alert d-flex align-items-start gap-3 mb-4"
+            style={{
+              backgroundColor: "#fff3cd",
+              border: "1px solid #ffc107",
+              borderRadius: "8px",
+            }}
+          >
+            <i
+              className="bi bi-exclamation-triangle-fill"
+              style={{ color: "#f9a825", fontSize: "1.4rem", marginTop: "2px" }}
+            ></i>
+            <div>
+              <strong>Seu username precisa ser alterado!</strong>
+              <p className="mb-0 mt-1" style={{ fontSize: "0.9rem" }}>
+                O username atual (<strong>{formData.username}</strong>) possui{" "}
+                <strong>{formData.username.length} caracteres</strong> e excede o
+                limite de 30. Isso acontece quando a conta é criada via Google e
+                o email é usado como username. Altere o campo abaixo antes de
+                salvar qualquer modificação.
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="row">
           <div className="col-md-6">
             <div className="mb-3">
@@ -462,6 +482,14 @@ export default function UserConfigTab({
             </div>
           </div>
         </div>
+
+        <hr className="my-4" />
+
+        <h6 className="azul mb-3">
+          <i className="bi bi-shield-lock me-2"></i>Segurança
+        </h6>
+
+        <PasswordSection showWarning={showWarning} />
 
         {/* BOTÕES */}
 
